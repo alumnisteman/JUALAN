@@ -82,7 +82,11 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-  lastLogin: Date
+  lastLogin: Date,
+  telegramChatId: {
+    type: String,
+    trim: true
+  }
 }, {
   timestamps: true
 });

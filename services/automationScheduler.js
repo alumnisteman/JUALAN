@@ -17,12 +17,11 @@ const startAutomationScheduler = () => {
           await runAutoPricing(user._id);
         } catch (error) {
           console.error(`Auto-pricing failed for user ${user._id}:`, error);
-          // Log error dan send notification to user
           const { sendNotification } = require('./notificationService');
           await sendNotification(user._id, {
             type: 'automation',
-            title: 'Auto-pricing Failed',
-            message: 'Automatic pricing update failed. Please check your settings.'
+            title: 'Auto-pricing Gagal',
+            message: 'Pembaruan harga otomatis gagal. Periksa pengaturan Anda.'
           }, ['push', 'email']);
         }
       }
@@ -44,8 +43,8 @@ const startAutomationScheduler = () => {
           const { sendNotification } = require('./notificationService');
           await sendNotification(user._id, {
             type: 'automation',
-            title: 'Auto-content Failed',
-            message: 'Automatic content generation failed. Please check your settings.'
+            title: 'Auto-content Gagal',
+            message: 'Pembuatan konten otomatis gagal. Periksa pengaturan Anda.'
           }, ['push', 'email']);
         }
       }
@@ -104,8 +103,8 @@ const startAutomationScheduler = () => {
           const userProducts = lowStockProducts.filter(p => p.createdBy._id.toString() === userId);
           await sendBulkNotification([userId], {
             type: 'inventory',
-            title: 'Low Stock Alert',
-            message: `${userProducts.length} products are running low on stock`
+            title: 'Peringatan Stok Menipis',
+            message: `${userProducts.length} produk hampir habis stoknya`
           }, ['push', 'email']);
         } catch (error) {
           console.error(`Failed to send low stock notification to user ${userId}:`, error);

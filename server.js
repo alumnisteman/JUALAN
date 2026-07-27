@@ -6,8 +6,9 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cron = require('node-cron');
 
-// Import models (ensure Counter is registered before Order)
+// Import models (ensure Counter registered before Order, Notification early)
 require('./models/Counter');
+require('./models/Notification');
 
 // Import routes
 const authRoutes = require('./routes/auth');
