@@ -1,2 +1,0 @@
-# Reseller
-Reseller
