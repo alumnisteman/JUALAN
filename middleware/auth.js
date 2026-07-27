@@ -20,12 +20,18 @@ const authMiddleware = async (req, res, next) => {
     req.userId = user._id;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expired' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    res.status(401).json({ error: 'Authentication failed' });
   }
 };
 
 const adminMiddleware = (req, res, next) => {
-  if (req.user.role !== 'admin') {
+  if (!req.user || req.user.role !== 'admin') {
     return res.status(403).json({ error: 'Admin access required' });
   }
   next();

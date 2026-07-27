@@ -111,8 +111,17 @@ const orderSchema = new mongoose.Schema({
 // Generate order number
 orderSchema.pre('save', async function(next) {
   if (!this.orderNumber) {
-    const count = await mongoose.model('Order').countDocuments();
-    this.orderNumber = `ORD-${new Date().getFullYear()}${String(count + 1).padStart(6, '0')}`;
+    const Counter = mongoose.model('Counter');
+    const year = new Date().getFullYear();
+    const counterName = `order-${year}`;
+    
+    const counter = await Counter.findOneAndUpdate(
+      { name: counterName },
+      { $inc: { sequence: 1 } },
+      { new: true, upsert: true }
+    );
+    
+    this.orderNumber = `ORD-${year}${String(counter.sequence).padStart(6, '0')}`;
   }
   
   // Calculate totals

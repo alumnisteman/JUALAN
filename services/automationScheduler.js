@@ -13,10 +13,21 @@ const startAutomationScheduler = () => {
     try {
       const users = await User.find({ 'aiSettings.autoPricing': true, isActive: true });
       for (const user of users) {
-        await runAutoPricing(user._id);
+        try {
+          await runAutoPricing(user._id);
+        } catch (error) {
+          console.error(`Auto-pricing failed for user ${user._id}:`, error);
+          // Log error dan send notification to user
+          const { sendNotification } = require('./notificationService');
+          await sendNotification(user._id, {
+            type: 'automation',
+            title: 'Auto-pricing Failed',
+            message: 'Automatic pricing update failed. Please check your settings.'
+          }, ['push', 'email']);
+        }
       }
     } catch (error) {
-      console.error('Auto-pricing error:', error);
+      console.error('Auto-pricing scheduler error:', error);
     }
   });
 
@@ -26,10 +37,20 @@ const startAutomationScheduler = () => {
     try {
       const users = await User.find({ 'aiSettings.autoContent': true, isActive: true });
       for (const user of users) {
-        await runAutoContent(user._id);
+        try {
+          await runAutoContent(user._id);
+        } catch (error) {
+          console.error(`Auto-content failed for user ${user._id}:`, error);
+          const { sendNotification } = require('./notificationService');
+          await sendNotification(user._id, {
+            type: 'automation',
+            title: 'Auto-content Failed',
+            message: 'Automatic content generation failed. Please check your settings.'
+          }, ['push', 'email']);
+        }
       }
     } catch (error) {
-      console.error('Auto-content error:', error);
+      console.error('Auto-content scheduler error:', error);
     }
   });
 
@@ -39,10 +60,14 @@ const startAutomationScheduler = () => {
     try {
       const users = await User.find({ isActive: true });
       for (const user of users) {
-        await runInventorySync(user._id);
+        try {
+          await runInventorySync(user._id);
+        } catch (error) {
+          console.error(`Inventory sync failed for user ${user._id}:`, error);
+        }
       }
     } catch (error) {
-      console.error('Inventory sync error:', error);
+      console.error('Inventory sync scheduler error:', error);
     }
   });
 
@@ -52,10 +77,14 @@ const startAutomationScheduler = () => {
     try {
       const users = await User.find({ isActive: true });
       for (const user of users) {
-        await runOrderSync(user._id);
+        try {
+          await runOrderSync(user._id);
+        } catch (error) {
+          console.error(`Order sync failed for user ${user._id}:`, error);
+        }
       }
     } catch (error) {
-      console.error('Order sync error:', error);
+      console.error('Order sync scheduler error:', error);
     }
   });
 
@@ -71,12 +100,16 @@ const startAutomationScheduler = () => {
       const userIds = [...new Set(lowStockProducts.map(p => p.createdBy._id.toString()))];
       
       for (const userId of userIds) {
-        const userProducts = lowStockProducts.filter(p => p.createdBy._id.toString() === userId);
-        await sendBulkNotification([userId], {
-          type: 'inventory',
-          title: 'Low Stock Alert',
-          message: `${userProducts.length} products are running low on stock`
-        }, ['push', 'email']);
+        try {
+          const userProducts = lowStockProducts.filter(p => p.createdBy._id.toString() === userId);
+          await sendBulkNotification([userId], {
+            type: 'inventory',
+            title: 'Low Stock Alert',
+            message: `${userProducts.length} products are running low on stock`
+          }, ['push', 'email']);
+        } catch (error) {
+          console.error(`Failed to send low stock notification to user ${userId}:`, error);
+        }
       }
     } catch (error) {
       console.error('Low stock check error:', error);

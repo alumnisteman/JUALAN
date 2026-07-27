@@ -2,6 +2,7 @@ const express = require('express');
 const Product = require('../models/Product');
 const Order = require('../models/Order');
 const Customer = require('../models/Customer');
+const User = require('../models/User');
 
 const router = express.Router();
 
@@ -32,7 +33,7 @@ router.get('/stats', async (req, res) => {
       Customer.countDocuments({ createdBy: userId }),
       Product.countDocuments({
         createdBy: userId,
-        'inventory.available': { $lte: '$inventory.reorderLevel' }
+        $expr: { $lte: ['$inventory.available', '$inventory.reorderLevel'] }
       })
     ]);
 

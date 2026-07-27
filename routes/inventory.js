@@ -91,6 +91,17 @@ router.post('/adjust', async (req, res) => {
   try {
     const { productId, quantity, type, reason, reference } = req.body;
 
+    // Validation
+    if (!productId) {
+      return res.status(400).json({ error: 'Product ID is required' });
+    }
+    if (!quantity || quantity <= 0) {
+      return res.status(400).json({ error: 'Quantity must be a positive number' });
+    }
+    if (!type || !['in', 'out'].includes(type)) {
+      return res.status(400).json({ error: 'Type must be either "in" or "out"' });
+    }
+
     const product = await Product.findOne({
       _id: productId,
       createdBy: req.userId
@@ -101,7 +112,15 @@ router.post('/adjust', async (req, res) => {
     }
 
     const adjustment = type === 'in' ? quantity : -quantity;
-    product.inventory.quantity += adjustment;
+    const newQuantity = product.inventory.quantity + adjustment;
+
+    if (newQuantity < 0) {
+      return res.status(400).json({ 
+        error: 'Insufficient quantity for adjustment. Current: ' + product.inventory.quantity + ', Requested: ' + adjustment
+      });
+    }
+
+    product.inventory.quantity = newQuantity;
     product.inventory.available = product.inventory.quantity - product.inventory.reserved;
 
     await product.save();

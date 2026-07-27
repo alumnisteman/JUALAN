@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 
@@ -61,35 +62,42 @@ router.get('/:id', async (req, res) => {
 
 // Create order
 router.post('/', async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  
   try {
     const orderData = {
       ...req.body,
       createdBy: req.userId
     };
 
-    // Check inventory availability
+    // Check inventory availability and reserve atomically
     for (const item of orderData.items) {
-      const product = await Product.findById(item.product);
+      const product = await Product.findById(item.product).session(session);
       if (!product) {
+        await session.abortTransaction();
         return res.status(404).json({ error: `Product ${item.product} not found` });
       }
+      
       if (product.inventory.available < item.quantity) {
+        await session.abortTransaction();
         return res.status(400).json({ 
           error: `Insufficient stock for ${product.name}. Available: ${product.inventory.available}, Requested: ${item.quantity}`
         });
       }
-    }
 
-    // Reserve inventory
-    for (const item of orderData.items) {
+      // Reserve inventory
       await Product.findByIdAndUpdate(
         item.product,
-        { $inc: { 'inventory.reserved': item.quantity } }
+        { $inc: { 'inventory.reserved': item.quantity } },
+        { session }
       );
     }
 
     const order = new Order(orderData);
-    await order.save();
+    await order.save({ session });
+
+    await session.commitTransaction();
 
     // Emit WebSocket event
     const io = req.app.get('io');
@@ -97,20 +105,27 @@ router.post('/', async (req, res) => {
 
     res.status(201).json({ order });
   } catch (error) {
+    await session.abortTransaction();
     res.status(500).json({ error: error.message });
+  } finally {
+    session.endSession();
   }
 });
 
 // Update order status
 router.put('/:id/status', async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  
   try {
     const { status } = req.body;
     const order = await Order.findOne({
       _id: req.params.id,
       createdBy: req.userId
-    });
+    }).session(session);
 
     if (!order) {
+      await session.abortTransaction();
       return res.status(404).json({ error: 'Order not found' });
     }
 
@@ -122,7 +137,8 @@ router.put('/:id/status', async (req, res) => {
       for (const item of order.items) {
         await Product.findByIdAndUpdate(
           item.product,
-          { $inc: { 'inventory.reserved': -item.quantity } }
+          { $inc: { 'inventory.reserved': -item.quantity } },
+          { session }
         );
       }
     } else if (status === 'shipped') {
@@ -135,7 +151,8 @@ router.put('/:id/status', async (req, res) => {
               'inventory.quantity': -item.quantity,
               'inventory.reserved': -item.quantity
             }
-          }
+          },
+          { session }
         );
       }
       order.fulfillment.shippedAt = new Date();
@@ -145,14 +162,18 @@ router.put('/:id/status', async (req, res) => {
       order.paidAt = new Date();
     }
 
-    await order.save();
+    await order.save({ session });
+    await session.commitTransaction();
 
     const io = req.app.get('io');
     io.to(`user-${req.userId}`).emit('order:status-updated', order);
 
     res.json({ order });
   } catch (error) {
+    await session.abortTransaction();
     res.status(500).json({ error: error.message });
+  } finally {
+    session.endSession();
   }
 });
 

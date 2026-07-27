@@ -2,11 +2,12 @@ const express = require('express');
 const Product = require('../models/Product');
 const Order = require('../models/Order');
 const Customer = require('../models/Customer');
+const { aiRateLimiter } = require('../middleware/rateLimiter');
 
 const router = express.Router();
 
 // AI Product Analysis
-router.post('/analyze-product', async (req, res) => {
+router.post('/analyze-product', aiRateLimiter, async (req, res) => {
   try {
     const { productId } = req.body;
     const product = await Product.findOne({
@@ -36,7 +37,7 @@ router.post('/analyze-product', async (req, res) => {
 });
 
 // AI Price Recommendation
-router.post('/recommend-price', async (req, res) => {
+router.post('/recommend-price', aiRateLimiter, async (req, res) => {
   try {
     const { productId } = req.body;
     const product = await Product.findOne({
@@ -58,7 +59,7 @@ router.post('/recommend-price', async (req, res) => {
 });
 
 // AI Content Generation
-router.post('/generate-content', async (req, res) => {
+router.post('/generate-content', aiRateLimiter, async (req, res) => {
   try {
     const { productId, contentType } = req.body;
     const product = await Product.findOne({
@@ -80,7 +81,7 @@ router.post('/generate-content', async (req, res) => {
 });
 
 // AI Customer Insights
-router.post('/analyze-customer', async (req, res) => {
+router.post('/analyze-customer', aiRateLimiter, async (req, res) => {
   try {
     const { customerId } = req.body;
     const customer = await Customer.findOne({
@@ -123,7 +124,7 @@ router.get('/trends', async (req, res) => {
 });
 
 // AI Fraud Detection
-router.post('/detect-fraud', async (req, res) => {
+router.post('/detect-fraud', aiRateLimiter, async (req, res) => {
   try {
     const { orderId } = req.body;
     const order = await Order.findOne({

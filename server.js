@@ -62,35 +62,44 @@ app.use('/api/notifications', authMiddleware, notificationRoutes);
 app.use('/api/crm', authMiddleware, crmRoutes);
 app.use('/api/pricing', authMiddleware, pricingRoutes);
 
-// Serve static files from UI modules
-app.use(express.static('resellerhub_dashboard'));
-app.use(express.static('resellerhub_os'));
-app.use(express.static('resellerhub_ai_content_hub'));
-app.use(express.static('resellerhub_ai_marketing_hub'));
-app.use(express.static('resellerhub_ai_order_fulfillment'));
-app.use(express.static('resellerhub_ai_pricing_engine'));
-app.use(express.static('resellerhub_analitik_ai'));
-app.use(express.static('resellerhub_auto_posting'));
-app.use(express.static('resellerhub_auto_reply_ai'));
-app.use(express.static('resellerhub_automasi_marketing_ai'));
-app.use(express.static('resellerhub_integrasi_supplier'));
-app.use(express.static('resellerhub_inventory_sync'));
-app.use(express.static('resellerhub_manajemen_stok_otomatis'));
-app.use(express.static('resellerhub_manajemen_pelanggan_crm'));
-app.use(express.static('resellerhub_pengaturan_profil_toko'));
-app.use(express.static('otorisasi_api_berhasil_terhubung'));
-app.use(express.static('otorisasi_api_izin_akses'));
-app.use(express.static('otorisasi_api_pilih_marketplace'));
-app.use(express.static('otorisasi_api_sinkronisasi_awal'));
+// Serve static files from UI modules (only if directory exists)
+const fs = require('fs');
+const path = require('path');
+
+const uiModules = [
+  'resellerhub_dashboard',
+  'resellerhub_os',
+  'resellerhub_ai_content_hub',
+  'resellerhub_ai_marketing_hub',
+  'resellerhub_ai_order_fulfillment',
+  'resellerhub_ai_pricing_engine',
+  'resellerhub_analitik_ai',
+  'resellerhub_auto_posting',
+  'resellerhub_auto_reply_ai',
+  'resellerhub_automasi_marketing_ai',
+  'resellerhub_integrasi_supplier',
+  'resellerhub_inventory_sync',
+  'resellerhub_manajemen_stok_otomatis',
+  'resellerhub_manajemen_pelanggan_crm',
+  'resellerhub_pengaturan_profil_toko',
+  'otorisasi_api_berhasil_terhubung',
+  'otorisasi_api_izin_akses',
+  'otorisasi_api_pilih_marketplace',
+  'otorisasi_api_sinkronisasi_awal'
+];
+
+uiModules.forEach(module => {
+  const modulePath = path.join(__dirname, module);
+  if (fs.existsSync(modulePath)) {
+    app.use(express.static(module));
+  }
+});
 
 // Error handling
 app.use(errorHandler);
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/resellerhub', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/resellerhub')
 .then(() => console.log('MongoDB connected successfully'))
 .catch(err => console.error('MongoDB connection error:', err));
 

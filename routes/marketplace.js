@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 const User = require('../models/User');
 const Product = require('../models/Product');
 
@@ -18,6 +19,17 @@ router.get('/integrations', async (req, res) => {
 router.post('/connect', async (req, res) => {
   try {
     const { platform, shopId, accessToken, refreshToken } = req.body;
+
+    // Validation
+    if (!platform || !['shopee', 'tokopedia', 'tiktok', 'zalora'].includes(platform)) {
+      return res.status(400).json({ error: 'Invalid platform' });
+    }
+    if (!shopId) {
+      return res.status(400).json({ error: 'Shop ID is required' });
+    }
+    if (!accessToken) {
+      return res.status(400).json({ error: 'Access token is required' });
+    }
 
     const user = await User.findById(req.userId);
     
@@ -157,6 +169,21 @@ router.post('/webhook/:platform', async (req, res) => {
     const event = req.body;
 
     // Verify webhook signature (platform-specific)
+    const signature = req.headers['x-webhook-signature'];
+    
+    if (signature) {
+      const webhookSecret = process.env[`${platform.toUpperCase()}_WEBHOOK_SECRET`];
+      if (webhookSecret) {
+        const hmac = crypto.createHmac('sha256', webhookSecret);
+        hmac.update(JSON.stringify(req.body));
+        const expectedSignature = hmac.digest('hex');
+        
+        if (signature !== expectedSignature) {
+          return res.status(401).json({ error: 'Invalid webhook signature' });
+        }
+      }
+    }
+
     const { handleWebhook } = require('../services/marketplaceSync');
     await handleWebhook(platform, event);
 

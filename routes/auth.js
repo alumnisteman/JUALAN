@@ -104,6 +104,12 @@ router.get('/me', async (req, res) => {
 
     res.json({ user });
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expired' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
     res.status(500).json({ error: error.message });
   }
 });
@@ -124,6 +130,12 @@ router.put('/profile', async (req, res) => {
 
     res.json({ user });
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expired' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
     res.status(500).json({ error: error.message });
   }
 });
