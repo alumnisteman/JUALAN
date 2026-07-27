@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RESELLER_HUB.OS | Customer Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(23, 31, 51, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.5);
+        }
+        .intelligence-glow {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1326;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+            border-radius: 10px;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 3s infinite ease-in-out;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#006970",
+                        "on-primary-fixed": "#002022",
+                        "on-background": "#dae2fd",
+                        "on-tertiary": "#003907",
+                        "tertiary-fixed-dim": "#00e639",
+                        "on-primary": "#00363a",
+                        "surface-bright": "#31394d",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#00dbe9",
+                        "data-node": "#38BDF8",
+                        "secondary-container": "#7000ff",
+                        "surface-variant": "#2d3449",
+                        "tertiary": "#ddffd3",
+                        "secondary-fixed-dim": "#d1bcff",
+                        "tertiary-container": "#00fb40",
+                        "surface-container-lowest": "#060e20",
+                        "intelligence-score": "#FACC15",
+                        "on-tertiary-container": "#006e16",
+                        "primary-fixed": "#7df4ff",
+                        "primary": "#dbfcff",
+                        "inverse-on-surface": "#283044",
+                        "surface-container-highest": "#2d3449",
+                        "secondary-fixed": "#e9ddff",
+                        "surface-container-high": "#222a3d",
+                        "surface-container": "#171f33",
+                        "secondary": "#d1bcff",
+                        "api-disconnected": "#94A3B8",
+                        "primary-container": "#00f0ff",
+                        "surface": "#0b1326",
+                        "outline": "#849495",
+                        "on-surface": "#dae2fd",
+                        "market-growth": "#00FF41",
+                        "surface-tint": "#00dbe9",
+                        "surface-dim": "#0b1326",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-surface-variant": "#b9cacb",
+                        "risk-danger": "#FF4B4B",
+                        "tertiary-fixed": "#72ff70",
+                        "surface-container-low": "#131b2e",
+                        "background": "#0b1326",
+                        "on-secondary-container": "#ddcdff",
+                        "on-tertiary-fixed-variant": "#00530e",
+                        "error": "#ffb4ab",
+                        "api-connected": "#22C55E",
+                        "on-tertiary-fixed": "#002203",
+                        "on-secondary-fixed": "#23005b",
+                        "on-secondary-fixed-variant": "#5700c9",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#006970",
+                        "outline-variant": "#3b494b",
+                        "on-secondary": "#3c0090",
+                        "inverse-surface": "#dae2fd",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "density-compact": "8px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "density-comfortable": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "data-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full h-16 z-[70] flex justify-between items-center px-gutter bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<h1 class="font-label-caps text-label-caps text-primary tracking-widest">RESELLER_HUB.OS</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-primary font-bold font-label-caps text-label-caps" href="#">Hub</a>
+<a class="text-outline-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#">Intel</a>
+<a class="text-outline-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#">Trends</a>
+<a class="text-outline-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#">Settings</a>
+</nav>
+<div class="h-6 w-px bg-outline-variant"></div>
+<span class="material-symbols-outlined text-primary" data-icon="sensors">sensors</span>
+</div>
+</header>
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="fixed inset-y-0 left-0 z-[60] hidden md:flex flex-col h-full w-72 bg-surface-container-low border-r border-outline-variant mt-16">
+<div class="p-6 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</div>
+<div>
+<p class="font-data-mono text-data-mono text-tertiary">INTEL_UNIT_01</p>
+<p class="text-[10px] text-outline-variant uppercase tracking-tighter">Status: Synchronizing</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<div class="text-tertiary bg-tertiary-container/10 border-l-2 border-tertiary px-6 py-3 flex items-center gap-3 font-data-mono text-data-mono mb-1">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+                Marketplace Scan
+            </div>
+<div class="text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 flex items-center gap-3 font-data-mono text-data-mono cursor-pointer mb-1">
+<span class="material-symbols-outlined" data-icon="chat_bubble_outline">chat_bubble_outline</span>
+                Social Sentiment
+            </div>
+<div class="text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 flex items-center gap-3 font-data-mono text-data-mono cursor-pointer mb-1">
+<span class="material-symbols-outlined" data-icon="api">api</span>
+                Supplier API
+            </div>
+<div class="text-on-surface-variant hover:bg-surface-container-high transition-colors px-6 py-3 flex items-center gap-3 font-data-mono text-data-mono cursor-pointer mb-1">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+                System Logs
+            </div>
+</nav>
+<div class="p-6 text-outline-variant font-data-mono text-[10px]">
+            v2.4.0-alpha
+        </div>
+</aside>
+<!-- Main Content -->
+<main class="pt-24 pb-32 md:pb-8 px-4 md:ml-72 md:px-margin-desktop">
+<!-- Dashboard Header -->
+<header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-tertiary-container/20 text-tertiary rounded text-[10px] font-bold border border-tertiary/30 uppercase tracking-widest">Legal Intel</span>
+<span class="px-2 py-0.5 bg-surface-container-high text-on-surface-variant rounded text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-api-connected"></span> CRM Synced
+                    </span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Customer Intelligence Dashboard</h2>
+<p class="text-on-surface-variant max-w-2xl mt-1">First-party data synthesis for high-fidelity lead management and lifetime value forecasting.</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-surface-container-high border border-outline-variant px-4 py-2 rounded-xl text-sm font-semibold hover:bg-surface-bright transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span> Export Report
+                </button>
+<button class="bg-primary text-on-primary-fixed px-4 py-2 rounded-xl text-sm font-bold hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="refresh">refresh</span> Sync CRM
+                </button>
+</div>
+</header>
+<!-- Intelligence Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Retention Pulse (Left Column) -->
+<div class="md:col-span-4 glass-panel rounded-xl p-6 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="font-label-caps text-label-caps text-outline-variant uppercase">Retention Score</p>
+<h3 class="font-headline-md text-headline-md text-market-growth">84.2%</h3>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-market-growth/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-market-growth" data-icon="autostop">autostop</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Active Members</span>
+<span class="font-data-mono text-sm">4,210</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-market-growth h-full" style="width: 84%"></div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant">Churn Risk (Predicted)</span>
+<span class="font-data-mono text-sm text-risk-danger">1.4%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-risk-danger h-full" style="width: 8%"></div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/30">
+<p class="text-xs text-on-surface-variant italic leading-relaxed">"AI forecast suggests a +4% lift in loyalty if automated re-engagement triggers are activated for 'Slipped' segment."</p>
+</div>
+<!-- Background Pattern -->
+<div class="absolute -bottom-4 -right-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[120px]" data-icon="query_stats">query_stats</span>
+</div>
+</div>
+<!-- Predicted LTV Matrix (Center Column) -->
+<div class="md:col-span-8 glass-panel rounded-xl p-6 border-l-4 border-l-primary overflow-hidden">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="rocket_launch">rocket_launch</span>
+<h3 class="font-headline-md text-headline-md text-primary">LTV Prediction Matrix</h3>
+</div>
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded-lg bg-surface-container-highest text-[10px] font-bold">12 MO FORECAST</span>
+<span class="px-2 py-1 rounded-lg bg-surface-container-highest text-[10px] font-bold">ALPHA UNIT</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+<div class="p-4 rounded-xl bg-surface-container-high border border-outline-variant/30">
+<p class="font-label-caps text-[10px] text-outline-variant mb-1 uppercase">Avg. Life Cycle</p>
+<p class="font-data-mono text-xl text-primary">18.4 Mo</p>
+<div class="mt-2 flex items-center gap-1 text-[10px] text-market-growth">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> +2.1% MoM
+                        </div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-high border border-outline-variant/30">
+<p class="font-label-caps text-[10px] text-outline-variant mb-1 uppercase">Expected LTV</p>
+<p class="font-data-mono text-xl text-tertiary">Rp 8.2M</p>
+<div class="mt-2 flex items-center gap-1 text-[10px] text-market-growth">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> +14.5% YoY
+                        </div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-high border border-outline-variant/30">
+<p class="font-label-caps text-[10px] text-outline-variant mb-1 uppercase">CAC Recovery</p>
+<p class="font-data-mono text-xl text-on-surface">3.2 Mo</p>
+<div class="mt-2 flex items-center gap-1 text-[10px] text-outline-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="stable_identity">switch_right</span> Optimized
+                        </div>
+</div>
+</div>
+<div class="mt-8 h-32 flex items-end justify-between gap-1">
+<!-- Stylized Sparkline Visual -->
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[30%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[45%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[40%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[60%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[55%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary/30 rounded-t-sm h-[75%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary/30 rounded-t-sm h-[70%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary/40 rounded-t-sm h-[90%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary/60 rounded-t-sm h-[85%] hover:bg-primary/40 transition-all duration-300"></div>
+<div class="flex-1 bg-primary h-[100%] hover:bg-primary-container transition-all duration-300 relative">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary text-black font-data-mono text-[10px] px-2 py-0.5 rounded animate-bounce">NOW</div>
+</div>
+</div>
+</div>
+<!-- Lead Generation Pipeline Flow -->
+<div class="md:col-span-12 glass-panel rounded-xl p-8 relative overflow-hidden">
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Intelligence Flow: Lead-to-Member</h3>
+<p class="text-on-surface-variant">Real-time tracking of acquisition channels and conversion velocity.</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="text-[10px] font-label-caps text-outline-variant">TOTAL FLOW-THRU</p>
+<p class="font-data-mono text-lg">12,840 Units</p>
+</div>
+</div>
+</div>
+<!-- Neural Flow Visualizer -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+<!-- Connecting Neural Lines (Desktop) -->
+<div class="hidden md:block absolute top-10 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-outline-variant/50 to-transparent z-0"></div>
+<!-- Step 1: Landing Page -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full bg-surface-container-high border-2 border-outline-variant flex items-center justify-center mb-4 intelligence-glow">
+<span class="material-symbols-outlined text-3xl text-outline-variant" data-icon="web">web</span>
+</div>
+<h4 class="font-bold text-on-surface">Landing Page</h4>
+<p class="font-data-mono text-sm text-primary">8.2k Visits</p>
+<p class="text-[10px] text-outline-variant mt-2">Conversion: 12%</p>
+</div>
+<!-- Step 2: WhatsApp CRM -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full bg-tertiary-container/10 border-2 border-tertiary flex items-center justify-center mb-4 intelligence-glow">
+<span class="material-symbols-outlined text-3xl text-tertiary" data-icon="chat">chat</span>
+</div>
+<h4 class="font-bold text-on-surface">WhatsApp / CRM</h4>
+<p class="font-data-mono text-sm text-tertiary">984 Threads</p>
+<p class="text-[10px] text-outline-variant mt-2">Resp. Time: &lt;2m</p>
+<!-- Pulse Indicator -->
+<div class="absolute -top-1 -right-1 w-4 h-4 bg-tertiary rounded-full animate-ping opacity-20"></div>
+</div>
+<!-- Step 3: Registration -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full bg-secondary-container/10 border-2 border-secondary flex items-center justify-center mb-4 intelligence-glow">
+<span class="material-symbols-outlined text-3xl text-secondary" data-icon="assignment_ind">assignment_ind</span>
+</div>
+<h4 class="font-bold text-on-surface">KYC &amp; Reg</h4>
+<p class="font-data-mono text-sm text-secondary">642 Accounts</p>
+<p class="text-[10px] text-outline-variant mt-2">Valid: 94%</p>
+</div>
+<!-- Step 4: Membership -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-20 h-20 rounded-full bg-primary-container/20 border-2 border-primary flex items-center justify-center mb-4 intelligence-glow">
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="loyalty">loyalty</span>
+</div>
+<h4 class="font-bold text-on-surface">Membership</h4>
+<p class="font-data-mono text-sm text-primary">588 Active</p>
+<p class="text-[10px] text-outline-variant mt-2">ARPU: Rp 450k</p>
+</div>
+</div>
+</div>
+<!-- Customer Segmentation Table -->
+<div class="md:col-span-12 glass-panel rounded-xl overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-on-surface">Customer Segments</h3>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-surface-container-highest text-[10px] font-bold text-primary border border-primary/20">AI ENRICHED</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-high/50 border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline-variant">Segment Name</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline-variant">Volume</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline-variant">Avg LTV</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline-variant">Churn Propensity</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline-variant">Action Logic</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-tertiary rounded-full"></div>
+<div>
+<p class="font-bold text-on-surface">Champions</p>
+<p class="text-[10px] text-outline-variant">Recent &amp; High Freq</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-data-mono">1,120</td>
+<td class="px-6 py-4 font-data-mono text-tertiary">Rp 12.4M</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-market-growth h-full" style="width: 5%"></div>
+</div>
+<span class="text-[10px] text-market-growth font-bold">LOW</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<button class="text-xs px-3 py-1 bg-tertiary/10 text-tertiary rounded border border-tertiary/30 hover:bg-tertiary hover:text-on-tertiary transition-all">Enroll Rewards</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-primary rounded-full"></div>
+<div>
+<p class="font-bold text-on-surface">Growing Potentials</p>
+<p class="text-[10px] text-outline-variant">High Avg. Basket</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-data-mono">2,450</td>
+<td class="px-6 py-4 font-data-mono text-primary">Rp 4.2M</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-intelligence-score h-full" style="width: 15%"></div>
+</div>
+<span class="text-[10px] text-intelligence-score font-bold">STABLE</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<button class="text-xs px-3 py-1 bg-primary/10 text-primary rounded border border-primary/30 hover:bg-primary hover:text-on-primary transition-all">Upsell Trigger</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-risk-danger rounded-full"></div>
+<div>
+<p class="font-bold text-on-surface">At Risk</p>
+<p class="text-[10px] text-outline-variant">Lapsed &gt; 60 Days</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-data-mono">812</td>
+<td class="px-6 py-4 font-data-mono text-on-surface-variant">Rp 1.1M</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-risk-danger h-full" style="width: 78%"></div>
+</div>
+<span class="text-[10px] text-risk-danger font-bold">HIGH</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<button class="text-xs px-3 py-1 bg-risk-danger/10 text-risk-danger rounded border border-risk-danger/30 hover:bg-risk-danger hover:text-white transition-all">Re-engage WA</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container/90 backdrop-blur-2xl border-t border-outline-variant md:hidden shadow-lg">
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1.5 transition-all">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps text-[10px]">Hub</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant hover:bg-surface-bright transition-all p-1.5">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps text-[10px]">Intel</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant hover:bg-surface-bright transition-all p-1.5">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="font-label-caps text-label-caps text-[10px]">Trends</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant hover:bg-surface-bright transition-all p-1.5">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps text-[10px]">Settings</span>
+</div>
+</nav>
+<!-- Interactive Layer: Status HUD -->
+<div class="fixed bottom-6 right-6 z-[80] hidden lg:block">
+<div class="glass-panel rounded-full px-4 py-2 flex items-center gap-4 shadow-2xl animate-pulse-soft border border-primary/20">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-market-growth"></span>
+<span class="text-[10px] font-data-mono text-on-surface uppercase tracking-wider">Node-01 Active</span>
+</div>
+<div class="w-px h-3 bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="database">database</span>
+<span class="text-[10px] font-data-mono text-on-surface uppercase tracking-wider">CRM Synced</span>
+</div>
+</div>
+</div>
+<!-- Micro-interaction script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hover effect for table rows to show the "Neural Accent"
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    const bar = row.querySelector('.rounded-full');
+                    if(bar) bar.style.transform = 'scaleY(1.2)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    const bar = row.querySelector('.rounded-full');
+                    if(bar) bar.style.transform = 'scaleY(1)';
+                });
+            });
+
+            // Smooth scaling for buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousedown', () => {
+                    btn.classList.add('scale-95');
+                });
+                btn.addEventListener('mouseup', () => {
+                    btn.classList.remove('scale-95');
+                });
+            });
+        });
+    </script>
+</body></html>

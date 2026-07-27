@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResellerHub OS | SaaS &amp; White-Label Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(24, 24, 27, 0.7);
+            --glass-border: rgba(39, 39, 42, 1);
+        }
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .glass-card {
+            background: #18181B;
+            border: 1px solid #27272A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card:hover {
+            border-color: #424754;
+            background: #1c1b1d;
+        }
+        .active-glow {
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.1);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+        }
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid currentColor;
+            animation: sonar 2s infinite;
+            opacity: 0;
+        }
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+        .circuit-bg {
+            background-image: radial-gradient(circle at 2px 2px, #27272A 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background: #adc6ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#131315",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "tertiary": "#4edea3",
+                        "surface-container": "#201f22",
+                        "primary-fixed": "#d8e2ff",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-primary-container": "#00285d",
+                        "surface-container-highest": "#353437",
+                        "surface-bright": "#39393b",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-secondary": "#3c0091",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "on-secondary-fixed": "#23005c",
+                        "on-primary-fixed": "#001a42",
+                        "tertiary-fixed": "#6ffbbe",
+                        "primary": "#adc6ff",
+                        "secondary-fixed": "#e9ddff",
+                        "surface-variant": "#353437",
+                        "inverse-surface": "#e5e1e4",
+                        "inverse-primary": "#005ac2",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e5e1e4",
+                        "background": "#131315",
+                        "outline-variant": "#424754",
+                        "surface": "#131315",
+                        "on-secondary-container": "#c4abff",
+                        "error-container": "#93000a",
+                        "outline": "#8c909f",
+                        "on-surface": "#e5e1e4",
+                        "surface-container-low": "#1c1b1d",
+                        "secondary-container": "#571bc1",
+                        "on-surface-variant": "#c2c6d6",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-tertiary": "#003824",
+                        "primary-container": "#4d8eff",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#00a572",
+                        "surface-tint": "#adc6ff",
+                        "on-tertiary-fixed": "#002113",
+                        "surface-container-high": "#2a2a2c",
+                        "on-primary": "#002e6a",
+                        "on-tertiary-container": "#00311f",
+                        "surface-container-lowest": "#0e0e10",
+                        "secondary": "#d0bcff",
+                        "inverse-on-surface": "#313032",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#d0bcff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 left-0 w-full h-16 z-50 border-b border-outline-variant bg-surface/80 backdrop-blur-xl flex justify-between items-center px-margin-mobile md:px-margin-desktop">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic, high-resolution 3D digital avatar profile icon with glowing circuit lines and synthetic mesh textures. The design uses a professional dark mode aesthetic with electric blue and deep obsidian tones, representing an AI system interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgTfWalb1p8-wQS7Jn5KEUAUZh3Y43CgWuHUbdUVaPjo4h_ON0QPoKGCiHh7SfvYMLWiQWiI0kop0JNN24rizBmhASRBlocbkKsRkEw9AaHBVC4KfMB06f8QmVl5qw6vFuhLyjzl0HiwQK0Hp1kuLBaDJ-gEwRqvt3NpC54NCmX2YiJByrd6lu6tDfNC1NdoqwNxB4RzaB1qF7gOMbn92Issw-KAwcr7S2dLaBSxfEabC0UaPEaR9mxxdD8T7oae8dF3nYZN9VI2SZ"/>
+</div>
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</span>
+</div>
+<nav class="hidden md:flex gap-lg">
+<a class="font-label-caps text-label-caps text-primary font-bold" href="#">Hubs</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Intelligence</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Orders</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Analytics</a>
+</nav>
+<button class="w-10 h-10 rounded-full hover:bg-surface-variant/50 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</button>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto circuit-bg min-h-screen">
+<!-- Header Section -->
+<section class="mb-xl">
+<h1 class="font-headline-lg text-headline-lg mb-xs tracking-tight">SaaS &amp; White-Label <span class="text-primary">Center</span></h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Kelola infrastruktur reseller dan optimasi biaya operasional dalam satu dashboard terpadu.</p>
+</section>
+<div class="bento-grid">
+<!-- 1. Upgrade Node (Call to Action) - Priority Large -->
+<div class="glass-card col-span-12 md:col-span-8 p-lg flex flex-col justify-between active-glow">
+
+<div class="relative z-10">
+<div class="flex items-center gap-sm mb-md">
+<div class="status-dot bg-tertiary"></div>
+<span class="font-label-caps text-label-caps text-tertiary">NODE STATUS: OPTIMAL</span>
+</div>
+<h2 class="font-headline-md text-headline-md mb-sm">Node V2 Engine</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl max-w-md">Tingkatkan kapasitas throughput hingga 500% dengan Node V2. Dapatkan efisiensi biaya API sebesar 40% melalui model caching cerdas.</p>
+</div>
+<div class="relative z-10 flex flex-wrap gap-md">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-xl py-md rounded-full hover:brightness-110 transition-all flex items-center gap-sm">
+                        UPGRADE SEKARANG <span class="material-symbols-outlined">bolt</span>
+</button>
+<button class="border border-outline-variant hover:border-primary px-xl py-md rounded-full font-label-caps text-label-caps transition-all">
+                        PELAJARI MODEL GRATIS
+                    </button>
+</div>
+</div>
+<!-- 3. Enterprise Plan Status - Vertical Side -->
+<div class="glass-card col-span-12 md:col-span-4 p-lg">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-lg">PAKET ENTERPRISE</div>
+<div class="space-y-xl">
+<div>
+<div class="flex justify-between text-body-sm mb-xs">
+<span class="text-on-surface-variant">User Aktif</span>
+<span class="font-data-mono">842 / 1,000</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[84%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-body-sm mb-xs">
+<span class="text-on-surface-variant">Kapasitas Data</span>
+<span class="font-data-mono">1.2 TB / 2 TB</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full w-[60%]"></div>
+</div>
+</div>
+<div class="p-md bg-surface-container-low border border-outline-variant rounded-xl">
+<div class="flex items-center gap-sm mb-xs text-primary">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span class="font-label-caps text-xs">SLA 99.9% TERJAMIN</span>
+</div>
+<p class="text-[10px] font-data-mono text-on-surface-variant uppercase">Sistem berjalan tanpa gangguan selama 42 hari terakhir.</p>
+</div>
+</div>
+</div>
+<!-- 2. Revenue Stream Analysis - Full Width Chart Area -->
+<div class="glass-card col-span-12 md:col-span-12 p-lg">
+<div class="flex justify-between items-start mb-xl">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">REVENUE STREAM ANALYSIS</div>
+<h3 class="font-headline-md text-headline-md">Rp 1.4B <span class="text-tertiary text-sm font-normal">+12.4%</span></h3>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-highest p-sm rounded hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface text-sm">filter_list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<div class="space-y-xs">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-body-sm text-on-surface-variant">Subscriptions</span>
+</div>
+<div class="text-headline-md font-bold font-data-mono">65%</div>
+</div>
+<div class="space-y-xs">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-body-sm text-on-surface-variant">API Usage</span>
+</div>
+<div class="text-headline-md font-bold font-data-mono">22%</div>
+</div>
+<div class="space-y-xs">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="text-body-sm text-on-surface-variant">Marketplace Fees</span>
+</div>
+<div class="text-headline-md font-bold font-data-mono">13%</div>
+</div>
+</div>
+<!-- Fake Chart Visualization -->
+<div class="h-48 w-full flex items-end gap-1 overflow-hidden">
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[40%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[55%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[45%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[70%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[60%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[85%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[95%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[75%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[80%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[60%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[40%] rounded-t-sm border-t border-primary"></div>
+<div class="bg-primary/20 hover:bg-primary/40 transition-all flex-1 h-[50%] rounded-t-sm border-t border-primary"></div>
+</div>
+</div>
+<!-- 4. Sub-merchant Branding - Left Half -->
+<div class="glass-card col-span-12 md:col-span-6 p-lg">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-lg">BRANDING SUB-MERCHANT</div>
+<div class="space-y-lg">
+<div>
+<label class="font-label-caps text-[10px] text-on-surface-variant mb-xs block">DOMAIN ALIAS</label>
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-xl px-md py-sm">
+<span class="font-data-mono text-on-surface-variant mr-xs">https://</span>
+<input class="bg-transparent border-none focus:ring-0 text-on-surface font-data-mono flex-1 p-0" placeholder="store.name" type="text"/>
+<span class="font-data-mono text-primary">.resellerhub.io</span>
+</div>
+</div>
+<div>
+<label class="font-label-caps text-[10px] text-on-surface-variant mb-md block">WARNA TEMA UTAMA</label>
+<div class="flex gap-md">
+<button class="w-10 h-10 rounded-full ring-2 ring-primary ring-offset-4 ring-offset-background bg-primary"></button>
+<button class="w-10 h-10 rounded-full bg-secondary hover:scale-110 transition-transform"></button>
+<button class="w-10 h-10 rounded-full bg-tertiary hover:scale-110 transition-transform"></button>
+<button class="w-10 h-10 rounded-full bg-error hover:scale-110 transition-transform"></button>
+<button class="w-10 h-10 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">palette</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 5. Tier Management - Right Half -->
+<div class="glass-card col-span-12 md:col-span-6 p-lg">
+<div class="flex justify-between items-center mb-lg">
+<div class="font-label-caps text-label-caps text-on-surface-variant">TIER MANAGEMENT</div>
+<button class="text-primary font-label-caps text-[10px] hover:underline">+ TIER BARU</button>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-md bg-surface-container-low border border-outline-variant rounded-xl group hover:border-primary transition-colors">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant">rocket_launch</span>
+<div>
+<div class="font-bold">Pro Plan</div>
+<div class="text-[10px] text-on-surface-variant font-data-mono">Limit: 50 Resellers</div>
+</div>
+</div>
+<span class="bg-surface-container-highest px-sm py-1 rounded text-[10px] font-label-caps border border-outline-variant">ACTIVE</span>
+</div>
+<div class="flex items-center justify-between p-md bg-surface-container-low border border-outline-variant rounded-xl group hover:border-secondary transition-colors">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant">business_center</span>
+<div>
+<div class="font-bold">Business</div>
+<div class="text-[10px] text-on-surface-variant font-data-mono">Limit: 250 Resellers</div>
+</div>
+</div>
+<span class="bg-secondary/10 text-secondary px-sm py-1 rounded text-[10px] font-label-caps border border-secondary/50">VIP</span>
+</div>
+<div class="flex items-center justify-between p-md bg-surface-container-low border border-outline-variant rounded-xl border-dashed opacity-70">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant">hub</span>
+<div>
+<div class="font-bold">Custom Mesh</div>
+<div class="text-[10px] text-on-surface-variant font-data-mono">Unlimited Scaling</div>
+</div>
+</div>
+<span class="bg-tertiary/10 text-tertiary px-sm py-1 rounded text-[10px] font-label-caps border border-tertiary/50">ENTERPRISE</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant flex justify-around items-center px-4 pb-6 pt-3 shadow-lg rounded-t-xl">
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-[10px] mt-1">Hubs</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-[10px] mt-1">AI</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-1">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px] mt-1">Data</span>
+</button>
+</nav>
+<!-- Floating Action Button Contextual (Only for Main Dash) -->
+<button class="fixed bottom-24 right-8 md:bottom-8 md:right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<script>
+        // Micro-interactions and subtle glow effects
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Simulating the AI "Terminal" feeling in input
+        const inputField = document.querySelector('input[placeholder="store.name"]');
+        if (inputField) {
+            inputField.addEventListener('focus', () => {
+                inputField.parentElement.classList.add('border-primary');
+            });
+            inputField.addEventListener('blur', () => {
+                inputField.parentElement.classList.remove('border-primary');
+            });
+        }
+    </script>
+</body></html>

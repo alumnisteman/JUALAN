@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Model Produk Universal | OS.COMMERCE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Geist:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-card {
+            background: #18181B;
+            border: 1px solid #27272A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-card:hover {
+            border-color: #adc6ff;
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.05);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        .sonar-ring {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background: #adc6ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .glow-primary {
+            box-shadow: 0 0 15px rgba(173, 198, 255, 0.15);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#c2c6d6",
+                      "primary-fixed": "#d8e2ff",
+                      "secondary-fixed-dim": "#d0bcff",
+                      "on-primary-container": "#00285d",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#2a2a2c",
+                      "on-primary-fixed-variant": "#004395",
+                      "surface-variant": "#353437",
+                      "on-surface": "#e5e1e4",
+                      "on-secondary-container": "#c4abff",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "inverse-primary": "#005ac2",
+                      "surface-dim": "#131315",
+                      "surface-bright": "#39393b",
+                      "surface-tint": "#adc6ff",
+                      "secondary-container": "#571bc1",
+                      "tertiary-container": "#00a572",
+                      "on-secondary-fixed-variant": "#5516be",
+                      "on-tertiary-fixed": "#002113",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed": "#6ffbbe",
+                      "surface-container-low": "#1c1b1d",
+                      "on-error": "#690005",
+                      "background": "#131315",
+                      "secondary-fixed": "#e9ddff",
+                      "surface-container": "#201f22",
+                      "secondary": "#d0bcff",
+                      "on-secondary-fixed": "#23005c",
+                      "outline": "#8c909f",
+                      "inverse-surface": "#e5e1e4",
+                      "on-background": "#e5e1e4",
+                      "tertiary": "#4edea3",
+                      "outline-variant": "#424754",
+                      "on-secondary": "#3c0091",
+                      "primary-fixed-dim": "#adc6ff",
+                      "error": "#ffb4ab",
+                      "surface-container-lowest": "#0e0e10",
+                      "on-primary-fixed": "#001a42",
+                      "surface-container-highest": "#353437",
+                      "on-primary": "#002e6a",
+                      "inverse-on-surface": "#313032",
+                      "surface": "#131315",
+                      "on-tertiary-container": "#00311f",
+                      "primary": "#adc6ff",
+                      "primary-container": "#4d8eff",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "on-tertiary": "#003824"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "margin-desktop": "48px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "unit": "4px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "gutter": "16px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Geist"],
+                      "data-mono": ["JetBrains Mono"],
+                      "body-sm": ["Inter"],
+                      "headline-md": ["Geist"],
+                      "label-caps": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "display-lg": ["Geist"]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 border-b border-outline-variant/30 backdrop-blur-xl bg-background/80 flex justify-between items-center px-lg h-16">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">OS.COMMERCE</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center gap-lg">
+<span class="font-label-caps text-label-caps text-primary cursor-pointer transition-colors">HUB</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary cursor-pointer transition-colors">INVENTORY</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary cursor-pointer transition-colors">RULES</span>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="sensors">sensors</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-md md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-xl gap-md">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<div class="relative flex items-center justify-center w-3 h-3">
+<div class="absolute w-full h-full bg-tertiary rounded-full sonar-ring"></div>
+<div class="w-2 h-2 bg-tertiary rounded-full"></div>
+</div>
+<span class="font-label-caps text-label-caps text-tertiary">SISTEM AKTIF</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Model Produk Universal</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Satu sumber kebenaran untuk seluruh ekosistem perdagangan.</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container border border-outline-variant px-md py-sm rounded-xl font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="refresh">refresh</span> RE-SYNC SEMUA
+                </button>
+<button class="bg-primary text-on-primary-container px-md py-sm rounded-xl font-label-caps text-label-caps hover:brightness-110 transition-all flex items-center gap-xs glow-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span> PRODUK BARU
+                </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- CENTRAL CORE: Product Master Data -->
+<div class="md:col-span-8 bento-card rounded-xl p-lg overflow-hidden relative">
+<div class="absolute top-0 right-0 p-lg">
+<span class="font-label-caps text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded">MASTER_UID: OS-9921-X</span>
+</div>
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-lg">CENTRAL_DATA_CORE</h2>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-xl">
+<!-- Product Image -->
+<div class="lg:col-span-1">
+<div class="aspect-square rounded-xl bg-surface-container overflow-hidden border border-outline-variant relative group">
+<img class="w-full h-full object-cover" data-alt="A high-tech sleek smartwatch displayed in a dark, moody studio setting with obsidian surfaces and sharp cyan blue edge lighting. The product has a premium matte finish and a glowing digital interface, positioned as a central masterpiece in a minimalist composition for a high-performance commerce platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB42KblPNkcDz3Y0HqoHu2c5UdkPUhQk-o2_ffASOdVarXswWjDOQi5E5r2c5kkUW0xGk4Ewwnbf8q1WpyCQeNOMXjPyDMshaYqh8t4G365_eukgGUH2qYbIw6J6YCmCd97yilNoWkBd72DiQjKp6QpN45ufLiuv5rUj9OOb_nTESpK-aZYQ5B1MbhkhQ-3rnwj5BGHI63FDnfCS_oCA2su2b5sRPg07gQ-3VORUUVgHO3sDJU2D8h1wwFmLdFcarfE97UtswfZOjxm"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-md">
+<span class="font-label-caps text-label-caps text-white">GANTI MEDIA</span>
+</div>
+</div>
+<div class="mt-md space-y-sm">
+<div class="flex justify-between items-center px-sm">
+<span class="font-label-caps text-[10px] text-on-surface-variant">KESEHATAN DATA</span>
+<span class="font-label-caps text-[10px] text-tertiary">98% OPTIMAL</span>
+</div>
+<div class="h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[98%]"></div>
+</div>
+</div>
+</div>
+<!-- Details -->
+<div class="lg:col-span-2 space-y-lg">
+<div>
+<label class="font-label-caps text-[10px] text-on-surface-variant block mb-1">NAMA PRODUK UNIVERSAL</label>
+<div class="font-headline-md text-headline-md text-on-surface bg-surface-container-low p-md rounded-xl border border-outline-variant/30">
+                                Quantum Pulse: Stealth Edition 2024
+                                <span class="terminal-cursor"></span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div>
+<label class="font-label-caps text-[10px] text-on-surface-variant block mb-1">STOK PUSAT (WH-01)</label>
+<div class="bg-surface-container-low p-md rounded-xl border border-outline-variant/30 flex items-center justify-between">
+<span class="font-display-lg text-[24px] text-primary">1,240</span>
+<span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
+</div>
+</div>
+<div>
+<label class="font-label-caps text-[10px] text-on-surface-variant block mb-1">HARGA DASAR (IDR)</label>
+<div class="bg-surface-container-low p-md rounded-xl border border-outline-variant/30 flex items-center justify-between">
+<span class="font-display-lg text-[24px] text-on-surface">3.499.000</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="payments">payments</span>
+</div>
+</div>
+</div>
+<div>
+<label class="font-label-caps text-[10px] text-on-surface-variant block mb-1">DESKRIPSI MASTER</label>
+<div class="font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low p-md rounded-xl border border-outline-variant/30 h-24 overflow-y-auto">
+                                Smartwatch generasi terbaru dengan sensor biomekanik presisi tinggi. Material titanium Grade 5 dengan lapisan kaca safir anti-reflektif. Baterai tahan hingga 21 hari dalam mode 'Power Core'. Tahan air hingga 100m.
+                            </div>
+</div>
+</div>
+</div>
+</div>
+<!-- AI MAPPING LOGIC -->
+<div class="md:col-span-4 bento-card rounded-xl p-lg flex flex-col">
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant">AUTO_MAPPING_ENGINE</h2>
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="flex-grow space-y-md">
+<div class="bg-secondary/5 border border-secondary/20 p-md rounded-xl relative">
+<div class="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-8 bg-secondary rounded-full"></div>
+<p class="font-data-mono text-[11px] text-secondary-fixed-dim leading-relaxed">
+                            [PROC] Transform: Master.Desc -&gt; TikTok_Shop.ShortDesc<br/>
+                            [OK] Tokenize: "Biomekanik" -&gt; "Fitur Kesehatan"<br/>
+                            [OK] Apply: Lazada_RichContent_Format
+                        </p>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between items-center text-[12px]">
+<span class="text-on-surface-variant">Kesesuaian Atribut</span>
+<span class="text-secondary">94%</span>
+</div>
+<div class="h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[94%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="p-sm bg-surface-container-high rounded-lg text-center border border-outline-variant/20">
+<p class="text-[10px] text-on-surface-variant font-label-caps">MAPPING AKTIF</p>
+<p class="text-[18px] font-bold text-on-surface">42</p>
+</div>
+<div class="p-sm bg-surface-container-high rounded-lg text-center border border-outline-variant/20">
+<p class="text-[10px] text-on-surface-variant font-label-caps">RESOLVED</p>
+<p class="text-[18px] font-bold text-tertiary">08</p>
+</div>
+</div>
+</div>
+<button class="mt-lg w-full border border-secondary/30 text-secondary font-label-caps text-[11px] py-sm rounded-lg hover:bg-secondary/10 transition-colors">
+                    KONFIGURASI ATRIBUT AI
+                </button>
+</div>
+<!-- MARKETPLACE CONNECTORS -->
+<div class="md:col-span-12">
+<div class="flex items-center gap-sm mb-md">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant">MARKETPLACE_NODES</h2>
+<div class="h-px flex-grow bg-outline-variant/30"></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Tokopedia Node -->
+<div class="bento-card rounded-xl p-md border-l-4 border-l-[#42b549]">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-lg bg-[#42b549]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#42b549]" data-icon="shopping_bag">shopping_bag</span>
+</div>
+<span class="font-label-caps text-[12px] font-bold">TOKOPEDIA</span>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary border border-tertiary/20 font-label-caps">SYNCED</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between text-[11px]">
+<span class="text-on-surface-variant">Stok Aktif</span>
+<span class="font-data-mono">450</span>
+</div>
+<div class="flex justify-between text-[11px]">
+<span class="text-on-surface-variant">Harga Jual</span>
+<span class="font-data-mono">Rp 3.599.000</span>
+</div>
+<div class="flex items-center gap-xs pt-xs border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check_circle">check_circle</span>
+<span class="text-[10px] text-on-surface-variant">Terakhir: 2 menit yang lalu</span>
+</div>
+</div>
+</div>
+<!-- Shopee Node -->
+<div class="bento-card rounded-xl p-md border-l-4 border-l-[#ee4d2d]">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-lg bg-[#ee4d2d]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#ee4d2d]" data-icon="storefront">storefront</span>
+</div>
+<span class="font-label-caps text-[12px] font-bold">SHOPEE</span>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary border border-tertiary/20 font-label-caps">SYNCED</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between text-[11px]">
+<span class="text-on-surface-variant">Stok Aktif</span>
+<span class="font-data-mono">320</span>
+</div>
+<div class="flex justify-between text-[11px]">
+<span class="text-on-surface-variant">Harga Jual</span>
+<span class="font-data-mono">Rp 3.599.000</span>
+</div>
+<div class="flex items-center gap-xs pt-xs border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="check_circle">check_circle</span>
+<span class="text-[10px] text-on-surface-variant">Terakhir: 4 menit yang lalu</span>
+</div>
+</div>
+</div>
+<!-- TikTok Shop Node -->
+<div class="bento-card rounded-xl p-md border-l-4 border-l-primary">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="video_library">video_library</span>
+</div>
+<span class="font-label-caps text-[12px] font-bold">TIKTOK SHOP</span>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20 font-label-caps">SYNCING...</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between text-[11px]">
+<span class="text-on-surface-variant">Stok Aktif</span>
+<span class="font-data-mono">200</span>
+</div>
+<div class="flex justify-between text-[11px]">
+<span class="text-on-surface-variant">Harga Jual</span>
+<span class="font-data-mono">Rp 3.499.000</span>
+</div>
+<div class="flex items-center gap-xs pt-xs border-t border-outline-variant/20">
+<div class="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+<span class="text-[10px] text-on-surface-variant">Sedang memperbarui SKU...</span>
+</div>
+</div>
+</div>
+<!-- Lazada Node -->
+<div class="bento-card rounded-xl p-md border-l-4 border-l-[#0f146d]">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-lg bg-[#0f146d]/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#adc6ff]" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<span class="font-label-caps text-[12px] font-bold">LAZADA</span>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-error/10 text-error border border-error/20 font-label-caps">ALERT</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between text-[11px]">
+<span class="text-on-surface-variant">Stok Aktif</span>
+<span class="font-data-mono">270</span>
+</div>
+<div class="flex justify-between text-[11px]">
+<span class="text-on-surface-variant">Harga Jual</span>
+<span class="font-data-mono">Rp 3.599.000</span>
+</div>
+<div class="flex items-center gap-xs pt-xs border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-[14px] text-error" data-icon="warning">warning</span>
+<span class="text-[10px] text-error">Token API Kadaluwarsa</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ANALYTICS MINI WIDGETS -->
+<div class="md:col-span-12 grid grid-cols-1 sm:grid-cols-3 gap-gutter">
+<div class="bento-card rounded-xl p-md flex items-center gap-md">
+<div class="p-sm rounded-full bg-tertiary/10 text-tertiary">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+</div>
+<div>
+<p class="text-[11px] text-on-surface-variant font-label-caps">TOTAL SALES (GLOBAL)</p>
+<p class="text-headline-md font-bold text-on-surface">Rp 4.2B</p>
+</div>
+</div>
+<div class="bento-card rounded-xl p-md flex items-center gap-md">
+<div class="p-sm rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</div>
+<div>
+<p class="text-[11px] text-on-surface-variant font-label-caps">KONEKTOR AKTIF</p>
+<p class="text-headline-md font-bold text-on-surface">12 / 12</p>
+</div>
+</div>
+<div class="bento-card rounded-xl p-md flex items-center gap-md">
+<div class="p-sm rounded-full bg-secondary/10 text-secondary">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+</div>
+<div>
+<p class="text-[11px] text-on-surface-variant font-label-caps">INTEGRITAS DATA</p>
+<p class="text-headline-md font-bold text-on-surface">99.2%</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 border-t border-outline-variant/20 backdrop-blur-2xl bg-surface-container-lowest/80 flex justify-around items-center px-md pb-6 pt-3">
+<div class="flex flex-col items-center justify-center text-primary bg-primary/10 rounded-xl py-1 px-3 shadow-[0_0_15px_rgba(173,198,255,0.15)] active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-[10px] mt-1">HUB</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 hover:text-primary transition-all duration-300 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-1">STOCK</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 hover:text-primary transition-all duration-300 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="settings_ethernet">settings_ethernet</span>
+<span class="font-label-caps text-[10px] mt-1">RULES</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 hover:text-primary transition-all duration-300 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-caps text-[10px] mt-1">DATA</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 hover:text-primary transition-all duration-300 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-[10px] mt-1">SYSTEM</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for stock pulse
+        setInterval(() => {
+            const stockElement = document.querySelector('.text-primary');
+            if(stockElement) {
+                stockElement.classList.add('scale-105');
+                setTimeout(() => stockElement.classList.remove('scale-105'), 200);
+            }
+        }, 8000);
+
+        // Simulated AI Terminal Output
+        const terminalOutput = document.querySelector('.font-data-mono');
+        const lines = [
+            "[PROC] Transform: Master.Desc -> TikTok_Shop.ShortDesc",
+            "[OK] Tokenize: \"Biomekanik\" -> \"Fitur Kesehatan\"",
+            "[OK] Apply: Lazada_RichContent_Format",
+            "[WAIT] Validation with Shopee API v2.1...",
+            "[SUCCESS] Mapping parity achieved."
+        ];
+        let lineIdx = 0;
+        
+        setInterval(() => {
+            lineIdx = (lineIdx + 1) % lines.length;
+            const newLines = lines.slice(0, lineIdx + 1).join('<br>');
+            terminalOutput.innerHTML = newLines;
+        }, 3000);
+    </script>
+</body></html>

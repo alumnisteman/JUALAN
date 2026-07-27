@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Commerce OS - White Label & Subscriptions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@400;600;700&family=JetBrains+Mono:wght@500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #09090B;
+            color: #E5E1E4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .bento-card {
+            background: #18181B;
+            border: 1px solid #27272A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-card:hover {
+            border-color: #424754;
+            background: #1C1C1F;
+        }
+        .glass-overlay {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .active-glow {
+            box-shadow: 0 0 15px rgba(173, 198, 255, 0.15);
+            border-color: #adc6ff !important;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #adc6ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        .sonar-wave {
+            animation: sonar 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        }
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d8e2ff",
+                        "background": "#131315",
+                        "surface-container-highest": "#353437",
+                        "on-surface-variant": "#c2c6d6",
+                        "outline-variant": "#424754",
+                        "on-tertiary-fixed": "#002113",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary-container": "#00285d",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#353437",
+                        "surface-bright": "#39393b",
+                        "on-primary-fixed": "#001a42",
+                        "secondary": "#d0bcff",
+                        "on-secondary-container": "#c4abff",
+                        "secondary-container": "#571bc1",
+                        "inverse-primary": "#005ac2",
+                        "surface": "#131315",
+                        "outline": "#8c909f",
+                        "on-secondary": "#3c0091",
+                        "surface-container-high": "#2a2a2c",
+                        "on-primary-fixed-variant": "#004395",
+                        "primary": "#adc6ff",
+                        "surface-container-low": "#1c1b1d",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#4d8eff",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "surface-container": "#201f22",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "surface-tint": "#adc6ff",
+                        "surface-dim": "#131315",
+                        "on-surface": "#e5e1e4",
+                        "primary-fixed-dim": "#adc6ff",
+                        "tertiary": "#4edea3",
+                        "inverse-on-surface": "#313032",
+                        "on-tertiary-container": "#00311f",
+                        "tertiary-container": "#00a572",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0e0e10",
+                        "inverse-surface": "#e5e1e4",
+                        "on-secondary-fixed": "#23005c",
+                        "on-primary": "#002e6a",
+                        "on-background": "#e5e1e4",
+                        "tertiary-fixed": "#6ffbbe",
+                        "secondary-fixed": "#e9ddff",
+                        "on-tertiary": "#003824"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "lg": "24px",
+                        "margin-desktop": "48px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic circular interface profile picture for a tech-savvy user. The image features glowing neon circuit patterns in electric blue and deep indigo against a matte obsidian background, conveying a high-tech computational authority and professional AI integration aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_TH4N7E-I0sUkha-7QvX7IFk4jAEGtBIOnuO_8UXPLJLUMO91Nb1clt7x1Frpn5K6yHZB9onOppSNHS9vjCtr0bsD1QBGvEkGf8JF-WUYBAkgi_jqRWYJd7AOMpjDgDr65OHdB7jSc0PPX57jtIbdbkBlp3VD-uazBLVldMQ7obWKE8AAT6iIydPYLTAIhjqSVEepWIYhMUZm6xGWZslMzWdXBVoVCU9-3pmFPvMloFzIind3x-PapgHxtQsO6iNrSG3xsgNu54AY"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-primary font-bold font-label-caps text-label-caps transition-all" href="#">Hubs</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-all" href="#">Intelligence</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-all" href="#">Orders</a>
+<a class="text-on-surface-variant hover:text-primary font-label-caps text-label-caps transition-all" href="#">Analytics</a>
+</nav>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-variant/50 transition-colors rounded-full text-primary active:scale-95 duration-100">
+<span class="material-symbols-outlined">settings_input_component</span>
+</button>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<div class="relative w-2 h-2">
+<div class="absolute inset-0 bg-tertiary rounded-full sonar-wave"></div>
+<div class="absolute inset-0 bg-tertiary rounded-full"></div>
+</div>
+<span class="font-label-caps text-label-caps text-tertiary">SYSTEM ACTIVE: NODE 04</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Commerce Infrastructure</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Manage your white-label ecosystem, subscription tiers, and global revenue streams from a single computational command center.</p>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-6 py-3 rounded-full flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-[0_0_20px_rgba(173,198,255,0.2)]">
+<span class="material-symbols-outlined text-sm">upgrade</span>
+                UPGRADE NODE
+            </button>
+</div>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Revenue Breakdown (Large) -->
+<div class="md:col-span-8 bento-card p-lg rounded-xl flex flex-col justify-between overflow-hidden relative">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-8xl">monitoring</span>
+</div>
+<div class="z-10">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-6 uppercase">Revenue Stream Analysis</p>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Subscriptions</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">$142,850.00</p>
+<div class="h-1 w-full bg-surface-container-highest mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4"></div>
+</div>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">API Usage</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">$38,212.45</p>
+<div class="h-1 w-full bg-surface-container-highest mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-1/4"></div>
+</div>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Marketplace Fees</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">$12,400.12</p>
+<div class="h-1 w-full bg-surface-container-highest mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-1/6"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-12 h-32 w-full flex items-end gap-1">
+<!-- Fake Visualizer Bars -->
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[40%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[60%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[55%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[85%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[70%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[95%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[100%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[80%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[65%]"></div>
+<div class="flex-1 bg-primary/20 hover:bg-primary/40 transition-all rounded-t h-[45%]"></div>
+</div>
+</div>
+<!-- AI Subscription Status (Small) -->
+<div class="md:col-span-4 bento-card p-lg rounded-xl flex flex-col items-center justify-center text-center active-glow">
+<div class="mb-4">
+<span class="material-symbols-outlined text-5xl text-secondary">psychology</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Enterprise Plan</h3>
+<div class="flex items-center gap-2 mb-6">
+<span class="font-data-mono text-data-mono text-primary bg-primary/10 px-2 py-1 rounded">2,482 ACTIVE USERS</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">Your current computational node is operating at 82% capacity.</p>
+<button class="w-full py-2 font-label-caps text-label-caps border border-outline-variant hover:border-primary transition-all rounded">MANAGE SEATS</button>
+</div>
+<!-- White Label Configuration (Medium) -->
+<div class="md:col-span-7 bento-card p-lg rounded-xl overflow-hidden">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-6 uppercase">Sub-Merchant Branding</p>
+<div class="flex flex-col sm:flex-row gap-8">
+<div class="flex-1">
+<div class="mb-6">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">DOMAIN ALIAS</label>
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded px-3 py-2">
+<span class="font-data-mono text-data-mono text-on-surface-variant">https://</span>
+<span class="font-data-mono text-data-mono text-on-surface flex-1">store.enterprise-mesh.ai</span>
+<span class="terminal-cursor"></span>
+</div>
+</div>
+<div class="mb-6">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">THEME COLOR</label>
+<div class="flex gap-2">
+<div class="w-8 h-8 rounded bg-primary cursor-pointer border-2 border-white"></div>
+<div class="w-8 h-8 rounded bg-secondary cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-8 h-8 rounded bg-tertiary cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-8 h-8 rounded bg-error cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-xs">add</span>
+</div>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-container font-label-caps text-label-caps px-4 py-2 rounded-full w-full">SAVE CONFIGURATION</button>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center bg-background/50 rounded-lg p-6 border border-dashed border-outline-variant">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">PREVIEW LOGO</p>
+<div class="w-32 h-32 bg-surface rounded-full flex items-center justify-center shadow-inner relative overflow-hidden group">
+<img class="w-24 h-24 object-contain transition-transform duration-500 group-hover:scale-110" data-alt="A minimalist tech logo centered in a dark circular frame. The design features sharp, geometric abstract lines forming a stylized 'M' or 'A', rendered in high-contrast matte silver with a soft blue backlight glow. The overall mood is sophisticated, executive, and high-performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQF-fF00hfzGLct-XtVtGmSgbaM8WMvj58IMdUTH7Lj1L_iYQO4DOKyT90IRHEsVFbuz60I-0b4uIbSzOAJ5BBNb8KaREtAR6EO4sVZf97MDNyvEwLB36wMZroiu9s0OvIA2ZeXGRkRKQkRUtZGZGGFsa9gDWodOHWI_cOxxXPJSYK3Efe4NWbDI3Zahjf9kZHufMz3rnYnu852NVruZfAVF6GW51mzz_bYVgLQSVaBsZj1H6nCPpPXCT2EV0ED0aUQV7ISLBoN_Ru"/>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-white">upload</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Subscription Tiers (Medium) -->
+<div class="md:col-span-5 bento-card p-lg rounded-xl overflow-y-auto max-h-[360px]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-6 uppercase">Tier Management</p>
+<div class="space-y-4">
+<!-- Pro Tier -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded border border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">verified</span>
+<div>
+<p class="font-body-md text-body-md font-semibold">Pro Tier</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">420 Active Entities</p>
+</div>
+</div>
+<p class="font-data-mono text-data-mono text-on-surface">$299/mo</p>
+</div>
+<!-- Business Tier -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded border border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">rocket_launch</span>
+<div>
+<p class="font-body-md text-body-md font-semibold">Business Tier</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">128 Active Entities</p>
+</div>
+</div>
+<p class="font-data-mono text-data-mono text-on-surface">$899/mo</p>
+</div>
+<!-- Custom Tier -->
+<div class="flex items-center justify-between p-4 bg-secondary-container/20 rounded border border-secondary-container">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">auto_awesome</span>
+<div>
+<p class="font-body-md text-body-md font-semibold">Custom Mesh</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">12 Enterprise Orgs</p>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-secondary text-on-secondary rounded text-[10px] font-bold">VIP</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant shadow-lg md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-[10px] mt-1">Hubs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-[10px] mt-1">Intelligence</span>
+</a>
+<div class="relative -top-6">
+<button class="bg-secondary-container text-on-secondary-container w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90 transition-transform active:scale-75">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-1">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px] mt-1">Analytics</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for hover glows
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Simple terminal cursor toggle for effect
+        setInterval(() => {
+            const cursors = document.querySelectorAll('.terminal-cursor');
+            cursors.forEach(c => c.style.visibility = c.style.visibility === 'hidden' ? 'visible' : 'hidden');
+        }, 600);
+    </script>
+</body></html>

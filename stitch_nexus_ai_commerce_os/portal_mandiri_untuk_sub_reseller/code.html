@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Geist:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid #27272A;
+        }
+
+        .glow-purple {
+            box-shadow: 0 0 15px rgba(173, 198, 255, 0.1), 0 0 5px rgba(208, 188, 255, 0.2);
+        }
+
+        .bento-card {
+            background: #18181B;
+            border: 1px solid #27272A;
+            transition: all 0.3s ease;
+        }
+
+        .bento-card:hover {
+            border-color: #adc6ff;
+            background: #1c1c21;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .active-pulse {
+            position: relative;
+        }
+        .active-pulse::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #4edea3;
+            border-radius: 50%;
+            top: 0;
+            right: 0;
+            box-shadow: 0 0 10px #4edea3;
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 0; }
+            100% { transform: scale(0.8); opacity: 0; }
+        }
+
+        .circuit-bg {
+            background-image: radial-gradient(#27272A 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c2c6d6",
+                        "on-primary-container": "#00285d",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353437",
+                        "surface": "#131315",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-secondary-container": "#c4abff",
+                        "tertiary": "#4edea3",
+                        "surface-variant": "#353437",
+                        "surface-tint": "#adc6ff",
+                        "tertiary-container": "#00a572",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "on-secondary": "#3c0091",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "surface-container": "#201f22",
+                        "primary-container": "#4d8eff",
+                        "surface-container-low": "#1c1b1d",
+                        "on-primary-fixed-variant": "#004395",
+                        "inverse-surface": "#e5e1e4",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-error": "#690005",
+                        "surface-container-high": "#2a2a2c",
+                        "on-tertiary-container": "#00311f",
+                        "outline": "#8c909f",
+                        "secondary": "#d0bcff",
+                        "inverse-on-surface": "#313032",
+                        "secondary-fixed": "#e9ddff",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#002113",
+                        "outline-variant": "#424754",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "on-surface": "#e5e1e4",
+                        "on-primary": "#002e6a",
+                        "error": "#ffb4ab",
+                        "primary": "#adc6ff",
+                        "surface-dim": "#131315",
+                        "on-tertiary": "#003824",
+                        "secondary-container": "#571bc1",
+                        "on-background": "#e5e1e4",
+                        "surface-bright": "#39393b",
+                        "primary-fixed": "#d8e2ff",
+                        "inverse-primary": "#005ac2",
+                        "background": "#131315",
+                        "on-secondary-fixed": "#23005c",
+                        "on-primary-fixed": "#001a42"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "margin-desktop": "48px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Geist"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">memory</span>
+<h1 class="font-label-caps text-label-caps tracking-widest text-primary">RESELLERHUB OS</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-200">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-200">account_circle</span>
+</div>
+</header>
+<main class="pt-20 pb-28 px-margin-mobile max-w-5xl mx-auto circuit-bg min-h-screen">
+<!-- Portal Header -->
+<section class="mb-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-xs">Portal Sub-Reseller</h2>
+<div class="h-1 w-12 bg-secondary-container rounded-full"></div>
+</section>
+<!-- Profile Summary Bento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-lg">
+<div class="md:col-span-2 bento-card rounded-xl p-lg flex items-center gap-lg relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-secondary-container/10 blur-3xl rounded-full"></div>
+<div class="w-16 h-16 rounded-full bg-surface-container-high border-2 border-secondary flex items-center justify-center relative">
+<span class="material-symbols-outlined text-secondary text-3xl">person</span>
+<div class="absolute -bottom-1 -right-1 bg-tertiary w-5 h-5 rounded-full border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-on-tertiary font-bold">check</span>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<p class="font-headline-md text-headline-md">Budi</p>
+<span class="bg-secondary-container/20 text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-label-caps border border-secondary/30">GOLD TIER</span>
+</div>
+<p class="font-data-mono text-data-mono text-on-surface-variant">ID: <span class="text-primary">SR-772</span></p>
+</div>
+</div>
+<div class="bento-card rounded-xl p-lg flex flex-col justify-center items-center text-center border-dashed border-outline-variant">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">TARGET BULANAN</p>
+<div class="relative w-20 h-20 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle cx="40" cy="40" fill="transparent" r="36" stroke="#27272A" stroke-width="4"></circle>
+<circle cx="40" cy="40" fill="transparent" r="36" stroke="#d0bcff" stroke-dasharray="226" stroke-dashoffset="67" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-data-mono text-on-surface">70%</span>
+</div>
+</div>
+</div>
+<!-- Performance Metrics -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-md mb-lg">
+<div class="bento-card rounded-xl p-md glow-purple">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary text-sm">payments</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant">TOTAL KOMISI</p>
+</div>
+<p class="font-headline-md text-headline-md text-on-surface">Rp 4.250.000</p>
+<p class="font-data-mono text-[10px] text-tertiary mt-1">+12% dari bln lalu</p>
+</div>
+<div class="bento-card rounded-xl p-md">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm">shopping_bag</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant">PESANAN SAYA</p>
+</div>
+<p class="font-headline-md text-headline-md text-on-surface">128</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant mt-1">24 pesanan diproses</p>
+</div>
+<div class="bento-card rounded-xl p-md">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary text-sm">history</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant">PENCAIRAN TERAKHIR</p>
+</div>
+<p class="font-headline-md text-headline-md text-on-surface">Rp 850k</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant mt-1">12 Okt 2023</p>
+</div>
+</div>
+<!-- Inventory Catalog (Horizontal Scroll) -->
+<section class="mb-lg">
+<div class="flex justify-between items-end mb-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">KATALOG PRODUK SUPPLIER</h3>
+<a class="text-primary font-body-sm text-body-sm flex items-center gap-1" href="#">Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+</div>
+<div class="flex gap-md overflow-x-auto pb-4 hide-scrollbar -mx-margin-mobile px-margin-mobile">
+<!-- Product Card 1 -->
+<div class="min-w-[200px] w-[200px] bento-card rounded-xl overflow-hidden flex flex-col group">
+<div class="h-32 bg-surface-container relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="High-tech sleek black smartphone on a minimalist glass pedestal, dramatic purple and blue edge lighting, studio product photography, hyper-realistic, dark mode aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQauXlhxjhy4JLmljNhcEZzw3JBMGA9ai0XLjrZvyK2gZAFnVZ1dtY9VudBNRhVyJFf2RUFZZ8xIfVy9ZhmGcW8K_9kne3cC-OYIWeSs8ca1R-wCpPuGDCP42debbHwSfBTGzT394BvzYgCwtlNneNzrHeyA0AxXmhqhc2RV3ToO_vcM99LoTE76rZMB4bcBOIrIr_v9ffz4Vfvo0QnZo4YOXZubxZUQCeXUTDf0a0LJjvA-fPyMU91pGuX8nGZBwXLP5F5_DC-3sB"/>
+<div class="absolute top-2 right-2 bg-surface/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-outline-variant">
+<p class="text-[10px] font-label-caps text-tertiary">STOK 12</p>
+</div>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-1 mb-1">X-Phone Obsidian</p>
+<p class="font-data-mono text-data-mono text-secondary mb-3">Rp 12.999k</p>
+<button class="w-full py-2 bg-primary text-on-primary font-label-caps text-[10px] rounded-lg active:scale-95 transition-all">PESAN</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="min-w-[200px] w-[200px] bento-card rounded-xl overflow-hidden flex flex-col group">
+<div class="h-32 bg-surface-container relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Futuristic noise-cancelling headphones with glowing LED accents, floating in a dark void with subtle circuit board patterns in the background, neon purple lighting, professional tech gear aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCU_JoE2cSDV4gFRuVC5WWAI4XV4ZTGbJ45E-0xNFC4bo_9muOd5M9SccnXFnCHQgKwaP25nBqUscNDHDMo9P3ejthqwYIZ_WO9zCZZSCEACAHtA-aNhlxTtQfshukdxKWVt65eyqFp9JnBAgqxbpLxjdU3qGjeIl0KjBe-AZGiTrkBRdPuj2vgqgAJ1PvAls773SxJtCVRHK_H7Cb4uhnHINg7ap5qfPa4k-jdCNl5kS4NQqQoMTmGmq2qXEUcUMOuHWzu-mtQotw"/>
+<div class="absolute top-2 right-2 bg-surface/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-outline-variant">
+<p class="text-[10px] font-label-caps text-tertiary">STOK 45</p>
+</div>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-1 mb-1">Sonic-Link Pro</p>
+<p class="font-data-mono text-data-mono text-secondary mb-3">Rp 2.450k</p>
+<button class="w-full py-2 bg-primary text-on-primary font-label-caps text-[10px] rounded-lg active:scale-95 transition-all">PESAN</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="min-w-[200px] w-[200px] bento-card rounded-xl overflow-hidden flex flex-col group">
+<div class="h-32 bg-surface-container relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Sophisticated smart watch with a holographic interface floating above it, carbon fiber finish, deep violet and cyan lighting, high-tech wearable, sharp focus, technical illustration style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv2StyJyOWOcSUAotZPwL7yj3uZXlsEAiCJPrIG_4TKzL20UEBj8rMeTx4_UtZXeFEXHlmYweFdtWY3Tpzt8ce_67XifqI6KakBqGWCcGIqK8Y1Ghxfh4dB3r4QGUKt-4vt8tLto_hDNpuX6JHEkLkj074RVSNY4mxtuWNzJMn6fpnJtTAdVIPlX4nxg81YXi97nhOeGVLUdd6yYSZHXWvV2ICetN1j5kwGioU57x1KLlReMMdk7c3Msad5En6cjWNk9vbL1knnnpa"/>
+<div class="absolute top-2 right-2 bg-surface/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-outline-variant">
+<p class="text-[10px] font-label-caps text-tertiary">STOK 8</p>
+</div>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-1 mb-1">Chronos Hub</p>
+<p class="font-data-mono text-data-mono text-secondary mb-3">Rp 4.100k</p>
+<button class="w-full py-2 bg-primary text-on-primary font-label-caps text-[10px] rounded-lg active:scale-95 transition-all">PESAN</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Marketing Kits -->
+<section class="mb-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-md">MARKETING KITS</h3>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-md">
+<button class="bento-card rounded-xl p-md flex items-center gap-md hover:border-secondary transition-all group">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">image</span>
+</div>
+<div class="text-left">
+<p class="font-body-sm text-body-sm text-on-surface">Banner Promo</p>
+<p class="text-[10px] text-on-surface-variant">12 Assets</p>
+</div>
+</button>
+<button class="bento-card rounded-xl p-md flex items-center gap-md hover:border-secondary transition-all group">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">movie</span>
+</div>
+<div class="text-left">
+<p class="font-body-sm text-body-sm text-on-surface">Video Produk</p>
+<p class="text-[10px] text-on-surface-variant">5 Assets</p>
+</div>
+</button>
+<button class="bento-card rounded-xl p-md flex items-center gap-md hover:border-secondary transition-all group">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div class="text-left">
+<p class="font-body-sm text-body-sm text-on-surface">Caption Copy</p>
+<p class="text-[10px] text-on-surface-variant">Ready to use</p>
+</div>
+</button>
+</div>
+</section>
+<!-- Support Section -->
+<section class="mb-md">
+<div class="glass-panel rounded-2xl p-lg flex flex-col sm:flex-row items-center justify-between gap-md border-secondary/30">
+<div class="flex items-center gap-md">
+<div class="active-pulse bg-surface-container-high p-3 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-tertiary">support_agent</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-on-surface">Butuh Bantuan?</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Admin kami siap membantu operasional harian Anda.</p>
+</div>
+</div>
+<button class="px-lg py-3 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps rounded-full hover:scale-105 active:scale-95 transition-all w-full sm:w-auto">
+                    HUBUNGI ADMIN
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container/90 backdrop-blur-lg border-t border-outline-variant shadow-lg flex justify-around items-center h-20 pb-safe px-md">
+<div class="flex flex-col items-center justify-center text-primary bg-primary-container/20 rounded-xl py-1 px-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-caps text-label-caps mt-1">Hubs</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-colors rounded-xl py-1 px-3 cursor-pointer">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-label-caps mt-1">Intelligence</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-colors rounded-xl py-1 px-3 cursor-pointer">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-caps text-label-caps mt-1">Orders</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-colors rounded-xl py-1 px-3 cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps mt-1">Analytics</span>
+</div>
+</nav>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    </script>
+</body></html>

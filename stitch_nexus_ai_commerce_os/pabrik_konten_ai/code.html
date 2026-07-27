@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pabrik Konten AI - AI Commerce OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Geist:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#d8e2ff",
+                    "primary-container": "#4d8eff",
+                    "tertiary": "#4edea3",
+                    "surface": "#131315",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "surface-tint": "#adc6ff",
+                    "surface-dim": "#131315",
+                    "outline-variant": "#424754",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "on-primary-fixed-variant": "#004395",
+                    "surface-variant": "#353437",
+                    "on-background": "#e5e1e4",
+                    "inverse-surface": "#e5e1e4",
+                    "secondary-container": "#571bc1",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "background": "#131315",
+                    "on-tertiary": "#003824",
+                    "on-secondary-container": "#c4abff",
+                    "on-primary-fixed": "#001a42",
+                    "on-surface-variant": "#c2c6d6",
+                    "secondary-fixed-dim": "#d0bcff",
+                    "on-error": "#690005",
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-container": "#201f22",
+                    "secondary-fixed": "#e9ddff",
+                    "outline": "#8c909f",
+                    "secondary": "#d0bcff",
+                    "on-secondary-fixed": "#23005c",
+                    "tertiary-container": "#00a572",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-tertiary-container": "#00311f",
+                    "error": "#ffb4ab",
+                    "on-primary": "#002e6a",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#2a2a2c",
+                    "inverse-on-surface": "#313032",
+                    "surface-bright": "#39393b",
+                    "primary": "#adc6ff",
+                    "on-secondary": "#3c0091",
+                    "surface-container-highest": "#353437",
+                    "surface-container-lowest": "#0e0e10",
+                    "on-tertiary-fixed": "#002113",
+                    "on-error-container": "#ffdad6",
+                    "inverse-primary": "#005ac2",
+                    "surface-container-low": "#1c1b1d",
+                    "on-primary-container": "#00285d",
+                    "on-surface": "#e5e1e4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "xs": "4px",
+                    "margin-desktop": "48px",
+                    "lg": "24px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "data-mono": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Geist"],
+                    "headline-lg-mobile": ["Geist"],
+                    "label-caps": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #09090B; color: #e5e1e4; -webkit-font-smoothing: antialiased; }
+        .glass-card { background: rgba(24, 24, 27, 0.8); border: 1px solid #27272A; backdrop-filter: blur(12px); }
+        .circuit-border { border: 1px solid rgba(173, 198, 255, 0.2); }
+        .pulse-ring { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(1.2); } }
+        .terminal-cursor { border-right: 8px solid #adc6ff; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { border-color: transparent; } }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131315; }
+        ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #adc6ff; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md overflow-x-hidden pb-24 md:pb-0 md:pt-16">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-[100] flex justify-between items-center px-margin-mobile h-16 border-b border-outline-variant bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-primary/20 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A futuristic circular circuit board profile interface icon in Circuit Blue and obsidian black. The design is minimalist and high-tech, glowing with a soft neon light against a dark background, representing a high-performance AI operating system identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY73naBe6_1oF9xnrmlcIQuE65tQimrVl8lz-9U6fVwhui6wkzCaxWEnwMzP8-L6xiaIWlHo610phdA6o4mWeMSL7R53PTr8pcBrycItPfmd4OOoj14ey25fivrV31_4MzetnqNbAymt0dGcaZcGWd4LknBsFAQPFeR8FDEHQlyKu0TuCOnrZMqIbsHOkw3PFVRfkeWxagJ6Fdyki-JM4Gvy_aoRGshbdj6ex2PR9Rdnc5XzPnBDDQ6Cm21j6C0tl7zd1-p-5bs4dB"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 py-8 md:px-margin-desktop space-y-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+<div class="space-y-1">
+<p class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Content Factory Hub</p>
+<h2 class="font-display-lg text-display-lg text-on-surface">Pabrik Konten AI</h2>
+</div>
+<!-- Auto-Generation Mode Toggle -->
+<div class="glass-card px-6 py-4 rounded-xl flex items-center gap-6 border-primary/10">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">AUTO-GENERATION MODE</span>
+<span class="text-primary font-bold" id="mode-status">AKTIF</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="auto-gen-toggle" type="checkbox"/>
+<div class="w-14 h-7 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-primary after:border-primary after:border after:rounded-full after:h-5 after:w-6 after:transition-all peer-checked:bg-secondary-container"></div>
+</label>
+</div>
+</div>
+<!-- Main Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Left Column: Status & Engine -->
+<div class="md:col-span-4 space-y-6">
+<!-- Creative Engine Status -->
+<div class="glass-card p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[64px] text-secondary">psychology</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-6">CREATIVE ENGINE STATUS</h3>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-3 h-3 bg-tertiary rounded-full"></div>
+<div class="absolute inset-0 w-3 h-3 bg-tertiary rounded-full pulse-ring"></div>
+</div>
+<div>
+<p class="font-data-mono text-data-mono text-on-surface">Gemini 1.5 Flash</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">OPTIMIZED FOR EFFICIENCY</p>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[11px] font-label-caps">
+<span>MODEL LOAD</span>
+<span class="text-tertiary">24%</span>
+</div>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[24%]"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant grid grid-cols-2 gap-4">
+<div>
+<p class="text-[10px] font-label-caps text-on-surface-variant">COST SAVED</p>
+<p class="font-data-mono text-primary">Rp 4.2M</p>
+</div>
+<div>
+<p class="text-[10px] font-label-caps text-on-surface-variant">LATENCY</p>
+<p class="font-data-mono text-secondary">1.2s</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Asset Creation Quick Actions -->
+<div class="glass-card p-6 rounded-xl border-dashed border-outline-variant">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4">BUAT ASSET BARU</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-surface-container-high hover:bg-primary/10 hover:border-primary/30 border border-transparent transition-all group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">description</span>
+<span class="text-[11px] font-label-caps">Deskripsi</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-surface-container-high hover:bg-secondary/10 hover:border-secondary/30 border border-transparent transition-all group">
+<span class="material-symbols-outlined text-secondary mb-2 group-hover:scale-110 transition-transform">share</span>
+<span class="text-[11px] font-label-caps">Social Media</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-surface-container-high hover:bg-tertiary/10 hover:border-tertiary/30 border border-transparent transition-all group">
+<span class="material-symbols-outlined text-tertiary mb-2 group-hover:scale-110 transition-transform">campaign</span>
+<span class="text-[11px] font-label-caps">Marketing</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-surface-container-high hover:bg-on-surface-variant/10 hover:border-on-surface-variant/30 border border-transparent transition-all group">
+<span class="material-symbols-outlined text-on-surface-variant mb-2 group-hover:scale-110 transition-transform">add</span>
+<span class="text-[11px] font-label-caps">Custom</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Project List -->
+<div class="md:col-span-8 space-y-6">
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-label-caps text-label-caps text-on-surface">PROYEK AKTIF</h3>
+<div class="flex gap-2">
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary text-[10px] font-bold rounded border border-secondary/20">8 SEDANG JALAN</span>
+</div>
+</div>
+<div class="divide-y divide-outline-variant">
+<!-- Project Item 1 -->
+<div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-bright/20 transition-colors group">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-primary">headphones</span>
+</div>
+<div>
+<h4 class="font-headline-md text-[18px] text-on-surface">Headphones SEO Copy</h4>
+<p class="text-sm text-on-surface-variant">Target: Tokopedia &amp; Shopee • 12 Varian</p>
+</div>
+</div>
+<div class="flex items-center gap-6 w-full md:w-auto">
+<div class="flex-1 md:w-32">
+<div class="flex justify-between text-[10px] font-label-caps mb-1">
+<span>PROGRES</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Project Item 2 -->
+<div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-bright/20 transition-colors">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-secondary">movie_filter</span>
+</div>
+<div>
+<h4 class="font-headline-md text-[18px] text-on-surface">Instagram Reel Script</h4>
+<p class="text-sm text-on-surface-variant">Campaign: Summer Sale • Hook &amp; CTA Gen</p>
+</div>
+</div>
+<div class="flex items-center gap-6 w-full md:w-auto">
+<div class="flex-1 md:w-32">
+<div class="flex justify-between text-[10px] font-label-caps mb-1">
+<span>PROGRES</span>
+<span class="text-secondary">42%</span>
+</div>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[42%]"></div>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Project Item 3 -->
+<div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-bright/20 transition-colors">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-tertiary">email</span>
+</div>
+<div>
+<h4 class="font-headline-md text-[18px] text-on-surface">Newsletter Automation</h4>
+<p class="text-sm text-on-surface-variant">Segment: VIP Customer • Personalized</p>
+</div>
+</div>
+<div class="flex items-center gap-6 w-full md:w-auto">
+<div class="flex-1 md:w-32 text-right">
+<span class="px-2 py-1 rounded bg-tertiary/10 text-tertiary text-[10px] font-bold border border-tertiary/20">SELESAI</span>
+</div>
+<button class="text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Generation Preview -->
+<div class="glass-card p-6 rounded-xl bg-gradient-to-br from-surface to-surface-container-low border-primary/20">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-sm">terminal</span>
+<h3 class="font-label-caps text-label-caps text-primary">LIVE ENGINE OUTPUT</h3>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded border border-outline-variant font-data-mono text-sm min-h-[120px] relative">
+<div class="text-on-surface leading-relaxed" id="typewriter"></div>
+<span class="terminal-cursor"></span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg rounded-t-xl">
+<a href="../index.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90 transition-transform">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-[10px]">Home</span>
+</a>
+<a href="../ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-[10px]">Intelligence</span>
+</a>
+<a href="../manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px]">Orders</span>
+</a>
+<a href="../analitik_eksekutif/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px]">Analytics</span>
+</a>
+</nav>
+<script>
+        // Toggle Logic
+        const toggle = document.getElementById('auto-gen-toggle');
+        const statusText = document.getElementById('mode-status');
+        
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+                statusText.innerText = 'AKTIF';
+                statusText.classList.remove('text-on-surface-variant');
+                statusText.classList.add('text-primary');
+                startTypewriter();
+            } else {
+                statusText.innerText = 'NONAKTIF';
+                statusText.classList.remove('text-primary');
+                statusText.classList.add('text-on-surface-variant');
+            }
+        });
+
+        // Typewriter Effect
+        const typewriterElement = document.getElementById('typewriter');
+        const phrases = [
+            "> Menganalisis metadata produk...",
+            "> Menghasilkan deskripsi SEO untuk 'Sony WH-1000XM5'...",
+            "> Mengoptimalkan kata kunci untuk pasar Indonesia...",
+            "> Selesai. Menunggu verifikasi user.",
+            "> [System] Gemini 1.5 Flash memproses batch 4...",
+            "> Memperbarui data inventaris sinkron..."
+        ];
+        
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let currentPhrase = "";
+
+        function startTypewriter() {
+            if (!toggle.checked) return;
+            
+            if (charIndex < phrases[phraseIndex].length) {
+                currentPhrase += phrases[phraseIndex].charAt(charIndex);
+                typewriterElement.innerHTML = currentPhrase;
+                charIndex++;
+                setTimeout(startTypewriter, 40);
+            } else {
+                setTimeout(() => {
+                    charIndex = 0;
+                    currentPhrase = "";
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    startTypewriter();
+                }, 2000);
+            }
+        }
+
+        // Initialize
+        startTypewriter();
+
+        // Asset creation buttons functionality
+        const assetButtons = document.querySelectorAll('button.flex.flex-col');
+        assetButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const assetType = this.querySelector('span:last-child').textContent;
+                alert(`Membuka editor untuk membuat: ${assetType}`);
+            });
+        });
+
+        // Project items click handler
+        const projectItems = document.querySelectorAll('.group.hover\\:bg-surface-bright\\/20');
+        projectItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const projectName = this.querySelector('h4').textContent;
+                alert(`Membuka proyek: ${projectName}`);
+            });
+        });
+
+        // Settings button
+        const settingsBtn = document.querySelector('button.p-2');
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', () => {
+                alert('Pengaturan Pabrik Konten');
+            });
+        }
+    </script>
+</body></html>

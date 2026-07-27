@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@600;700;800&family=JetBrains+Mono:wght@500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .glass-card {
+            background: #18181B;
+            border: 1px solid #27272A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:active {
+            transform: scale(0.98);
+            border-color: #adc6ff;
+        }
+        .glow-primary {
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.15);
+        }
+        .sonar-ring {
+            position: relative;
+        }
+        .sonar-ring::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.4;
+            animation: sonar 2s infinite;
+        }
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #adc6ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#adc6ff",
+                        "on-primary": "#002e6a",
+                        "primary-container": "#4d8eff",
+                        "secondary": "#d0bcff",
+                        "secondary-container": "#571bc1",
+                        "tertiary": "#4edea3",
+                        "surface": "#131315",
+                        "surface-container": "#201f22",
+                        "surface-container-low": "#1c1b1d",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-surface": "#e5e1e4",
+                        "on-surface-variant": "#c2c6d6",
+                        "outline-variant": "#424754",
+                        "background": "#131315"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    fontFamily: {
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "data-mono": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "data-mono": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface pb-24">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 border-b border-outline-variant bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-primary-container flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A professional, hyper-realistic 3D avatar headshot of a futuristic digital being, featuring intricate glowing circuit patterns on the skin. The aesthetic is clean and corporate tech, with soft blue ambient lighting and a shallow depth of field, reflecting high-performance AI marketing authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByWzIODoAJs4d1YViM7FcIdavN5J-FBosr7mcs8tFE5rfU1zoMGgPGy6dckvaKwd2KFrgvEFZUXBdU8QlkXxu45ye1KYjtD4lbi-N5aLuOb0P3ZcBQdMp4gr7TedoMCTbKS54O7d6T_UuMTZauI1i9Sy6LNFNB5gaj6gpOTixrAoJx2e0tuu6xwEPqh3JBfY8ul9F0bJy-ETbnC74Tul7AoVHA46NYsfS1PCvEzTPFy89SdT_94BKOf-G2VMkhB0_3SnWEVzMp65f7"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50 transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</button>
+</header>
+<main class="mt-20 px-4 space-y-6">
+<!-- AI Brain Status Header -->
+<section class="glass-card rounded-xl p-4 flex items-center justify-between glow-primary border-primary/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary/10 flex items-center justify-center">
+<div class="w-3 h-3 bg-tertiary rounded-full sonar-ring text-tertiary"></div>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-tertiary">AI AGENT ACTIVE</p>
+<p class="text-xs text-on-surface-variant">Auto-replies handling 12 threads</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-data-mono text-primary text-sm">98.4% CSAT</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Efficiency</p>
+</div>
+</section>
+<!-- Multi-platform Queue -->
+<section>
+<div class="flex justify-between items-end mb-3">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant">PLATFORM QUEUE</h2>
+<span class="text-[10px] text-primary">VIEW ALL</span>
+</div>
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+<!-- Platform Chips -->
+<div class="flex-shrink-0 flex items-center gap-2 px-3 py-2 glass-card rounded-full border-pink-500/30">
+<span class="material-symbols-outlined text-pink-500 text-sm">camera_alt</span>
+<span class="font-data-mono text-xs">IG: 4 Pending</span>
+</div>
+<div class="flex-shrink-0 flex items-center gap-2 px-3 py-2 glass-card rounded-full border-blue-400/30">
+<span class="material-symbols-outlined text-blue-400 text-sm">video_library</span>
+<span class="font-data-mono text-xs">TikTok: 2 Active</span>
+</div>
+<div class="flex-shrink-0 flex items-center gap-2 px-3 py-2 glass-card rounded-full border-purple-400/30">
+<span class="material-symbols-outlined text-purple-400 text-sm">alt_route</span>
+<span class="font-data-mono text-xs">Threads: 1 Live</span>
+</div>
+<div class="flex-shrink-0 flex items-center gap-2 px-3 py-2 glass-card rounded-full border-red-500/30">
+<span class="material-symbols-outlined text-red-500 text-sm">push_pin</span>
+<span class="font-data-mono text-xs">Pinterest: 8 Ready</span>
+</div>
+</div>
+</section>
+<!-- Bento Content Preview Area -->
+<div class="bento-grid">
+<!-- Large Preview Card -->
+<div class="col-span-2 glass-card rounded-xl overflow-hidden">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-contrast video thumbnail for a premium coffee brand, showing slow-motion espresso pouring into a glass. The scene is lit with dramatic side-lighting in a dark, moody kitchen environment, reflecting a luxury commerce aesthetic. Subtle glowing overlays indicate AI-detected hotspots for engagement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxB5J3w1rWLg3o59Ri9-ObJRqlUrABWre0UQg36wELBNj8zc04U53UwfG_tmenuBnVmDZs5ABkjEU2CO37nQqNG7vJwUTN5Om3-sKdMrE_qFwqiRKe4esoH8QWHeC86tfaSYZHJlNaPikwlG1JKxBhEMVDF1_VKxSzr-Of9wYdt471T3vFcEy4C_6_LQlfZ1s4wKoS2K5jo3y-hQ5iyx39yKMbl3tja4UUFbv_6Gwx4In-g868n9wNQe7ex0-dKn-Ty5aJ11vBVVVh"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent flex flex-col justify-end p-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-primary text-on-primary text-[10px] font-bold rounded-full">AI GENERATED</span>
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] rounded-full">VIDEO REEL</span>
+</div>
+<h3 class="font-headline-md text-sm text-on-surface line-clamp-1">Morning Ritual: The Art of the Pour</h3>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low">
+<div class="flex items-start gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-base">auto_awesome</span>
+<p class="text-xs text-on-surface-variant font-data-mono italic">
+                            "Experience the precision of a perfect morning. #PremiumCoffee #MorningRitual <span class="terminal-cursor"></span>"
+                        </p>
+</div>
+<div class="grid grid-cols-3 gap-2 border-t border-outline-variant pt-3">
+<div class="text-center">
+<p class="text-[10px] text-on-surface-variant">EST. REACH</p>
+<p class="font-data-mono text-tertiary">12.4k</p>
+</div>
+<div class="text-center border-x border-outline-variant">
+<p class="text-[10px] text-on-surface-variant">CONV.</p>
+<p class="font-data-mono text-primary">4.2%</p>
+</div>
+<div class="text-center">
+<p class="text-[10px] text-on-surface-variant">ROI</p>
+<p class="font-data-mono text-secondary">3.1x</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Calendar Module -->
+<div class="glass-card rounded-xl p-4 flex flex-col justify-between aspect-square">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-2">NEXT POST</p>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-bold font-headline-md">14</span>
+<span class="text-sm font-data-mono text-primary">:30</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-1">Today, May 12</p>
+</div>
+<div class="flex -space-x-2 mt-4">
+<div class="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-[12px] text-white">camera_alt</span></div>
+<div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-[12px] text-white">video_library</span></div>
+</div>
+</div>
+<!-- Conversion Module -->
+<div class="glass-card rounded-xl p-4 flex flex-col justify-between aspect-square">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-2">ENGAGEMENT</p>
+<div class="h-16 flex items-end gap-1">
+<div class="w-2 bg-primary/20 h-1/2 rounded-t-sm"></div>
+<div class="w-2 bg-primary/40 h-2/3 rounded-t-sm"></div>
+<div class="w-2 bg-primary/60 h-3/4 rounded-t-sm"></div>
+<div class="w-2 bg-primary h-full rounded-t-sm"></div>
+<div class="w-2 bg-primary/50 h-1/3 rounded-t-sm"></div>
+</div>
+</div>
+<div class="flex items-center justify-between text-[10px]">
+<span class="text-tertiary">+12%</span>
+<span class="text-on-surface-variant font-data-mono">LAST 24H</span>
+</div>
+</div>
+</div>
+<!-- Bot Activity Feed -->
+<section class="space-y-3">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant">LIVE AI AGENT FEED</h2>
+<div class="space-y-2">
+<div class="glass-card rounded-lg p-3 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-base">forum</span>
+<div class="flex-1">
+<p class="text-[11px] text-on-surface leading-tight">Replied to <span class="text-primary">@user_99</span> on IG regarding pricing inquiry.</p>
+<p class="text-[9px] text-on-surface-variant font-data-mono">2 mins ago</p>
+</div>
+</div>
+<div class="glass-card rounded-lg p-3 flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary text-base">shopping_cart</span>
+<div class="flex-1">
+<p class="text-[11px] text-on-surface leading-tight">Converted abandoned cart from <span class="text-primary">Pinterest</span> referral.</p>
+<p class="text-[9px] text-on-surface-variant font-data-mono">15 mins ago</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg rounded-t-xl">
+<a href="../index.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] transition-transform active:scale-90">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-caps text-[10px] mt-0.5">Home</span>
+</a>
+<a href="../ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-[10px] mt-0.5">Intelligence</span>
+</a>
+<a href="../manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-0.5">Orders</span>
+</a>
+<a href="../analitik_eksekutif/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px] mt-0.5">Analytics</span>
+</a>
+</nav>
+<!-- Micro-interaction script -->
+<script>
+        // Simple scale effect on tap for cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.borderColor = '#adc6ff';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+                card.style.borderColor = '#27272A';
+            });
+        });
+
+        // Simulating live data updates
+        setInterval(() => {
+            const conversion = document.querySelector('.text-tertiary');
+            if (conversion) {
+                const current = parseFloat(conversion.innerText.replace('+', '').replace('%', ''));
+                const next = (current + (Math.random() * 0.4 - 0.2)).toFixed(1);
+                conversion.innerText = `+${next}%`;
+            }
+        }, 5000);
+
+        // Platform chips click handler
+        const platformChips = document.querySelectorAll('.flex-shrink-0');
+        platformChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                const platform = this.querySelector('.font-data-mono').textContent;
+                alert(`Membuka antrian posting untuk: ${platform}`);
+            });
+        });
+
+        // Preview card click handler
+        const previewCard = document.querySelector('.col-span-2');
+        if (previewCard) {
+            previewCard.addEventListener('click', () => {
+                alert('Membuka editor konten untuk video ini...');
+            });
+        }
+
+        // Calendar module click
+        const calendarModule = document.querySelectorAll('.aspect-square')[0];
+        if (calendarModule) {
+            calendarModule.addEventListener('click', () => {
+                alert('Membuka jadwal posting...');
+            });
+        }
+
+        // Settings button
+        const settingsBtn = document.querySelector('button.w-10');
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', () => {
+                alert('Pengaturan Marketing Hub');
+            });
+        }
+    </script>
+</body></html>

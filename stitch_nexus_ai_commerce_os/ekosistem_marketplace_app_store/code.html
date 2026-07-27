@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<title>NEURAL OS | Ekosistem Marketplace</title>
+<style>
+        body {
+            background-color: #131315;
+            color: #e5e1e4;
+            font-family: 'Geist', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 12px;
+        }
+        .glass-card {
+            background: rgba(28, 28, 31, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(39, 39, 42, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: #adc6ff;
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #131315;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #424754;
+            border-radius: 10px;
+        }
+        .header-anchor {
+            letter-spacing: -0.02em;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#ffdcc6",
+                      "tertiary": "#ffb786",
+                      "surface-container-lowest": "#0e0e10",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a",
+                      "on-tertiary": "#502400",
+                      "on-primary": "#002e6a",
+                      "primary-container": "#4d8eff",
+                      "surface-dim": "#131315",
+                      "tertiary-fixed-dim": "#ffb786",
+                      "surface-tint": "#adc6ff",
+                      "surface-container-highest": "#353437",
+                      "inverse-surface": "#e5e1e4",
+                      "inverse-on-surface": "#303032",
+                      "surface-bright": "#39393b",
+                      "outline-variant": "#424754",
+                      "primary-fixed": "#d8e2ff",
+                      "on-secondary-container": "#d6a9ff",
+                      "on-primary-fixed-variant": "#004395",
+                      "surface-container-high": "#2a2a2c",
+                      "surface-container-low": "#1b1b1d",
+                      "primary": "#adc6ff",
+                      "surface-container": "#1f1f21",
+                      "secondary-fixed-dim": "#ddb7ff",
+                      "primary-fixed-dim": "#adc6ff",
+                      "inverse-primary": "#005ac2",
+                      "secondary": "#ddb7ff",
+                      "on-surface-variant": "#c2c6d6",
+                      "on-secondary-fixed": "#2c0051",
+                      "on-background": "#e5e1e4",
+                      "on-secondary": "#490080",
+                      "outline": "#8c909f",
+                      "on-tertiary-container": "#461f00",
+                      "tertiary-container": "#df7412",
+                      "secondary-container": "#6f00be",
+                      "on-surface": "#e5e1e4",
+                      "surface-variant": "#353437",
+                      "on-error-container": "#ffdad6",
+                      "background": "#131315",
+                      "secondary-fixed": "#f0dbff",
+                      "surface": "#131315",
+                      "on-primary-container": "#00285d",
+                      "on-secondary-fixed-variant": "#6900b3",
+                      "on-tertiary-fixed": "#311400",
+                      "on-error": "#690005",
+                      "on-primary-fixed": "#001a42",
+                      "on-tertiary-fixed-variant": "#723600"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "32px",
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "margin-mobile": "16px",
+                      "bento-gap": "12px"
+              },
+              "fontFamily": {
+                      "body-sm": ["Geist"],
+                      "display-lg-mobile": ["Geist"],
+                      "headline-md": ["Geist"],
+                      "body-base": ["Geist"],
+                      "display-lg": ["Geist"],
+                      "code-label": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-base": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "code-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary/30">
+<!-- Top Navigation Bar -->
+<header class="bg-background/80 backdrop-blur-xl text-primary fixed top-0 w-full z-50 border-b border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex items-center justify-between px-8 py-3">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="grid_view">grid_view</span>
+<h1 class="font-headline-md text-headline-md font-extrabold header-anchor">NEURAL OS</h1>
+</div>
+<div class="hidden md:flex items-center gap-8 font-label-caps text-label-caps">
+<a class="text-primary font-bold transition-colors" href="#">Marketplace</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 transition-colors px-3 py-1 rounded-lg" href="#">Katalog</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 transition-colors px-3 py-1 rounded-lg" href="#">Dev Center</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 hover:bg-surface-variant/50 transition-colors rounded-full" data-icon="search">search</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">A1</div>
+</div>
+</header>
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen z-40 bg-surface-container-lowest h-full w-72 border-r border-outline-variant/20 hidden md:flex flex-col pt-24 px-6">
+<div class="mb-8">
+<p class="text-on-surface-variant font-code-label text-code-label mb-2 uppercase tracking-tighter">System Node</p>
+<div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl">
+<div class="w-10 h-10 rounded-lg bg-tertiary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="hub">hub</span>
+</div>
+<div>
+<p class="font-body-base text-body-base font-bold">Admin Node-01</p>
+<p class="text-[10px] text-tertiary">v2.4.0 • Optimal</p>
+</div>
+</div>
+</div>
+<nav class="space-y-2 flex-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-secondary-container/20 text-secondary-fixed-dim border-l-2 border-secondary font-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+<span>Marketplace</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 font-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span>Operations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 font-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span>Growth</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 font-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span>Intelligence</span>
+</a>
+</nav>
+<div class="pb-8 mt-auto">
+<div class="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-transparent border border-primary/20">
+<p class="text-xs font-bold text-primary mb-1">PRO PLAN</p>
+<p class="text-[10px] text-on-surface-variant mb-3">Akses konektor enterprise tanpa batas.</p>
+<button class="w-full py-2 bg-primary text-on-primary font-bold text-xs rounded-lg hover:brightness-110 transition-all">Upgrade</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:pl-72 pt-24 pb-32 px-6 min-h-screen">
+<!-- Hero Section -->
+<section class="mb-12 relative overflow-hidden rounded-3xl h-[400px] flex items-center px-12">
+
+<div class="relative z-10 max-w-2xl">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4 inline-block">App Ecosystem</span>
+<h2 class="font-display-lg text-display-lg mb-4 text-white">Ekosistem Marketplace</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mb-8 leading-relaxed">
+                    Perluas kapabilitas operasional bisnis Anda dengan kurasi plugin, konektor API, dan blueprint model bisnis tercanggih di industri.
+                </p>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+                        Mulai Eksplorasi
+                    </button>
+<button class="bg-surface-variant/30 backdrop-blur-md border border-outline-variant/30 text-white px-6 py-3 rounded-xl font-bold hover:bg-surface-variant/50 transition-colors">
+                        Documentation
+                    </button>
+</div>
+</div>
+</section>
+<!-- Category Filters -->
+<div class="flex flex-wrap items-center gap-4 mb-10 overflow-x-auto pb-4 custom-scrollbar">
+<button class="px-5 py-2 rounded-full bg-primary text-on-primary font-bold text-sm whitespace-nowrap">Semua</button>
+<button class="px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap">Konektor Marketplace</button>
+<button class="px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap">Plugin Operasional</button>
+<button class="px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap">Business Blueprint</button>
+<button class="px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap">Ekstensi UI</button>
+</div>
+<!-- Bento Grid: Konektor -->
+<div class="mb-12">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="cable">cable</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-bold">Konektor</h3>
+<p class="text-xs text-on-surface-variant">Hubungkan inventory dengan platform global.</p>
+</div>
+</div>
+<a class="text-primary font-bold text-sm hover:underline" href="#">Lihat Semua</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bento-gap">
+<!-- Shopee Card -->
+<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 group">
+<div class="flex justify-between items-start">
+<div class="w-14 h-14 rounded-2xl bg-[#EE4D2D]/10 flex items-center justify-center border border-[#EE4D2D]/20">
+<img class="w-10 h-10 object-contain" data-alt="Official Shopee brand logo vector icon in a high-tech minimalist style with vibrant orange tones set against a deep professional dark background. The logo is clean and representative of the e-commerce giant, placed within a glowing container. High-contrast and modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6v5HjRcAK0AGZ3hEDeF7wgVvYYdI0NqZmAKXnvpaWSzIzd917WNYb_s7l6dTi4SQi2fJuLwn2pTK0pmSzHKZoJwQ6E8CABTRFsGC9fq4xmd5gRSVjocJSjV9oGMrQyfjcW6Of1NgtSXuyyFUL-b8nAmC2VQpD2aUnu4rkpUG7rsKJq5MAq2mDuTMr7yd7tAQS3-dUy5tnYSNKolnZbz9tb2OIP3dz8xtOfBLyWJYSIpWU2jIyeKEZikZT0CvnxKQjuxxJk8-JCVT9"/>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined text-yellow-400 text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[10px] font-bold">4.9</span>
+</div>
+</div>
+<div>
+<h4 class="font-body-base text-body-base font-bold group-hover:text-primary transition-colors">Shopee Sync Pro</h4>
+<p class="text-xs text-on-surface-variant mb-4">Integrasi inventory real-time &amp; order processing otomatis.</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-code-label text-outline bg-surface-container px-2 py-1 rounded">Dev: NeuralCore</span>
+<span class="text-sm font-bold text-primary">Gratis</span>
+</div>
+</div>
+</div>
+<!-- Tokopedia Card -->
+<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 group">
+<div class="flex justify-between items-start">
+<div class="w-14 h-14 rounded-2xl bg-[#42B549]/10 flex items-center justify-center border border-[#42B549]/20">
+<img class="w-10 h-10 object-contain" data-alt="Official Tokopedia brand logo vector icon in a professional tech-focused style with vibrant green color palette. The icon is sharp, minimalist, and perfectly centered within a dark translucent glass container. Clean corporate branding suitable for a high-performance business operating system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdlF89uc7rdu3GDarvTG0AT_7dV0e7jwGc3HQ7Skwo0O6i2N9xVf4EG16UW2FneuMph12w09EvMvvPwhPkKMDBzwGhskjt9Kf3oq8mhKe6o0UWuETKCvhOuqF5cIvtMHLo4sxmeOfbMvgY_O8QVNaaWo66WTjpc4JfiHWuWb_ecT4Sw73Y-3-k3qd5WuFC79iTytPl8KEUa8DcnQ_9WzF-rcZSEeCbxvEdnt3bnZXldDVY97_oVdbi608TXnbNPIkT6r3Uxu72p4kP"/>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined text-yellow-400 text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[10px] font-bold">4.8</span>
+</div>
+</div>
+<div>
+<h4 class="font-body-base text-body-base font-bold group-hover:text-primary transition-colors">Tokopedia Bridge</h4>
+<p class="text-xs text-on-surface-variant mb-4">Manajemen multi-gudang dan promosi flash sale terpadu.</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-code-label text-outline bg-surface-container px-2 py-1 rounded">Dev: IndoStack</span>
+<span class="text-sm font-bold text-primary">IDR 149k/bln</span>
+</div>
+</div>
+</div>
+<!-- Amazon Card -->
+<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 group">
+<div class="flex justify-between items-start">
+<div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
+<img class="w-10 h-10 object-contain" data-alt="Amazon marketplace logo with the iconic smile mark in a high-fidelity minimalist digital art style. The logo is white and silver, glowing subtly against a deep obsidian dark background. The aesthetic is clean, premium, and corporate, representing global logistics and commerce." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYH6ZlktwjHDZY5zSvxygsFLE3_8VGwujVAzxPIG2Sl-OidHXh8a9Wnb2F15FIQyIPkYhInxSkahIiUsHNxjyXVCwwti-D-yym5qaUw2zL9-ExF6pfX0HGYExmMPmoCevAB7CKpcmrcozDT-hAa-7sW1h_Ld8-P3YxI9Q4ge2H7tOxlJhtPrFk_CsEbiu7xu5HXeeM5Wd-poApgpX8NxJJ8M3nT9aEBlosFWWjtWQrJQpSxbcG2J-px1y-KZ5uy4R2i2PlF2PAbwe8"/>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined text-yellow-400 text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[10px] font-bold">5.0</span>
+</div>
+</div>
+<div>
+<h4 class="font-body-base text-body-base font-bold group-hover:text-primary transition-colors">Global Amazon FBA</h4>
+<p class="text-xs text-on-surface-variant mb-4">Export otomatis dan sinkronisasi stok ke fulfillment center US/UK.</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-code-label text-outline bg-surface-container px-2 py-1 rounded">Dev: Amazon AWS</span>
+<span class="text-sm font-bold text-primary">Komisi 2%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid: Plugins -->
+<div class="mb-12">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="extension">extension</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-bold">Plugin</h3>
+<p class="text-xs text-on-surface-variant">Optimalisasi workflow internal dengan tools spesifik.</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-bento-gap">
+<!-- Logistik Plugin -->
+<div class="glass-card rounded-2xl p-5 border-l-4 border-l-secondary relative overflow-hidden group">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="local_shipping">local_shipping</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Logistic</span>
+</div>
+<h4 class="font-body-base text-body-base font-bold mb-1">Smart Logistics AI</h4>
+<p class="text-xs text-on-surface-variant mb-6">Pemilihan kurir termurah otomatis berdasarkan rute.</p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-sm font-bold">IDR 89k</span>
+<button class="bg-secondary/20 hover:bg-secondary/40 text-secondary-fixed-dim p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Akuntansi Plugin -->
+<div class="glass-card rounded-2xl p-5 border-l-4 border-l-primary relative overflow-hidden group">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Finance</span>
+</div>
+<h4 class="font-body-base text-body-base font-bold mb-1">Auto-Accounting Sync</h4>
+<p class="text-xs text-on-surface-variant mb-6">Penjualan langsung masuk ke neraca laba rugi otomatis.</p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-sm font-bold">Gratis</span>
+<button class="bg-primary/20 hover:bg-primary/40 text-primary p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- COD Plugin -->
+<div class="glass-card rounded-2xl p-5 border-l-4 border-l-tertiary relative overflow-hidden group">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="payments">payments</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Payment</span>
+</div>
+<h4 class="font-body-base text-body-base font-bold mb-1">COD Risk Shield</h4>
+<p class="text-xs text-on-surface-variant mb-6">Deteksi buyer bermasalah sebelum kirim paket COD.</p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-sm font-bold">IDR 45k</span>
+<button class="bg-tertiary/20 hover:bg-tertiary/40 text-tertiary p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Analytics Plugin -->
+<div class="glass-card rounded-2xl p-5 border-l-4 border-l-error relative overflow-hidden group">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-error text-sm" data-icon="analytics">analytics</span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Insight</span>
+</div>
+<h4 class="font-body-base text-body-base font-bold mb-1">Retention Radar</h4>
+<p class="text-xs text-on-surface-variant mb-6">Analisis customer churn rate dengan machine learning.</p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-sm font-bold">Enterprise</span>
+<button class="bg-error/20 hover:bg-error/40 text-error p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Blueprints -->
+<div class="mb-20">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="architecture">architecture</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-bold">Blueprint</h3>
+<p class="text-xs text-on-surface-variant">Template bisnis siap pakai untuk skalabilitas instan.</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Laundry Blueprint -->
+<div class="glass-card rounded-[2rem] overflow-hidden group">
+<div class="h-48 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A futuristic minimalist laundry business concept. Industrial high-tech washing machines in a clean white and cyan neon room. The lighting is cold and professional, highlighting a sleek command center tablet interface for managing the business. 3D digital render, sharp focus, cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY_ii-XxHw_P57mNvBzTn3YogWoDteM0ICliX3q8uBA02dxpMYJ0_WKqPTVH3A6o3_fdIhskG9UaqNUYShIJrujuSQBg--HPOx8SZYQZ95cku-bKvj8XtIrzPM8bFVRNKzZCzXgIT_kuyip7ri1_7_JEdfzan5sqtjAyGD-9fhU4lJ5J9vQJeFYA7RGJWBetRZrU6TCsECsyR8Lybc0Li7DNRZIaz91txPyJzQwiZAjOnFC2VMik7KOrWpPMLevn0XP7moOBTdbH75"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#131315] to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<span class="bg-primary px-3 py-1 rounded-full text-[10px] font-bold text-on-primary">NEW</span>
+</div>
+</div>
+<div class="p-6">
+<h4 class="font-headline-md text-headline-md mb-2">Modern Laundry OS</h4>
+<p class="text-sm text-on-surface-variant mb-6">Sistem manajemen laundry kiloan &amp; satuan lengkap dengan tracker kurir dan POS.</p>
+<div class="flex items-center justify-between border-t border-outline-variant/30 pt-4">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-surface-bright flex items-center justify-center text-[10px]">JD</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-primary-container flex items-center justify-center text-[10px]">MS</div>
+</div>
+<span class="text-sm font-bold text-tertiary">IDR 2.499k</span>
+</div>
+</div>
+</div>
+<!-- Dropship Blueprint -->
+<div class="glass-card rounded-[2rem] overflow-hidden group">
+<div class="h-48 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A digital representation of global dropshipping and supply chain management. Glowing holographic lines connecting digital product nodes across a world map. The aesthetic is deep blue and circuit-like, conveying a sense of fast-moving international trade and e-commerce agility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl-Z7gvDCafO_WqbEJSrzZNdLOuKAFasoWc1jVj81hjA9diQTRcW5qJELP2TmHW0GbSGXHB_ZWRh9WwziIun1zaT2cJJKJSA1H_jOoKFhnXA-Ne8vpMHHnV1T5OxsSxt7yehXdUaShMHFLbFCbzEMCggqcJTJ0meee8N3IbTLdhnQxpgcrUqh-jKEFoa1YJgf2Oc_JNzywCK0MilFFTd4B5pMn8rNrVaJ_mJmPU82gEDKVjGsG_Z-1hGJ3wUM5cZbwxINuq4uJO4_i"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#131315] to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<span class="bg-secondary px-3 py-1 rounded-full text-[10px] font-bold text-on-secondary">TRENDING</span>
+</div>
+</div>
+<div class="p-6">
+<h4 class="font-headline-md text-headline-md mb-2">Automated Dropship Hub</h4>
+<p class="text-sm text-on-surface-variant mb-6">Blueprint untuk membangun brand dropship tanpa stok, terintegrasi ke 50+ supplier China &amp; Lokal.</p>
+<div class="flex items-center justify-between border-t border-outline-variant/30 pt-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-[10px] text-outline font-code-label">Certified Blueprint</span>
+</div>
+<span class="text-sm font-bold text-tertiary">IDR 1.250k</span>
+</div>
+</div>
+</div>
+<!-- Retail Blueprint -->
+<div class="glass-card rounded-[2rem] overflow-hidden group">
+<div class="h-48 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A sophisticated boutique retail store interior featuring dark minimalist shelving and glowing product displays. The aesthetic is ultra-modern luxury, emphasizing high-end organization and digital inventory control systems. Muted tones of charcoal and circuit blue accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSLIIsKYXXfhjWKz3BsFrG8dzRy_bBfpWw23PxbGUaDIeghcr-oHgINHWgAqCX5v0Dbin9XCg_8JvsYNj5dXC-V51RwXiWV2eE8SoV-AexVyrjXUNv8dy9yF3Kmt6ekDaVHQl-Ane4dQgFkDJPL7rENk_MV7eSwTCacqfRnQPsnXKERO1HkQpOSGwmL-aNayuP5h3_aeaJ5g8jzCXJqLcezIP7Za9xO2G23tlX7wTvTnHClKFfBF9pRKmpB3ndVIt3DiZQxPJQgqCd"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#131315] to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<span class="bg-surface-variant px-3 py-1 rounded-full text-[10px] font-bold text-on-surface">STAFF PICK</span>
+</div>
+</div>
+<div class="p-6">
+<h4 class="font-headline-md text-headline-md mb-2">Omnichannel Retail</h4>
+<p class="text-sm text-on-surface-variant mb-6">Gabungkan toko offline dan online Anda dalam satu dashboard pusat yang sinkron otomatis.</p>
+<div class="flex items-center justify-between border-t border-outline-variant/30 pt-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-yellow-500 text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.9 (120+)</span>
+</div>
+<span class="text-sm font-bold text-tertiary">IDR 3.900k</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<footer class="md:hidden bg-surface-dim/90 backdrop-blur-2xl text-primary fixed bottom-0 w-full rounded-t-xl border-t border-outline-variant/50 shadow-[0_-4px_24px_rgba(0,0,0,0.8)] z-50 flex justify-around items-center px-6 pb-6 h-20">
+<div class="flex flex-col items-center justify-center bg-primary/10 text-primary rounded-xl p-2">
+<span class="material-symbols-outlined" data-icon="token">token</span>
+<span class="text-[10px] font-bold uppercase mt-1">Hub</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="text-[10px] font-bold uppercase mt-1">Workflow</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="text-[10px] font-bold uppercase mt-1">MDM</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="text-[10px] font-bold uppercase mt-1">Reports</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="text-[10px] font-bold uppercase mt-1">Settings</span>
+</div>
+</footer>
+<!-- FAB -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-lg flex items-center justify-center z-50 md:bottom-8 hover:scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<script>
+        // Micro-interactions for hover effects on bento cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Subtle reactive logic could go here
+            });
+        });
+
+        // Search highlight logic
+        const searchBtn = document.querySelector('[data-icon="search"]');
+        searchBtn.addEventListener('click', () => {
+            const query = prompt("Cari plugin, konektor, atau blueprint:");
+            if (query) {
+                console.log("Searching for:", query);
+            }
+        });
+    </script>
+</body></html>

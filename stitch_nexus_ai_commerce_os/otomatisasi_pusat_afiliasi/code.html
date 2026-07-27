@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pusat Afiliasi | ResellerHub OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid #27272A;
+        }
+        .active-glow {
+            box-shadow: 0 0 12px rgba(173, 198, 255, 0.15);
+            border-color: #adc6ff;
+        }
+        .sonar-ping {
+            animation: sonar 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+        .block-caret {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #adc6ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e2ff",
+                      "background": "#131315",
+                      "surface-container-highest": "#353437",
+                      "on-surface-variant": "#c2c6d6",
+                      "outline-variant": "#424754",
+                      "on-tertiary-fixed": "#002113",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "on-primary-container": "#00285d",
+                      "error-container": "#93000a",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#353437",
+                      "surface-bright": "#39393b",
+                      "on-primary-fixed": "#001a42",
+                      "secondary": "#d0bcff",
+                      "on-secondary-container": "#c4abff",
+                      "secondary-container": "#571bc1",
+                      "inverse-primary": "#005ac2",
+                      "surface": "#131315",
+                      "outline": "#8c909f",
+                      "on-secondary": "#3c0091",
+                      "surface-container-high": "#2a2a2c",
+                      "on-primary-fixed-variant": "#004395",
+                      "primary": "#adc6ff",
+                      "surface-container-low": "#1c1b1d",
+                      "on-error-container": "#ffdad6",
+                      "primary-container": "#4d8eff",
+                      "on-secondary-fixed-variant": "#5516be",
+                      "surface-container": "#201f22",
+                      "secondary-fixed-dim": "#d0bcff",
+                      "surface-tint": "#adc6ff",
+                      "surface-dim": "#131315",
+                      "on-surface": "#e5e1e4",
+                      "primary-fixed-dim": "#adc6ff",
+                      "tertiary": "#4edea3",
+                      "inverse-on-surface": "#313032",
+                      "on-tertiary-container": "#00311f",
+                      "tertiary-container": "#00a572",
+                      "on-error": "#690005",
+                      "surface-container-lowest": "#0e0e10",
+                      "inverse-surface": "#e5e1e4",
+                      "on-secondary-fixed": "#23005c",
+                      "on-primary": "#002e6a",
+                      "on-background": "#e5e1e4",
+                      "tertiary-fixed": "#6ffbbe",
+                      "secondary-fixed": "#e9ddff",
+                      "on-tertiary": "#003824"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "margin-mobile": "16px",
+                      "lg": "24px",
+                      "margin-desktop": "48px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "label-caps": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Geist"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "data-mono": ["JetBrains Mono"],
+                      "body-sm": ["Inter"],
+                      "display-lg": ["Geist"]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="fixed top-0 z-50 w-full h-16 flex justify-between items-center px-margin-mobile border-b border-outline-variant bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A futuristic avatar silhouette inside a glowing circuit-patterned interface. The background is a deep obsidian with neon blue light leaks, representing a sophisticated AI-human partnership. The style is high-tech, minimalist, and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7fiV3dva_rWtCL4GhxiL-pQObfmKo-VCG48rwQLG4amdggmXTt4CN7R068Qa8ALYgqNMtE59ykHRu-TCEIztx2eP8Nu2SlHtF4FZ37GvWKhzsgO6vlIKk1LfGl5EiDm7y_H2rvw2ViNDxcV9Ju9Ds_vRvp9DvhDLU-NzWe604csazqyQSqAg1E115g1roJwGH1fP4axIemaksU4JDHC2X3iq5F8c2SLiuO-1J9oETBld7iKap1fTT-FKF1MK4f5WIBzNS7zFuRNSd"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 duration-100">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</button>
+</header>
+<main class="mt-20 px-margin-mobile space-y-6">
+<!-- Performance Stats Bento -->
+<section class="grid grid-cols-2 gap-4">
+<div class="col-span-2 glass-panel rounded-xl p-4 flex flex-col justify-between h-32 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Pendapatan Bersih</span>
+<span class="font-label-caps text-label-caps text-tertiary">LIVE</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-[32px] font-bold text-primary">$12,840.00</span>
+<span class="font-data-mono text-body-sm text-tertiary">+14.2%</span>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-4 space-y-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Klik</span>
+<p class="font-headline-md text-headline-md text-on-surface">42.1K</p>
+</div>
+<div class="glass-panel rounded-xl p-4 space-y-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Konv.</span>
+<p class="font-headline-md text-headline-md text-on-surface">3.8%</p>
+</div>
+</section>
+<!-- Automation Controls -->
+<section class="glass-panel rounded-xl p-5 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="relative w-2 h-2">
+<div class="absolute inset-0 bg-tertiary rounded-full pulse sonar-ping"></div>
+<div class="relative w-2 h-2 bg-tertiary rounded-full"></div>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface">Otomatisasi Pusat Afiliasi Aktif</span>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">V2.4.0-STABLE</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">auto_awesome</span>
+<span class="font-body-md text-body-md">Buat Konten Otomatis</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">rocket_launch</span>
+<span class="font-body-md text-body-md">Posting Otomatis ke Media Sosial</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Viral Discovery Feed -->
+<section class="space-y-4">
+<div class="flex justify-between items-center">
+<h2 class="font-label-caps text-label-caps text-on-surface uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">travel_explore</span>
+                Umpan Penemuan Viral
+            </h2>
+<span class="font-data-mono text-[10px] text-on-surface-variant">Pindaian Terakhir: 2m lalu</span>
+</div>
+<!-- Product Card 1 -->
+<div class="glass-panel rounded-xl overflow-hidden active-glow transition-all duration-300">
+<div class="relative h-48 w-full bg-surface-container-high">
+<img class="w-full h-full object-cover opacity-80" data-alt="A sleek, professional product shot of a high-end titanium mechanical keyboard with minimalist glowing RGB lighting. The background is dark and moody with a focus on metallic textures and precise industrial design. High contrast, sharp edges, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgJ_Ou2-0-WFIDaRxxnDhfE9ymg7DxjUz_Vpw0OJVCkExjeqsSclgB9t6iqtemtGoTot_sytshQKYw_ePGohPShnUt5S5F2jfn5JsfaQJ8yiG8jFjB4ECvQlR4hmDNAD_3YJ8MfOmgLQsZ83q2VI4ea7CKsS1BQZVj_Mryw0VrGIVkpkLdXmJY0RlOcBc8gjOuHo-nCLbkOyNZP5mmzHzo3OYARNeiVSYGSZ_X7_f0MhRlBAOhDV7RpKL2uqIqZsevz6DbQuRTPPHc"/>
+<div class="absolute top-3 left-3 bg-background/90 backdrop-blur-md border border-outline-variant px-2 py-1 rounded text-[10px] font-data-mono text-tertiary">
+                    SKOR PERMINTAAN: 98/100
+                </div>
+<div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-background to-transparent">
+<h3 class="font-headline-md text-headline-md text-white text-lg">CyberTyper Titanium X</h3>
+</div>
+</div>
+<div class="p-4 space-y-4">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Est. Komisi</p>
+<p class="font-data-mono text-headline-md text-primary">$42.50 / unit</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Tren</p>
+<span class="material-symbols-outlined text-tertiary">trending_up</span>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-on-primary font-label-caps flex items-center justify-center gap-2 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                    TINGKATKAN DENGAN AI
+                </button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="glass-panel rounded-xl overflow-hidden transition-all duration-300">
+<div class="relative h-48 w-full bg-surface-container-high">
+<img class="w-full h-full object-cover opacity-80" data-alt="Close up of a luxury matte black smart mug with a small OLED display showing temperature. The mug sits on a walnut desk with soft cinematic lighting from a nearby window. Minimalist, premium tech aesthetic with deep blacks and rich wood tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_E-LY7_UDYR3dnEuKf8AvSeaa10OJUaklge9KzNC03gUoiKdyP9Ybno6Zb5Z0G6dIGlm202QYtqSnoplWWjrvmpgQ0f6pkJjjilPm6RD7Vxp8ssHeponeDeqkbwDe4iMtyCK_wf-3XQ8YeC6LCnN-y5NiS7gqThUM4iMtxf7PCnxsvef41Dr_eDYy9oJzkIV6bwPsCFdebF6aRINfiM8E0lYrs_5KNkoSFRIZZpEIBgFwcrolzTdUBVPf_YHHN0XttWuzD7bdNKDt"/>
+<div class="absolute top-3 left-3 bg-background/90 backdrop-blur-md border border-outline-variant px-2 py-1 rounded text-[10px] font-data-mono text-secondary">
+                    SKOR PERMINTAAN: 84/100
+                </div>
+<div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-background to-transparent">
+<h3 class="font-headline-md text-headline-md text-white text-lg">TempSense Pro Mug</h3>
+</div>
+</div>
+<div class="p-4 space-y-4">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Est. Komisi</p>
+<p class="font-data-mono text-headline-md text-primary">$12.20 / unit</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Tren</p>
+<span class="material-symbols-outlined text-on-surface-variant">horizontal_rule</span>
+</div>
+</div>
+<button class="w-full py-3 border border-outline-variant text-on-surface font-label-caps flex items-center justify-center gap-2 rounded-lg hover:bg-surface-variant/30 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">bolt</span>
+                    TINGKATKAN DENGAN AI
+                </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-0.5">Hub</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-0.5">Intelijen</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-0.5">Pesanan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-label-caps text-[10px] mt-0.5">Analitik</span>
+</a>
+</nav>
+<script>
+    // Micro-interactions
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const ripples = this.getElementsByClassName('ripple');
+            if (ripples.length > 0) ripples[0].remove();
+            
+            const circle = document.createElement('span');
+            const diameter = Math.max(this.clientWidth, this.clientHeight);
+            const radius = diameter / 2;
+            
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `0px`;
+            circle.style.top = `0px`;
+            circle.classList.add('ripple');
+            
+            this.appendChild(circle);
+        });
+    });
+
+    // Simple feedback for the AI Boost button
+    const boostButtons = document.querySelectorAll('button:has(span:contains("bolt")), button:has(span.material-symbols-outlined)');
+    boostButtons.forEach(btn => {
+        if (btn.innerText.includes('TINGKATKAN DENGAN AI')) {
+            btn.addEventListener('click', () => {
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> MEMPROSES...`;
+                btn.classList.add('opacity-70');
+                setTimeout(() => {
+                    btn.innerHTML = `<span class="material-symbols-outlined text-tertiary">check_circle</span> KAMPANYE AKTIF`;
+                    btn.classList.remove('bg-primary');
+                    btn.classList.add('bg-tertiary-container');
+                }, 1500);
+            });
+        }
+    });
+</script>
+</body></html>

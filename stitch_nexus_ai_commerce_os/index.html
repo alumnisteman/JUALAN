@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AI Commerce OS - Dashboard Utama</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Geist:wght@600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #27272A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: #adc6ff;
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.1);
+            transform: translateY(-4px);
+        }
+        .pulse-glow {
+            box-shadow: 0 0 0 0 rgba(78, 222, 163, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(78, 222, 163, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(78, 222, 163, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(78, 222, 163, 0); }
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .category-badge {
+            background: linear-gradient(135deg, rgba(173, 198, 255, 0.1), rgba(208, 188, 255, 0.1));
+            border: 1px solid rgba(173, 198, 255, 0.2);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#adc6ff",
+                        primaryContainer: "#4d8eff",
+                        secondary: "#d0bcff",
+                        secondaryContainer: "#571bc1",
+                        tertiary: "#4edea3",
+                        tertiaryContainer: "#00a572",
+                        surface: "#131315",
+                        surfaceContainer: "#201f22",
+                        surfaceContainerHigh: "#2a2a2c",
+                        surfaceContainerHighest: "#353437",
+                        onSurface: "#e5e1e4",
+                        onSurfaceVariant: "#c2c6d6",
+                        outline: "#8c909f",
+                        outlineVariant: "#424754",
+                        background: "#131315",
+                        onBackground: "#e5e1e4",
+                        error: "#ffb4ab",
+                        errorContainer: "#93000a"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    fontFamily: {
+                        headlineMd: ["Geist"],
+                        headlineLg: ["Geist"],
+                        bodyLg: ["Inter"],
+                        bodyMd: ["Inter"],
+                        labelCaps: ["JetBrains Mono"],
+                        dataMono: ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        headlineMd: ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        headlineLg: ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        bodyLg: ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        bodyMd: ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        labelCaps: ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        dataMono: ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 md:pt-16">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-12 h-16 border-b border-outline-variant bg-surface/80 backdrop-blur-xl">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-primaryContainer flex items-center justify-center overflow-hidden">
+                <span class="material-symbols-outlined text-onPrimary text-2xl">hub</span>
+            </div>
+            <span class="font-headlineMd text-headlineMd font-bold text-primary tracking-tighter">AI Commerce OS</span>
+        </div>
+        <div class="hidden md:flex gap-8 items-center">
+            <nav class="flex gap-6">
+                <a class="text-primary font-labelCaps text-labelCaps" href="#">Dashboard</a>
+                <a class="text-onSurfaceVariant hover:text-primary transition-colors font-labelCaps text-labelCaps" href="#modul">Modul</a>
+                <a class="text-onSurfaceVariant hover:text-primary transition-colors font-labelCaps text-labelCaps" href="#tentang">Tentang</a>
+            </nav>
+            <button class="material-symbols-outlined text-primary hover:bg-surfaceVariant/50 p-2 rounded-full transition-colors">settings_input_component</button>
+        </div>
+        <button class="md:hidden material-symbols-outlined text-onSurfaceVariant">menu</button>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 md:px-12 py-8 space-y-8">
+        <!-- Hero Section -->
+        <section class="glass-card rounded-xl p-8 flex flex-col md:flex-row justify-between items-center gap-6 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -mr-20 -mt-20"></div>
+            <div class="z-10">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-3 h-3 rounded-full bg-tertiary pulse-glow"></div>
+                    <span class="font-labelCaps text-labelCaps text-tertiary uppercase tracking-widest">Sistem Aktif</span>
+                </div>
+                <h1 class="font-headlineLg text-headlineLg text-white leading-tight">Platform Otomatisasi<br/>Reseller Berbasis AI</h1>
+                <p class="font-bodyMd text-onSurfaceVariant mt-2 max-w-lg">Integrasikan semua modul bisnis e-commerce Anda dalam satu platform terpusat dengan kecerdasan buatan.</p>
+            </div>
+            <div class="flex gap-4 z-10">
+                <div class="bg-surfaceContainerHigh p-6 rounded-xl border border-outline-variant w-40 h-40 flex flex-col justify-center items-center">
+                    <span class="font-dataMono text-primary text-3xl font-bold">44+</span>
+                    <span class="font-labelCaps text-labelCaps text-onSurfaceVariant mt-2">MODUL</span>
+                </div>
+                <div class="bg-surfaceContainerHigh p-6 rounded-xl border border-outline-variant w-40 h-40 flex flex-col justify-center items-center">
+                    <span class="font-dataMono text-tertiary text-3xl font-bold">AI</span>
+                    <span class="font-labelCaps text-labelCaps text-onSurfaceVariant mt-2">POWERED</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass-card rounded-xl p-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-symbols-outlined text-primary">storefront</span>
+                    <span class="font-labelCaps text-labelCaps text-onSurfaceVariant">MARKETPLACE</span>
+                </div>
+                <span class="font-dataMono text-2xl text-white">5</span>
+                <p class="text-sm text-onSurfaceVariant mt-1">Terhubung</p>
+            </div>
+            <div class="glass-card rounded-xl p-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-symbols-outlined text-secondary">inventory_2</span>
+                    <span class="font-labelCaps text-labelCaps text-onSurfaceVariant">PRODUK</span>
+                </div>
+                <span class="font-dataMono text-2xl text-white">1,248</span>
+                <p class="text-sm text-onSurfaceVariant mt-1">Terdaftar</p>
+            </div>
+            <div class="glass-card rounded-xl p-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-symbols-outlined text-tertiary">shopping_cart</span>
+                    <span class="font-labelCaps text-labelCaps text-onSurfaceVariant">PESANAN</span>
+                </div>
+                <span class="font-dataMono text-2xl text-white">847</span>
+                <p class="text-sm text-onSurfaceVariant mt-1">Hari ini</p>
+            </div>
+            <div class="glass-card rounded-xl p-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-symbols-outlined text-primary">payments</span>
+                    <span class="font-labelCaps text-labelCaps text-onSurfaceVariant">PENDAPATAN</span>
+                </div>
+                <span class="font-dataMono text-2xl text-white">Rp 24.9jt</span>
+                <p class="text-sm text-onSurfaceVariant mt-1">Hari ini</p>
+            </div>
+        </div>
+
+        <!-- Module Categories -->
+        <section id="modul">
+            <h2 class="font-headlineMd text-headlineMd text-white mb-6">Modul Tersedia</h2>
+            
+            <!-- Core Modules -->
+            <div class="mb-8">
+                <h3 class="font-labelCaps text-labelCaps text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">stars</span>
+                    MODUL UTAMA
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="command_center/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                            <span class="material-symbols-outlined text-primary">command_center</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-primary transition-colors">Pusat Komando</h4>
+                            <p class="text-sm text-onSurfaceVariant">Dashboard utama sistem</p>
+                        </div>
+                    </a>
+                    <a href="ai_business_coach_saran_bisnis/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-onSecondary transition-colors">
+                            <span class="material-symbols-outlined text-secondary">psychology</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-secondary transition-colors">AI Business Coach</h4>
+                            <p class="text-sm text-onSurfaceVariant">Saran & analisis bisnis</p>
+                        </div>
+                    </a>
+                    <a href="pabrik_konten_ai/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center group-hover:bg-tertiary group-hover:text-onTertiary transition-colors">
+                            <span class="material-symbols-outlined text-tertiary">auto_awesome</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-tertiary transition-colors">Pabrik Konten AI</h4>
+                            <p class="text-sm text-onSurfaceVariant">Generate konten otomatis</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Marketplace & Integration -->
+            <div class="mb-8">
+                <h3 class="font-labelCaps text-labelCaps text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">store</span>
+                    MARKETPLACE & INTEGRASI
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="integrasi_marketplace_api/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                            <span class="material-symbols-outlined text-primary">api</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-primary transition-colors">Integrasi Marketplace</h4>
+                            <p class="text-sm text-onSurfaceVariant">API Shopee, Tokopedia, dll</p>
+                        </div>
+                    </a>
+                    <a href="supplier_fulfillment_hub/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-onSecondary transition-colors">
+                            <span class="material-symbols-outlined text-secondary">local_shipping</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-secondary transition-colors">Supplier & Fulfillment</h4>
+                            <p class="text-sm text-onSurfaceVariant">Manajemen supplier & pengiriman</p>
+                        </div>
+                    </a>
+                    <a href="manajemen_pesanan_stok/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center group-hover:bg-tertiary group-hover:text-onTertiary transition-colors">
+                            <span class="material-symbols-outlined text-tertiary">inventory_2</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-tertiary transition-colors">Manajemen Pesanan & Stok</h4>
+                            <p class="text-sm text-onSurfaceVariant">Sinkronisasi stok otomatis</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Marketing & Content -->
+            <div class="mb-8">
+                <h3 class="font-labelCaps text-labelCaps text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">campaign</span>
+                    MARKETING & KONTEN
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="marketing_auto_post_hub/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                            <span class="material-symbols-outlined text-primary">auto_post</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-primary transition-colors">Marketing Auto Post</h4>
+                            <p class="text-sm text-onSurfaceVariant">Posting otomatis ke sosial media</p>
+                        </div>
+                    </a>
+                    <a href="pabrik_konten_ai_id/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-onSecondary transition-colors">
+                            <span class="material-symbols-outlined text-secondary">description</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-secondary transition-colors">Pabrik Konten ID</h4>
+                            <p class="text-sm text-onSurfaceVariant">Konten bahasa Indonesia</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Analytics & Intelligence -->
+            <div class="mb-8">
+                <h3 class="font-labelCaps text-labelCaps text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">analytics</span>
+                    ANALITIK & INTELIJEN
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="analitik_eksekutif/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                            <span class="material-symbols-outlined text-primary">dashboard</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-primary transition-colors">Analitik Eksekutif</h4>
+                            <p class="text-sm text-onSurfaceVariant">Dashboard performa bisnis</p>
+                        </div>
+                    </a>
+                    <a href="customer_intelligence_hub/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-onSecondary transition-colors">
+                            <span class="material-symbols-outlined text-secondary">groups</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-secondary transition-colors">Customer Intelligence</h4>
+                            <p class="text-sm text-onSurfaceVariant">Analisis pelanggan & CRM</p>
+                        </div>
+                    </a>
+                    <a href="market_intelligence_engine/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center group-hover:bg-tertiary group-hover:text-onTertiary transition-colors">
+                            <span class="material-symbols-outlined text-tertiary">trending_up</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-tertiary transition-colors">Market Intelligence</h4>
+                            <p class="text-sm text-onSurfaceVariant">Analisis pasar & kompetitor</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Revenue & Finance -->
+            <div class="mb-8">
+                <h3 class="font-labelCaps text-labelCaps text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">payments</span>
+                    PENDAPATAN & KEUANGAN
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="mesin_pendapatan_revenue_engine/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                            <span class="material-symbols-outlined text-primary">account_balance</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-primary transition-colors">Mesin Pendapatan</h4>
+                            <p class="text-sm text-onSurfaceVariant">Revenue engine & profit</p>
+                        </div>
+                    </a>
+                    <a href="laporan_keuangan_laba_rugi_otomatis/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-onSecondary transition-colors">
+                            <span class="material-symbols-outlined text-secondary">receipt_long</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-secondary transition-colors">Laporan Keuangan</h4>
+                            <p class="text-sm text-onSurfaceVariant">Laba rugi otomatis</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Enterprise & Developer -->
+            <div class="mb-8">
+                <h3 class="font-labelCaps text-labelCaps text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">developer_mode</span>
+                    ENTERPRISE & DEVELOPER
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="saas_white_label_center/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                            <span class="material-symbols-outlined text-primary">business</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-primary transition-colors">SaaS White Label</h4>
+                            <p class="text-sm text-onSurfaceVariant">Branding kustom untuk enterprise</p>
+                        </div>
+                    </a>
+                    <a href="low_code_app_builder/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-onSecondary transition-colors">
+                            <span class="material-symbols-outlined text-secondary">build</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-secondary transition-colors">Low Code App Builder</h4>
+                            <p class="text-sm text-onSurfaceVariant">Buat aplikasi tanpa coding</p>
+                        </div>
+                    </a>
+                    <a href="ekosistem_marketplace_app_store/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center group-hover:bg-tertiary group-hover:text-onTertiary transition-colors">
+                            <span class="material-symbols-outlined text-tertiary">apps</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-tertiary transition-colors">Ekosistem App Store</h4>
+                            <p class="text-sm text-onSurfaceVariant">Marketplace aplikasi & plugin</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Additional Modules -->
+            <div class="mb-8">
+                <h3 class="font-labelCaps text-labelCaps text-primary mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">extension</span>
+                    MODUL TAMBAHAN
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="affiliate_center_automation/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-onPrimary transition-colors">
+                            <span class="material-symbols-outlined text-primary">group_add</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-primary transition-colors">Affiliate Center</h4>
+                            <p class="text-sm text-onSurfaceVariant">Program afiliasi otomatis</p>
+                        </div>
+                    </a>
+                    <a href="sistem_notifikasi_wa_telegram/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-onSecondary transition-colors">
+                            <span class="material-symbols-outlined text-secondary">notifications</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-secondary transition-colors">Sistem Notifikasi</h4>
+                            <p class="text-sm text-onSurfaceVariant">WhatsApp & Telegram</p>
+                        </div>
+                    </a>
+                    <a href="portal_mandiri_untuk_sub_reseller/code.html" class="glass-card rounded-xl p-6 flex items-center gap-4 cursor-pointer group">
+                        <div class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center group-hover:bg-tertiary group-hover:text-onTertiary transition-colors">
+                            <span class="material-symbols-outlined text-tertiary">person_manage</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bodyMd font-semibold text-white group-hover:text-tertiary transition-colors">Portal Sub-Reseller</h4>
+                            <p class="text-sm text-onSurfaceVariant">Manajemen tim reseller</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="tentang" class="glass-card rounded-xl p-8">
+            <h2 class="font-headlineMd text-headlineMd text-white mb-4">Tentang AI Commerce OS</h2>
+            <p class="font-bodyMd text-onSurfaceVariant mb-4">
+                Platform otomatisasi reseller berbasis AI yang mengintegrasikan semua modul untuk manajemen bisnis e-commerce yang efisien. 
+                Dari deteksi produk viral hingga fulfillment otomatis, semua dalam satu platform terpusat.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-primary">check_circle</span>
+                    <div>
+                        <h4 class="font-bodyMd font-semibold text-white">AI-Powered</h4>
+                        <p class="text-sm text-onSurfaceVariant">Kecerdasan buatan untuk setiap keputusan bisnis</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-secondary">check_circle</span>
+                    <div>
+                        <h4 class="font-bodyMd font-semibold text-white">Multi-Channel</h4>
+                        <p class="text-sm text-onSurfaceVariant">Integrasi dengan semua marketplace utama</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-tertiary">check_circle</span>
+                    <div>
+                        <h4 class="font-bodyMd font-semibold text-white">Otomatisasi Penuh</h4>
+                        <p class="text-sm text-onSurfaceVariant">Dari produk hingga pengiriman, semua otomatis</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surfaceContainerLowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg rounded-t-xl">
+        <a href="#" class="flex flex-col items-center justify-center bg-secondaryContainer text-onSecondaryContainer rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90 transition-transform">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="font-labelCaps text-[10px] mt-0.5">Home</span>
+        </a>
+        <a href="#modul" class="flex flex-col items-center justify-center text-onSurfaceVariant hover:text-primary transition-all">
+            <span class="material-symbols-outlined">apps</span>
+            <span class="font-labelCaps text-[10px] mt-0.5">Modul</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center text-onSurfaceVariant hover:text-primary transition-all">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-labelCaps text-[10px] mt-0.5">Setting</span>
+        </a>
+    </nav>
+
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add click animation to cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>

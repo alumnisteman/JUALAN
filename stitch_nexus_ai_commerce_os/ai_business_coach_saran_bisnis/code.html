@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Business Coach - ResellerHub OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid #27272A;
+        }
+
+        .active-glow {
+            box-shadow: 0 0 12px rgba(173, 198, 255, 0.15);
+            border-color: #adc6ff;
+        }
+
+        .bento-grid {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(12, 1fr);
+        }
+
+        .sonar-ping {
+            animation: sonar 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .cursor-terminal {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #adc6ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#353437",
+                        "outline-variant": "#424754",
+                        "secondary-fixed": "#e9ddff",
+                        "inverse-surface": "#e5e1e4",
+                        "on-tertiary-fixed": "#002113",
+                        "on-surface-variant": "#c2c6d6",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "tertiary-fixed": "#6ffbbe",
+                        "secondary-container": "#571bc1",
+                        "primary-container": "#4d8eff",
+                        "on-primary-container": "#00285d",
+                        "surface-container": "#201f22",
+                        "surface-container-high": "#2a2a2c",
+                        "on-secondary": "#3c0091",
+                        "surface-dim": "#131315",
+                        "primary": "#adc6ff",
+                        "inverse-on-surface": "#313032",
+                        "surface-container-low": "#1c1b1d",
+                        "on-primary-fixed": "#001a42",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-tertiary": "#003824",
+                        "background": "#131315",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-container": "#00311f",
+                        "on-error": "#690005",
+                        "on-primary-fixed-variant": "#004395",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#353437",
+                        "secondary": "#d0bcff",
+                        "on-secondary-container": "#c4abff",
+                        "on-primary": "#002e6a",
+                        "tertiary": "#4edea3",
+                        "surface-tint": "#adc6ff",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-bright": "#39393b",
+                        "outline": "#8c909f",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-secondary-fixed": "#23005c",
+                        "on-background": "#e5e1e4",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "surface": "#131315",
+                        "inverse-primary": "#005ac2",
+                        "tertiary-container": "#00a572",
+                        "on-surface": "#e5e1e4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Geist"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- Top Navigation Header -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 border-b border-outline-variant bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic AI interface profile picture featuring glowing circuit board patterns and data stream overlays, designed in a sophisticated dark obsidian and electric blue aesthetic to represent a high-performance business intelligence system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB34-1sEMWagGmOA8cNEAlNTaWLfHGeS__vfSnEpPckd_C32JK9uhcSfoNMe9Y_abp5oyFsnb3LncUXUDGboCCdzGtr88fWcK6v_BhSDK2p4lC2zyA8yv48RXOmna9uAf3wLBT4wfVJzd-QE2zsI6-3Tf3-oo4Wl_4jKMgLKwvKfT144yVFMK5TA6ynh_TS97__fNRvk7upTmZJnQ-IfIMKCOVQHZSZcjXFqA2kCVOH17htUmSdtkHsFP9k4QA_Kwr4PM44TrPSKHuZ"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</button>
+</div>
+</header>
+<main class="pt-20 px-4 md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Header Section -->
+<section class="mb-8 mt-4">
+<div class="flex items-center gap-2 mb-1">
+<div class="relative flex items-center justify-center w-3 h-3">
+<div class="absolute w-full h-full bg-tertiary rounded-full sonar-ping"></div>
+<div class="relative w-2 h-2 bg-tertiary rounded-full"></div>
+</div>
+<span class="font-label-caps text-label-caps text-tertiary">SISTEM AKTIF</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Halo, Coach Intelijen Anda siap.</h2>
+<p class="text-on-surface-variant font-body-md mt-1">Menganalisis performa toko Anda secara real-time untuk hari ini.</p>
+</section>
+<!-- Bento Grid Layout -->
+<div class="bento-grid grid-cols-1 md:grid-cols-12 auto-rows-min">
+<!-- Performance Summary Cards (Level 1 Cards) -->
+<div class="col-span-12 md:col-span-4 glass-panel p-lg rounded-xl flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TOTAL PROFIT</span>
+<span class="material-symbols-outlined text-tertiary">trending_up</span>
+</div>
+<div>
+<div class="font-data-mono text-[28px] font-bold text-on-surface">Rp 42.850.000</div>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-tertiary font-label-caps text-[10px]">+12.4%</span>
+<span class="text-on-surface-variant font-label-caps text-[10px]">DARI BULAN LALU</span>
+</div>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 glass-panel p-lg rounded-xl flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">KONVERSI</span>
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div>
+<div class="font-data-mono text-[28px] font-bold text-on-surface">4.82%</div>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-error font-label-caps text-[10px]">-0.5%</span>
+<span class="text-on-surface-variant font-label-caps text-[10px]">DARI MINGGU LALU</span>
+</div>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 glass-panel p-lg rounded-xl flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PERTUMBUHAN</span>
+<span class="material-symbols-outlined text-secondary">show_chart</span>
+</div>
+<div>
+<div class="font-data-mono text-[28px] font-bold text-on-surface">28.5%</div>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-tertiary font-label-caps text-[10px]">+5.2%</span>
+<span class="text-on-surface-variant font-label-caps text-[10px]">TARGET KUARTAL</span>
+</div>
+</div>
+</div>
+<!-- Strategic Insights (Wawasan Strategis) -->
+<div class="col-span-12 md:col-span-8 glass-panel p-lg rounded-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -mr-20 -mt-20"></div>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<h3 class="font-label-caps text-label-caps text-on-surface">WAWASAN STRATEGIS</h3>
+</div>
+<div class="space-y-4">
+<!-- Suggestion 1 -->
+<div class="flex gap-4 p-4 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary/50 transition-all cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-on-surface group-hover:text-primary transition-colors">Optimasi Stok Produk Viral</h4>
+<p class="text-body-sm text-on-surface-variant mt-1">Produk "ErgoChair Pro" mengalami lonjakan traffic 40%. Tambah stok segera untuk menghindari kerugian potensi Rp 15jt.</p>
+<div class="mt-3 flex gap-2">
+<span class="bg-tertiary/10 border border-tertiary/30 text-tertiary px-2 py-0.5 rounded text-[10px] font-label-caps">HIGH IMPACT</span>
+<span class="bg-primary/10 border border-primary/30 text-primary px-2 py-0.5 rounded text-[10px] font-label-caps">STOK</span>
+</div>
+</div>
+</div>
+<!-- Suggestion 2 -->
+<div class="flex gap-4 p-4 rounded-lg bg-surface-container-low border border-outline-variant hover:border-primary/50 transition-all cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary">payments</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-on-surface group-hover:text-secondary transition-colors">Penyesuaian Margin</h4>
+<p class="text-body-sm text-on-surface-variant mt-1">Kompetitor menurunkan harga sebesar 5%. AI menyarankan penurunan 2% dengan bundling untuk menjaga margin profit.</p>
+<div class="mt-3 flex gap-2">
+<span class="bg-secondary/10 border border-secondary/30 text-secondary px-2 py-0.5 rounded text-[10px] font-label-caps">STRATEGI HARGA</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Business Health Metrics -->
+<div class="col-span-12 md:col-span-4 glass-panel p-lg rounded-xl">
+<h3 class="font-label-caps text-label-caps text-on-surface mb-6">KESEHATAN BISNIS</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-body-sm text-on-surface-variant">Efisiensi Operasional</span>
+<span class="text-body-sm font-data-mono text-tertiary">92%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[92%] shadow-[0_0_8px_rgba(78,222,163,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-body-sm text-on-surface-variant">Kepuasan Pelanggan</span>
+<span class="text-body-sm font-data-mono text-primary">88%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[88%] shadow-[0_0_8px_rgba(173,198,255,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-body-sm text-on-surface-variant">Laju Retensi</span>
+<span class="text-body-sm font-data-mono text-secondary">74%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[74%] shadow-[0_0_8px_rgba(208,188,255,0.5)]"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 rounded-lg bg-surface-container-highest/30 border border-outline-variant/30 text-center">
+<p class="text-body-sm italic text-on-surface-variant">"Bisnis Anda berada dalam fase ekspansi yang sehat. Fokus pada retensi pelanggan."</p>
+</div>
+</div>
+<!-- Konsultasi AI Chat Area -->
+<div class="col-span-12 glass-panel rounded-xl overflow-hidden min-h-[300px] flex flex-col">
+<div class="p-4 border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">psychology</span>
+</div>
+<span class="font-label-caps text-label-caps">KONSULTASI AI</span>
+</div>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="text-[10px] font-label-caps text-tertiary">SIAP MEMBANTU</span>
+</div>
+</div>
+<div class="flex-grow p-6 flex flex-col gap-4 max-h-[400px] overflow-y-auto no-scrollbar" id="chat-container">
+<div class="flex gap-3 max-w-[80%]">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+</div>
+<div class="bg-surface-container-high p-4 rounded-xl rounded-tl-none border border-outline-variant">
+<p class="text-body-md">Halo! Saya asisten bisnis Anda. Anda bisa bertanya tentang strategi stok, analisis pasar, atau cara meningkatkan margin keuntungan.</p>
+</div>
+</div>
+<div class="flex gap-3 max-w-[80%] self-end flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary text-[16px]">person</span>
+</div>
+<div class="bg-primary-container text-on-primary-container p-4 rounded-xl rounded-tr-none">
+<p class="text-body-md">Bagaimana cara meningkatkan konversi di kategori Elektronik?</p>
+</div>
+</div>
+<div class="flex gap-3 max-w-[80%]">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+</div>
+<div class="bg-surface-container-high p-4 rounded-xl rounded-tl-none border border-outline-variant">
+<p class="text-body-md">Berdasarkan data minggu ini, konversi Elektronik menurun karena waktu pengiriman. Saya sarankan Anda mengaktifkan 'Instant Delivery' untuk 5 SKU teratas atau memberikan kupon diskon 5% khusus produk elektronik.</p>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-lowest border-t border-outline-variant">
+<div class="relative">
+<input class="w-full bg-[#0F0F12] border-outline-variant border rounded-full px-6 py-4 font-data-mono text-body-md focus:ring-1 focus:ring-primary focus:border-primary text-on-surface placeholder:text-outline" placeholder="Tanyakan sesuatu pada AI Coach..." type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex gap-3">
+<button class="text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="bg-primary text-on-primary w-10 h-10 rounded-full flex items-center justify-center hover:shadow-[0_0_15px_rgba(173,198,255,0.4)] transition-all">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="flex gap-2 mt-4 overflow-x-auto no-scrollbar">
+<button class="shrink-0 px-4 py-1.5 rounded-full border border-outline-variant text-[11px] font-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors">"Analisis Kompetitor"</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full border border-outline-variant text-[11px] font-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors">"Rekomendasi Bundling"</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full border border-outline-variant text-[11px] font-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors">"Laporan Profit Mingguan"</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg rounded-t-xl">
+<a href="../index.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-[10px] mt-1">Home</span>
+</a>
+<a href="../ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-label-caps text-[10px] mt-1">Intelligence</span>
+</a>
+<a href="../manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-1">Orders</span>
+</a>
+<a href="../analitik_eksekutif/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px] mt-1">Analytics</span>
+</a>
+</nav>
+<!-- Micro-interaction script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatContainer = document.getElementById('chat-container');
+            // Auto scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Simple typing effect for inputs
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('active-glow');
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('active-glow');
+                });
+            });
+
+            // Chat functionality
+            const sendButton = document.querySelector('button.bg-primary');
+            const chatInput = document.querySelector('input[type="text"]');
+            
+            if (sendButton && chatInput) {
+                sendButton.addEventListener('click', sendMessage);
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') sendMessage();
+                });
+            }
+
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+
+                // Add user message
+                const userMsg = document.createElement('div');
+                userMsg.className = 'flex gap-3 max-w-[80%] self-end flex-row-reverse';
+                userMsg.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-on-primary text-[16px]">person</span>
+                    </div>
+                    <div class="bg-primary-container text-on-primary-container p-4 rounded-xl rounded-tr-none">
+                        <p class="text-body-md">${message}</p>
+                    </div>
+                `;
+                chatContainer.appendChild(userMsg);
+                chatInput.value = '';
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // Simulate AI response
+                setTimeout(() => {
+                    const aiMsg = document.createElement('div');
+                    aiMsg.className = 'flex gap-3 max-w-[80%]';
+                    aiMsg.innerHTML = `
+                        <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant">
+                            <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+                        </div>
+                        <div class="bg-surface-container-high p-4 rounded-xl rounded-tl-none border border-outline-variant">
+                            <p class="text-body-md">Terima kasih atas pertanyaan Anda. Saya sedang menganalisis data bisnis Anda untuk memberikan rekomendasi terbaik...</p>
+                        </div>
+                    `;
+                    chatContainer.appendChild(aiMsg);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 1000);
+            }
+
+            // Quick action buttons
+            const quickButtons = document.querySelectorAll('button.shrink-0');
+            quickButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const text = btn.textContent.replace(/"/g, '');
+                    chatInput.value = text;
+                    sendMessage();
+                });
+            });
+
+            // Suggestion cards click handler
+            const suggestionCards = document.querySelectorAll('.group.cursor-pointer');
+            suggestionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    alert('Membuka detail rekomendasi...');
+                });
+            });
+        });
+    </script>
+</body></html>

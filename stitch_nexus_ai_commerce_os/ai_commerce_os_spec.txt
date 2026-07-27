@@ -1,0 +1,23 @@
+# AI Commerce Operating System (AI Commerce OS) - Product Specification
+
+## Overview
+A comprehensive, AI-driven commerce platform designed to automate the entire lifecycle of online business—from product discovery to fulfillment and analytics.
+
+## Core Pillars
+1. **AI Engine ("The Brain"):** Central intelligence handling LLM gateway, recommendations, trend prediction, and business advice.
+2. **Product Intelligence:** Real-time scanning for trends, competitors, and demand.
+3. **Multi-Hub Ecosystem:** Dedicated hubs for Marketplace, Suppliers, Marketing, Sales, CRM, Automation, Inventory, and Finance.
+4. **Developer & Enterprise:** White-labeling, API gateways, and enterprise-grade multi-tenant architecture.
+
+## Key Workflow Integration
+- **Detection:** AI identifies viral products.
+- **Analysis:** Margin and risk calculation.
+- **Creation:** AI Content Factory generates copy, images, and videos.
+- **Distribution:** Auto-posting to marketplaces (Shopee, Tokopedia, TikTok, etc.).
+- **Engagement:** AI-driven CRM and auto-replies.
+- **Fulfillment:** Automated order routing to suppliers/warehouses.
+- **Optimization:** Executive dashboards with real-time KPI and forecasting.
+
+## Architecture
+- **Distributed Databases:** Domain-specific DBs (auth, commerce, inventory, etc.) for microservice scalability.
+- **AI Gateway:** Dynamic model routing (OpenAI, Gemini, Local LLM) based on task and cost.

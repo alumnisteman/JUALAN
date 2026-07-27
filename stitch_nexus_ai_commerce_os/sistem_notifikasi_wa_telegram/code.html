@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResellerHub OS - Notification Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#353437",
+                    "outline-variant": "#424754",
+                    "secondary-fixed": "#e9ddff",
+                    "inverse-surface": "#e5e1e4",
+                    "on-tertiary-fixed": "#002113",
+                    "on-surface-variant": "#c2c6d6",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "tertiary-fixed": "#6ffbbe",
+                    "secondary-container": "#571bc1",
+                    "primary-container": "#4d8eff",
+                    "on-primary-container": "#00285d",
+                    "surface-container": "#201f22",
+                    "surface-container-high": "#2a2a2c",
+                    "on-secondary": "#3c0091",
+                    "surface-dim": "#131315",
+                    "primary": "#adc6ff",
+                    "inverse-on-surface": "#313032",
+                    "surface-container-low": "#1c1b1d",
+                    "on-primary-fixed": "#001a42",
+                    "surface-container-lowest": "#0e0e10",
+                    "on-tertiary": "#003824",
+                    "background": "#131315",
+                    "secondary-fixed-dim": "#d0bcff",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-container": "#00311f",
+                    "on-error": "#690005",
+                    "on-primary-fixed-variant": "#004395",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#353437",
+                    "secondary": "#d0bcff",
+                    "on-secondary-container": "#c4abff",
+                    "on-primary": "#002e6a",
+                    "tertiary": "#4edea3",
+                    "surface-tint": "#adc6ff",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-bright": "#39393b",
+                    "outline": "#8c909f",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-secondary-fixed": "#23005c",
+                    "on-background": "#e5e1e4",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "surface": "#131315",
+                    "inverse-primary": "#005ac2",
+                    "tertiary-container": "#00a572",
+                    "on-surface": "#e5e1e4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "md": "16px",
+                    "margin-mobile": "16px",
+                    "xs": "4px",
+                    "margin-desktop": "48px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "gutter": "16px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Geist"],
+                    "display-lg": ["Geist"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "data-mono": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .bento-card {
+            background-color: #18181B;
+            border: 1px solid #27272A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-overlay {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .active-glow {
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.1);
+            border-color: #4d8eff;
+        }
+        .pulse-dot {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(78, 222, 163, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(78, 222, 163, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(78, 222, 163, 0); }
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #adc6ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        /* Custom Toggle Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #27272A;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #4d8eff; }
+        input:checked + .slider:before { transform: translateX(20px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 z-50 w-full h-16 flex justify-between items-center px-margin-mobile md:px-margin-desktop border-b border-outline-variant bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic, high-tech circular circuit interface icon representing a digital brain or a computational processor, glowing with subtle neon blue lines against a deep black background, in a clean, minimalist UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADKAc75-B_HDSeb1nrRk7nJD3KDZ0uGpzIjvp6qDTKKnnMEH-UiaQn5hlLpwV8bqp8yVAwVs2RUyiNk-rjkE6FKBBNeExTh2hwaieQ1rTs8eCcOZxJou13L-v92TP51Mic-yceBFF_QZBkeSeakifMQtlS2FmVG9c7fk8CPMkIS0G3bxQp5gAvq9lpzWbrst9GigmBUfEPjtHWySkSHViRE_3CrqslKARPwoZqO3u2bshQoduLX0n600aRlod1Yy9GbQWHwEafH03s"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 mr-6">
+<span class="text-primary font-bold font-label-caps cursor-pointer">INTELLIGENCE</span>
+<span class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer font-label-caps">ANALYTICS</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">settings_input_component</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Header Section with Connection Status -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+<div>
+<span class="font-label-caps text-label-caps text-primary mb-2 block">SISTEM KOMUNIKASI</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Notifikasi WhatsApp &amp; Telegram</h2>
+</div>
+<div class="glass-overlay rounded-xl px-4 py-3 flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary pulse-dot"></div>
+<span class="font-label-caps text-[10px] text-tertiary">GATEWAY CONNECTED</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<div class="flex flex-col">
+<span class="text-[10px] font-label-caps text-on-surface-variant">API LATENCY</span>
+<span class="text-sm font-data-mono text-on-surface">12ms</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Notification Toggles (Left Column) -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<section class="bento-card p-6 rounded-xl">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-6">KONFIGURASI AKTIF</h3>
+<div class="space-y-6">
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface font-semibold">Notifikasi Pesanan Baru</span>
+<span class="text-xs text-on-surface-variant">Kirim pesan otomatis saat order masuk</span>
+</div>
+<label class="switch">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface font-semibold">Update Resi Pengiriman</span>
+<span class="text-xs text-on-surface-variant">Informasikan pelacakan ke pembeli</span>
+</div>
+<label class="switch">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface font-semibold">Konfirmasi Pembayaran</span>
+<span class="text-xs text-on-surface-variant">Validasi otomatis setelah transfer</span>
+</div>
+<label class="switch">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+</section>
+<section class="bento-card p-6 rounded-xl flex-grow">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4">VARIABEL TERSEDIA</h3>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container px-2 py-1 rounded text-[11px] font-data-mono text-primary border border-outline-variant">#{{nama_pembeli}}</span>
+<span class="bg-surface-container px-2 py-1 rounded text-[11px] font-data-mono text-primary border border-outline-variant">#{{no_pesanan}}</span>
+<span class="bg-surface-container px-2 py-1 rounded text-[11px] font-data-mono text-primary border border-outline-variant">#{{total_harga}}</span>
+<span class="bg-surface-container px-2 py-1 rounded text-[11px] font-data-mono text-primary border border-outline-variant">#{{nama_produk}}</span>
+<span class="bg-surface-container px-2 py-1 rounded text-[11px] font-data-mono text-primary border border-outline-variant">#{{link_lacak}}</span>
+</div>
+</section>
+</div>
+<!-- Template Editor (Middle Column) -->
+<div class="md:col-span-8">
+<section class="bento-card p-0 rounded-xl overflow-hidden h-full flex flex-col">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">edit_note</span>
+<h3 class="font-label-caps text-label-caps text-on-surface">Template Editor: <span class="text-primary">PESANAN_BARU</span></h3>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant text-xs font-label-caps hover:bg-surface-variant transition-colors">TEST KIRIM</button>
+<button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-label-caps font-bold">SIMPAN PERUBAHAN</button>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col gap-4">
+<div class="relative flex-grow">
+<textarea class="w-full h-64 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 font-data-mono text-sm text-on-surface focus:ring-1 focus:ring-primary focus:outline-none resize-none" placeholder="Ketik pesan template di sini...">Halo {{nama_pembeli}},
+
+Pesanan Anda dengan nomor {{no_pesanan}} telah kami terima dan sedang dalam proses verifikasi. 
+
+Detail Produk: {{nama_produk}}
+Total: {{total_harga}}
+
+Terima kasih telah berbelanja di ResellerHub OS!</textarea>
+<div class="absolute bottom-4 right-4 text-[10px] font-data-mono text-on-surface-variant flex items-center">
+<span>SYSTEM_READY</span>
+<span class="terminal-cursor"></span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-overlay p-4 rounded-xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-xs text-on-tertiary-container">forum</span>
+<span class="text-[10px] font-label-caps">WA PREVIEW</span>
+</div>
+<p class="text-xs text-on-surface-variant italic leading-relaxed">"Halo Budi, Pesanan Anda dengan nomor #RH-9021 telah kami terima..."</p>
+</div>
+<div class="glass-overlay p-4 rounded-xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-xs text-on-tertiary-container">send</span>
+<span class="text-[10px] font-label-caps">TELEGRAM PREVIEW</span>
+</div>
+<p class="text-xs text-on-surface-variant italic leading-relaxed">"📢 Order Baru! #RH-9021 untuk Budi (Rp 250.000) sedang diproses..."</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Recent Logs (Full Width Bottom) -->
+<div class="md:col-span-12">
+<section class="bento-card rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">LOG NOTIFIKASI TERAKHIR</h3>
+<span class="text-[10px] font-data-mono text-on-surface-variant">REFRESHED: 2 SEC AGO</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low/50 text-[10px] font-label-caps text-on-surface-variant">
+<tr>
+<th class="px-6 py-3">TIMESTAMP</th>
+<th class="px-6 py-3">TYPE</th>
+<th class="px-6 py-3">TARGET</th>
+<th class="px-6 py-3">STATUS</th>
+<th class="px-6 py-3 text-right">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-4 font-data-mono text-xs">14:22:05</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">shopping_cart</span>
+<span class="text-xs">Order Baru</span>
+</div>
+</td>
+<td class="px-6 py-4 text-xs font-data-mono">+62 812-****-4432</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-tertiary/10 border border-tertiary/30 text-[10px] font-label-caps text-tertiary">SENT</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">visibility</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-4 font-data-mono text-xs">14:15:30</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary">local_shipping</span>
+<span class="text-xs">Update Resi</span>
+</div>
+</td>
+<td class="px-6 py-4 text-xs font-data-mono">@user_telegram_01</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-tertiary/10 border border-tertiary/30 text-[10px] font-label-caps text-tertiary">SENT</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">visibility</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-4 font-data-mono text-xs">13:58:12</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-error">payments</span>
+<span class="text-xs">Konfirmasi Bayar</span>
+</div>
+</td>
+<td class="px-6 py-4 text-xs font-data-mono">+62 856-****-9901</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-error/10 border border-error/30 text-[10px] font-label-caps text-error">FAILED</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-lg">refresh</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant shadow-lg md:hidden">
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-label-caps mt-1">Hubs</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90 transition-transform">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-label-caps mt-1">Intel</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">Orders</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-label-caps mt-1">Analytics</span>
+</div>
+</nav>
+<script>
+        // Simple interactive demo logic
+        const switches = document.querySelectorAll('.switch input');
+        switches.forEach(sw => {
+            sw.addEventListener('change', (e) => {
+                const card = e.target.closest('section');
+                if (e.target.checked) {
+                    card.classList.add('active-glow');
+                    setTimeout(() => card.classList.remove('active-glow'), 1000);
+                }
+            });
+        });
+
+        // Dynamic typing effect for preview placeholder logic could go here
+    </script>
+</body></html>

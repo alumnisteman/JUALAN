@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Commerce OS - Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@600;700;800&family=JetBrains+Mono:wght@500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #27272A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: #adc6ff;
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.1);
+        }
+        .pulse-glow {
+            box-shadow: 0 0 0 0 rgba(78, 222, 163, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(78, 222, 163, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(78, 222, 163, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(78, 222, 163, 0); }
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .glow-border {
+            position: relative;
+        }
+        .glow-border::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(45deg, transparent, rgba(173, 198, 255, 0.3), transparent);
+            z-index: -1;
+            border-radius: inherit;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#353437",
+                    "on-secondary-fixed": "#23005c",
+                    "surface-bright": "#39393b",
+                    "secondary": "#d0bcff",
+                    "secondary-container": "#571bc1",
+                    "surface-dim": "#131315",
+                    "surface-variant": "#353437",
+                    "surface-container-low": "#1c1b1d",
+                    "on-tertiary": "#003824",
+                    "surface-tint": "#adc6ff",
+                    "surface": "#131315",
+                    "secondary-fixed": "#e9ddff",
+                    "on-tertiary-container": "#00311f",
+                    "tertiary-container": "#00a572",
+                    "tertiary": "#4edea3",
+                    "primary": "#adc6ff",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#313032",
+                    "primary-container": "#4d8eff",
+                    "error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "outline": "#8c909f",
+                    "on-secondary-container": "#c4abff",
+                    "on-primary-fixed": "#001a42",
+                    "inverse-surface": "#e5e1e4",
+                    "secondary-fixed-dim": "#d0bcff",
+                    "on-surface-variant": "#c2c6d6",
+                    "background": "#131315",
+                    "surface-container": "#201f22",
+                    "surface-container-high": "#2a2a2c",
+                    "on-surface": "#e5e1e4",
+                    "on-secondary": "#3c0091",
+                    "on-tertiary-fixed": "#002113",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-primary-container": "#00285d",
+                    "primary-fixed-dim": "#adc6ff",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#005ac2",
+                    "primary-fixed": "#d8e2ff",
+                    "outline-variant": "#424754",
+                    "on-background": "#e5e1e4",
+                    "on-error": "#690005",
+                    "on-primary-fixed-variant": "#004395",
+                    "surface-container-lowest": "#0e0e10",
+                    "on-primary": "#002e6a",
+                    "on-tertiary-fixed-variant": "#005236"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "xl": "32px",
+                    "unit": "4px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "gutter": "16px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Geist"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-lg": ["Geist"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Geist"],
+                    "data-mono": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 md:pt-16">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 border-b border-outline-variant bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<img alt="AI Commerce OS" class="w-8 h-8 rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHg8XdODpKRIqsuRt9ePygOavNZwXLyVbH78r8XxSrrzhiuY1wTOnia2fEDrhq_cBvUvDz6B5N7J0L2jJDVwBBYd1uZpKrulkLgV2-y8UzboC7XPlyXEKFlvMU9tK--KWvu_tCr16YvCHGom7xpD8ge4KVueAXntocqhzEHE2yMycQk2p0u3T-qmfiYwsG8qllHr_0llbO-jlYoAorpS2D_1kH1xJWDuTF68pGI0LAZ5Na8XSKHFsEj-8rNF2uBs5IKBrCLllvDI1I"/>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tighter">AI Commerce OS</span>
+</div>
+<div class="hidden md:flex gap-8 items-center">
+<nav class="flex gap-6">
+<a class="text-primary dark:text-primary font-bold font-label-caps text-label-caps" href="../index.html">Dashboard</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="../ai_business_coach_saran_bisnis/code.html">Intelligence</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="../manajemen_pesanan_stok/code.html">Orders</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="../analitik_eksekutif/code.html">Analytics</a>
+</nav>
+<button class="material-symbols-outlined text-primary hover:bg-surface-variant/50 p-2 rounded-full transition-colors duration-200 active:scale-95">settings_input_component</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A stylized technical avatar of a user profile represented as a circuit interface with glowing blue lines on a dark obsidian background, professional and futuristic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9B7vz2d_-epclZvwtw0qb-qZu22zlP0acCcAk_5tnSq8vHZ0ef016_FO1P6ZEXVg5OBdK5yNIOsizk7b43qZTgzMoyddSFk3uRGqDdZeCFhXzvKPTt68U1ClWdeQj1jO0oaN27AgAfBt2zgMM-U3Tb8bMWu6XByA9IMEgW19zR8Pm52it-ugejH4ON805aemo6rQFfGn2LVhLNtQeF2wKSX3hFXlmpRvc8adMQlWbKJoH08KXbKKP5zMhvzA833tDxRxGwLN0X_Rn"/>
+</div>
+</div>
+<!-- Mobile Trigger -->
+<button class="md:hidden material-symbols-outlined text-on-surface-variant">menu</button>
+</header>
+<main class="max-w-7xl mx-auto px-4 md:px-margin-desktop py-8 space-y-8">
+<!-- Hero Section: System Status -->
+<section class="glass-card rounded-xl p-8 flex flex-col md:flex-row justify-between items-center gap-6 overflow-hidden relative">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -mr-20 -mt-20"></div>
+<div class="z-10">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-3 h-3 rounded-full bg-tertiary pulse-glow"></div>
+<span class="font-label-caps text-label-caps text-tertiary uppercase tracking-widest">System Health</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-white leading-tight">System Status: <span class="text-tertiary">Optimal</span></h1>
+<p class="font-body-md text-on-surface-variant mt-2 max-w-lg">Autonomous nodes are synchronized. All 12 commerce workflows are executing with 99.9% precision efficiency.</p>
+</div>
+<div class="flex gap-4 z-10">
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant w-40 h-40 flex flex-col justify-center items-center">
+<span class="font-data-mono text-primary text-3xl font-bold">3</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-2">AI AGENTS</span>
+</div>
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant w-40 h-40 flex flex-col justify-center items-center">
+<span class="font-data-mono text-tertiary text-3xl font-bold">12</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-2">WORKFLOWS</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layer -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Revenue Metric -->
+<div class="md:col-span-4 glass-card rounded-xl p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TODAY'S REVENUE</span>
+<span class="text-tertiary font-data-mono text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_up</span> +14.2%
+                        </span>
+</div>
+<h2 class="font-headline-lg text-headline-lg mt-2">$24,902.50</h2>
+</div>
+<div class="h-16 mt-4 flex items-end gap-1">
+<div class="bg-primary/20 w-full h-1/2 rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-3/4 rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-2/3 rounded-t-sm"></div>
+<div class="bg-primary/40 w-full h-4/5 rounded-t-sm"></div>
+<div class="bg-primary/60 w-full h-full rounded-t-sm"></div>
+<div class="bg-primary w-full h-5/6 rounded-t-sm"></div>
+</div>
+</div>
+<!-- AI Alerts Section -->
+<div class="md:col-span-8 glass-card rounded-xl p-6 relative overflow-hidden group border-l-4 border-l-secondary">
+<div class="absolute top-0 right-0 p-4">
+<span class="bg-secondary/10 text-secondary border border-secondary/30 px-3 py-1 rounded-full text-[10px] font-label-caps">HIGH PRIORITY</span>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-white">Viral Product Detected</h3>
+<p class="font-body-md text-on-surface-variant mt-1">AI Scan identified emerging trend: <span class="text-secondary font-semibold">Foldable Drone</span>. 450% social volume increase in 24h.</p>
+<div class="mt-4 flex items-center gap-6">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">EST. MARGIN</span>
+<span class="font-data-mono text-lg text-tertiary">45.2%</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">RISK SCORE</span>
+<span class="font-data-mono text-lg text-primary">LOW</span>
+</div>
+<button class="ml-auto bg-primary text-on-primary px-6 py-2 rounded-lg font-label-caps text-label-caps hover:scale-105 transition-transform flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">factory</span>
+                                SOURCE NOW
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Hubs Grid -->
+<div class="md:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="glass-card rounded-xl p-6 flex flex-col gap-4 group cursor-pointer hover:bg-surface-container-high">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">storefront</span>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-white">Marketplace</h4>
+<p class="text-[11px] text-on-surface-variant mt-1">Multi-channel management</p>
+</div>
+</div>
+<div class="glass-card rounded-xl p-6 flex flex-col gap-4 group cursor-pointer hover:bg-surface-container-high">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">inventory</span>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-white">Suppliers</h4>
+<p class="text-[11px] text-on-surface-variant mt-1">Supply chain orchestration</p>
+</div>
+</div>
+<div class="glass-card rounded-xl p-6 flex flex-col gap-4 group cursor-pointer hover:bg-surface-container-high">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-white">CRM</h4>
+<p class="text-[11px] text-on-surface-variant mt-1">Autonomous customer care</p>
+</div>
+</div>
+<div class="glass-card rounded-xl p-6 flex flex-col gap-4 group cursor-pointer hover:bg-surface-container-high">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-white">Finance</h4>
+<p class="text-[11px] text-on-surface-variant mt-1">Ledger & P&L Analysis</p>
+</div>
+</div>
+</div>
+<!-- Intelligence Feed (Large Bento) -->
+<div class="md:col-span-12 glass-card rounded-xl p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-white">Intelligence Feed</h3>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">auto_mode</span>
+<span class="font-body-md">Workflow: <span class="text-white font-semibold">Inventory Restock</span> triggered for Amazon FBA.</span>
+</div>
+<span class="font-data-mono text-xs text-on-surface-variant">2m ago</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">analytics</span>
+<span class="font-body-md">Prediction: Ad spend optimization suggests <span class="text-white font-semibold">+12% budget</span> on Meta.</span>
+</div>
+<span class="font-data-mono text-xs text-on-surface-variant">14m ago</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg rounded-t-xl">
+<a href="../index.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90 transition-transform">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-[10px] mt-0.5">Home</span>
+</a>
+<a href="../ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-[10px] mt-0.5">Intelligence</span>
+</a>
+<a href="../manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-0.5">Orders</span>
+</a>
+<a href="../analitik_eksekutif/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px] mt-0.5">Analytics</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for Hubs cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = card.getBoundingClientRect();
+                const x = (e.clientX - left) / width;
+                const y = (e.clientY - top) / height;
+                card.style.setProperty('--mouse-x', x);
+                card.style.setProperty('--mouse-y', y);
+            });
+        });
+
+        // Click handler for hub cards
+        document.querySelectorAll('.glass-card.group').forEach(card => {
+            card.addEventListener('click', function() {
+                // Add click animation
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Source Now button functionality
+        const sourceButton = document.querySelector('button');
+        if (sourceButton && sourceButton.textContent.includes('SOURCE NOW')) {
+            sourceButton.addEventListener('click', function() {
+                alert('Membuka modul Product Hunter untuk sourcing produk...');
+                // In production, this would navigate to the product hunter module
+            });
+        }
+
+        // Settings button functionality
+        const settingsButton = document.querySelector('button.material-symbols-outlined');
+        if (settingsButton && settingsButton.textContent === 'settings_input_component') {
+            settingsButton.addEventListener('click', function() {
+                alert('Pengaturan sistem akan dibuka...');
+            });
+        }
+    </script>
+</body></html>

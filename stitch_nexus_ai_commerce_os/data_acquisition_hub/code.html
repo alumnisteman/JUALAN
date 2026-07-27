@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RESELLER_HUB.OS | Data Acquisition Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(23, 31, 51, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.5);
+        }
+        .neural-line {
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+            height: 1px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .neural-pulse {
+            position: absolute;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            animation: pulse 3s infinite linear;
+        }
+        @keyframes pulse {
+            0% { left: -40px; }
+            100% { left: 100%; }
+        }
+        .scan-line {
+            height: 2px;
+            background: #00f0ff;
+            box-shadow: 0 0 15px #00f0ff;
+            animation: scan 4s infinite ease-in-out;
+        }
+        @keyframes scan {
+            0%, 100% { transform: translateY(0); opacity: 0; }
+            50% { transform: translateY(200px); opacity: 1; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#006970",
+                      "on-primary-fixed": "#002022",
+                      "on-background": "#dae2fd",
+                      "on-tertiary": "#003907",
+                      "tertiary-fixed-dim": "#00e639",
+                      "on-primary": "#00363a",
+                      "surface-bright": "#31394d",
+                      "error-container": "#93000a",
+                      "primary-fixed-dim": "#00dbe9",
+                      "data-node": "#38BDF8",
+                      "secondary-container": "#7000ff",
+                      "surface-variant": "#2d3449",
+                      "tertiary": "#ddffd3",
+                      "secondary-fixed-dim": "#d1bcff",
+                      "tertiary-container": "#00fb40",
+                      "surface-container-lowest": "#060e20",
+                      "intelligence-score": "#FACC15",
+                      "on-tertiary-container": "#006e16",
+                      "primary-fixed": "#7df4ff",
+                      "primary": "#dbfcff",
+                      "inverse-on-surface": "#283044",
+                      "surface-container-highest": "#2d3449",
+                      "secondary-fixed": "#e9ddff",
+                      "surface-container-high": "#222a3d",
+                      "surface-container": "#171f33",
+                      "secondary": "#d1bcff",
+                      "api-disconnected": "#94A3B8",
+                      "primary-container": "#00f0ff",
+                      "surface": "#0b1326",
+                      "outline": "#849495",
+                      "on-surface": "#dae2fd",
+                      "market-growth": "#00FF41",
+                      "surface-tint": "#00dbe9",
+                      "surface-dim": "#0b1326",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-surface-variant": "#b9cacb",
+                      "risk-danger": "#FF4B4B",
+                      "tertiary-fixed": "#72ff70",
+                      "surface-container-low": "#131b2e",
+                      "background": "#0b1326",
+                      "on-secondary-container": "#ddcdff",
+                      "on-tertiary-fixed-variant": "#00530e",
+                      "error": "#ffb4ab",
+                      "api-connected": "#22C55E",
+                      "on-tertiary-fixed": "#002203",
+                      "on-secondary-fixed": "#23005b",
+                      "on-secondary-fixed-variant": "#5700c9",
+                      "on-error-container": "#ffdad6",
+                      "on-primary-container": "#006970",
+                      "outline-variant": "#3b494b",
+                      "on-secondary": "#3c0090",
+                      "inverse-surface": "#dae2fd",
+                      "on-error": "#690005"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "density-compact": "8px",
+                      "gutter": "16px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "density-comfortable": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "label-caps": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "body-sm": ["Inter"],
+                      "data-mono": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- Top Navigation Header -->
+<header class="bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant fixed top-0 w-full h-16 z-[70] flex justify-between items-center px-gutter">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">terminal</span>
+<h1 class="font-label-caps text-label-caps text-primary tracking-widest">RESELLER_HUB.OS</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-primary font-bold font-label-caps text-label-caps" href="#">HUB</a>
+<a class="text-outline-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#">INTEL</a>
+<a class="text-outline-variant hover:text-primary transition-colors font-label-caps text-label-caps" href="#">TRENDS</a>
+</nav>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded-full border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-api-connected animate-pulse"></span>
+<span class="font-data-mono text-data-mono text-on-surface-variant">NODE_01: ONLINE</span>
+</div>
+<span class="material-symbols-outlined text-primary">sensors</span>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="fixed inset-y-0 left-0 z-[60] hidden md:flex flex-col w-72 bg-surface-container-low border-r border-outline-variant pt-16">
+<div class="p-6 flex flex-col gap-1">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">memory</span>
+</div>
+<div>
+<div class="font-data-mono text-data-mono text-primary">INTEL_UNIT_01</div>
+<div class="text-[10px] text-outline-variant uppercase font-bold">Status: Synchronizing</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 text-tertiary bg-tertiary-container/10 border-l-2 border-tertiary px-4 py-3 font-data-mono text-data-mono" href="#">
+<span class="material-symbols-outlined">storefront</span> Marketplace Scan
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 font-data-mono text-data-mono transition-colors" href="#">
+<span class="material-symbols-outlined">chat_bubble_outline</span> Social Sentiment
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 font-data-mono text-data-mono transition-colors" href="#">
+<span class="material-symbols-outlined">api</span> Supplier API
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 font-data-mono text-data-mono transition-colors" href="#">
+<span class="material-symbols-outlined">terminal</span> System Logs
+            </a>
+</nav>
+<div class="p-4 border-t border-outline-variant mt-auto">
+<div class="text-[10px] text-outline-variant font-data-mono">v2.4.0-alpha</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-72 pt-16 pb-20 px-6 lg:px-12">
+<!-- Header Section -->
+<section class="py-8">
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">Data Acquisition Hub</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+                        Monitor the architecture of real-time market ingestion. From raw unstructured signals to high-fidelity intelligence primitives.
+                    </p>
+</div>
+<div class="flex gap-4">
+<button class="bg-primary text-surface-container-lowest px-6 py-2 rounded-xl font-label-caps text-label-caps flex items-center gap-2 hover:bg-primary-fixed transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">sync</span> FORCE_RESCAN
+                    </button>
+<button class="border border-secondary text-secondary px-6 py-2 rounded-xl font-label-caps text-label-caps flex items-center gap-2 hover:bg-secondary/10 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">psychology</span> AI_OPTIMIZE
+                    </button>
+</div>
+</div>
+</section>
+<!-- Dynamic Architecture Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+<!-- Acquisition Sources (Bento Row) -->
+<div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Source Card: Official API -->
+<div class="glass-panel p-5 rounded-xl group hover:border-primary transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">api</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-label-caps text-api-connected">STABLE</span>
+<span class="font-data-mono text-data-mono text-primary">1.4ms Latency</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-1">Official API</h3>
+<p class="text-sm text-outline-variant mb-4">Direct marketplace integration via verified endpoints.</p>
+<div class="neural-line mb-4"><div class="neural-pulse"></div></div>
+<div class="flex justify-between text-[11px] font-data-mono text-on-surface-variant">
+<span>Ingestion: 12.4 GB/s</span>
+<span>Load: 24%</span>
+</div>
+</div>
+<!-- Source Card: Web Import -->
+<div class="glass-panel p-5 rounded-xl group hover:border-primary transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">language</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-label-caps text-api-connected">ACTIVE</span>
+<span class="font-data-mono text-data-mono text-primary">98.2% Success</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-1">Web Import</h3>
+<p class="text-sm text-outline-variant mb-4">Heuristic-based scraping of public storefronts.</p>
+<div class="neural-line mb-4 opacity-50"><div class="neural-pulse" style="animation-delay: 1.5s;"></div></div>
+<div class="flex justify-between text-[11px] font-data-mono text-on-surface-variant">
+<span>Ingestion: 4.8 GB/s</span>
+<span>Proxies: 1.2k</span>
+</div>
+</div>
+<!-- Source Card: Social Sentiment -->
+<div class="glass-panel p-5 rounded-xl group hover:border-primary transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">chat</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-label-caps text-intelligence-score">BURST</span>
+<span class="font-data-mono text-data-mono text-intelligence-score">+45% Volume</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-1">Social Intel</h3>
+<p class="text-sm text-outline-variant mb-4">Natural language processing of viral commerce signals.</p>
+<div class="w-full h-1 bg-surface-container-high rounded-full overflow-hidden mb-4">
+<div class="h-full bg-intelligence-score w-3/4"></div>
+</div>
+<div class="flex justify-between text-[11px] font-data-mono text-on-surface-variant">
+<span>Mood: POSITIVE</span>
+<span>Trends: 42 Active</span>
+</div>
+</div>
+<!-- Source Card: Supplier API -->
+<div class="glass-panel p-5 rounded-xl group hover:border-primary transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-label-caps text-api-connected">SYNCED</span>
+<span class="font-data-mono text-data-mono text-primary">Last: 2s ago</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-1">Supplier Node</h3>
+<p class="text-sm text-outline-variant mb-4">Real-time stock level synchronization with partners.</p>
+<div class="flex gap-2 mb-4">
+<span class="w-4 h-1 bg-api-connected rounded-full"></span>
+<span class="w-4 h-1 bg-api-connected rounded-full"></span>
+<span class="w-4 h-1 bg-api-connected rounded-full"></span>
+<span class="w-4 h-1 bg-api-disconnected rounded-full"></span>
+</div>
+<div class="flex justify-between text-[11px] font-data-mono text-on-surface-variant">
+<span>SKUs: 1.4M</span>
+<span>Fulfillment: 99.1%</span>
+</div>
+</div>
+</div>
+<!-- Central Hub (The Brain) -->
+<div class="lg:col-span-4 glass-panel rounded-xl flex flex-col relative overflow-hidden">
+<div class="scan-line absolute top-0 left-0 w-full z-10 opacity-30"></div>
+<div class="p-6 relative z-20">
+<div class="flex items-center justify-between mb-8">
+<span class="font-label-caps text-label-caps text-primary tracking-widest">DATA_LAKE_CORE</span>
+<span class="material-symbols-outlined text-primary-container animate-spin-slow">hub</span>
+</div>
+<div class="text-center mb-10">
+<div class="text-[42px] font-bold text-primary font-headline-md leading-tight">842.5<span class="text-xl">PB</span></div>
+<div class="text-on-surface-variant font-label-caps text-[10px] tracking-widest mt-1">TOTAL_STORAGE_INDEXED</div>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-data-mono text-xs text-on-surface-variant">Normalization Engine</span>
+<span class="font-data-mono text-xs text-primary">94.8%</span>
+</div>
+<div class="h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[94.8%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-data-mono text-xs text-on-surface-variant">Anomalies Detected</span>
+<span class="font-data-mono text-xs text-risk-danger">0.02%</span>
+</div>
+<div class="h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-risk-danger w-[2%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-data-mono text-xs text-on-surface-variant">AI Transformation</span>
+<span class="font-data-mono text-xs text-tertiary">READY</span>
+</div>
+<div class="h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[100%] animate-pulse"></div>
+</div>
+</div>
+</div>
+<div class="mt-12 bg-surface-container-highest/50 p-4 rounded-lg border border-outline-variant">
+<div class="text-[10px] font-label-caps text-outline-variant mb-2">CORE_LOGS:</div>
+<div class="font-data-mono text-[10px] text-primary/70 leading-relaxed overflow-hidden h-20">
+                            [09:14:02] RAW_INGEST: SOURCE_SOCIAL_01<br/>
+                            [09:14:03] MAP_ENTITY: "Premium Headphones"<br/>
+                            [09:14:03] TRANSFORM: SUCCESS -&gt; UDM_V4<br/>
+                            [09:14:05] CACHE_COMMIT: NODE_04_SHARD_12<br/>
+                            [09:14:06] SCAN_COMPLETE: 4.2ms
+                        </div>
+</div>
+</div>
+<!-- Background Decoration -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-20">
+
+</div>
+</div>
+</div>
+<!-- Flow Diagram: Internet -> Engine -> Revenue -->
+<section class="glass-panel p-8 rounded-xl mb-12">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest mb-10 text-center">VALUE_CONVERSION_PIPELINE</h3>
+<div class="flex flex-col md:flex-row items-center justify-between gap-8 relative">
+<!-- Node 1: Internet -->
+<div class="flex flex-col items-center gap-4 group z-10">
+<div class="w-20 h-20 rounded-full border-2 border-outline-variant bg-surface flex items-center justify-center group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary transition-colors">public</span>
+</div>
+<div class="text-center">
+<div class="font-headline-md text-headline-md">Internet</div>
+<div class="font-label-caps text-[10px] text-outline-variant">RAW_SIGNAL_0</div>
+</div>
+</div>
+<!-- Connection 1 -->
+<div class="hidden md:block flex-1 h-[2px] bg-outline-variant relative">
+<div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full blur-md animate-pulse left-0" style="animation: flow 4s infinite linear;"></div>
+</div>
+<style>@keyframes flow { 0% { left: 0; } 100% { left: 100%; } }</style>
+<!-- Node 2: Intelligence Engine -->
+<div class="flex flex-col items-center gap-4 group z-10">
+<div class="w-24 h-24 rounded-2xl border-2 border-primary bg-surface-container flex items-center justify-center relative shadow-[0_0_20px_rgba(0,240,255,0.2)]">
+<span class="material-symbols-outlined text-5xl text-primary animate-pulse">psychology</span>
+<div class="absolute -bottom-2 bg-primary text-background px-2 py-0.5 rounded font-label-caps text-[9px] font-bold">AI_ENGINE</div>
+</div>
+<div class="text-center">
+<div class="font-headline-md text-headline-md text-primary">Intelligence</div>
+<div class="font-label-caps text-[10px] text-outline-variant">SYNTHETIC_BRAIN</div>
+</div>
+</div>
+<!-- Connection 2 -->
+<div class="hidden md:block flex-1 h-[2px] bg-outline-variant relative">
+<div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-market-growth rounded-full blur-md animate-pulse left-0" style="animation: flow 3s infinite linear;"></div>
+</div>
+<!-- Node 3: Revenue -->
+<div class="flex flex-col items-center gap-4 group z-10">
+<div class="w-20 h-20 rounded-full border-2 border-market-growth bg-surface flex items-center justify-center group-hover:bg-market-growth/10 transition-all">
+<span class="material-symbols-outlined text-4xl text-market-growth" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<div class="text-center">
+<div class="font-headline-md text-headline-md text-market-growth">Revenue</div>
+<div class="font-label-caps text-[10px] text-outline-variant">FULFILLMENT_ALPHA</div>
+</div>
+</div>
+</div>
+<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center border-t border-outline-variant pt-8">
+<div>
+<div class="text-sm font-label-caps text-outline-variant mb-1">DATA_CAPTURE</div>
+<div class="font-data-mono text-lg text-primary">12M+ Records/Hr</div>
+</div>
+<div>
+<div class="text-sm font-label-caps text-outline-variant mb-1">INSIGHT_CONFIDENCE</div>
+<div class="font-data-mono text-lg text-primary">99.8% Accuracy</div>
+</div>
+<div>
+<div class="text-sm font-label-caps text-outline-variant mb-1">PROJECTED_ROI</div>
+<div class="font-data-mono text-lg text-market-growth">+28.4% YoY</div>
+</div>
+</div>
+</section>
+<!-- Universal Data Model Status Table -->
+<section class="glass-panel rounded-xl overflow-hidden mb-12">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md">Universal Data Model (UDM) Schema</h3>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container text-outline-variant text-[10px] font-label-caps rounded-full border border-outline-variant">v4.1.2-STABLE</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-data-mono text-sm">
+<thead>
+<tr class="bg-surface-container-high/50 text-outline-variant">
+<th class="p-4 font-label-caps">Primitive Entity</th>
+<th class="p-4 font-label-caps">Normalization</th>
+<th class="p-4 font-label-caps">Market Coverage</th>
+<th class="p-4 font-label-caps">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="p-4 text-primary">Product_Master_Ref</td>
+<td class="p-4">Cross-EAN Matching</td>
+<td class="p-4">Global (98%)</td>
+<td class="p-4"><span class="text-api-connected flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-api-connected"></span> ACTIVE</span></td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-4 text-primary">Pricing_Temporal</td>
+<td class="p-4">ISO-4217 Unified</td>
+<td class="p-4">Regional (74%)</td>
+<td class="p-4"><span class="text-api-connected flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-api-connected"></span> ACTIVE</span></td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-4 text-primary">Sentiment_Vector</td>
+<td class="p-4">BERT-Base-NLP</td>
+<td class="p-4">EN/ES/FR (82%)</td>
+<td class="p-4"><span class="text-intelligence-score flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-intelligence-score animate-pulse"></span> PROCESSING</span></td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-4 text-primary">Competitor_DNA</td>
+<td class="p-4">Graph Heuristics</td>
+<td class="p-4">Direct Rivals (100%)</td>
+<td class="p-4"><span class="text-api-connected flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-api-connected"></span> ACTIVE</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container/90 backdrop-blur-2xl border-t border-outline-variant shadow-lg">
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1.5">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] font-label-caps">Hub</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-[10px] font-label-caps">Intel</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="text-[10px] font-label-caps">Trends</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-label-caps">Settings</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for real-time vibe
+        const logEntries = [
+            "[09:14:07] CLUSTER_04: REBALANCING STORAGE...",
+            "[09:14:08] INGEST_API: EBAY_DE SYNCHRONIZED",
+            "[09:14:10] PARSER: DETECTED_SKU_ANOMALY (ITEM_ID: 9422)",
+            "[09:14:12] UDM_LOADER: COMMIT_HASH_0x42A",
+            "[09:14:15] SYSTEM: ALL_NODES_HEALTHY"
+        ];
+        
+        let logIndex = 0;
+        const logContainer = document.querySelector('.font-data-mono.text-\\[10px\\].text-primary\\/70');
+        
+        setInterval(() => {
+            const newLog = document.createElement('div');
+            newLog.innerHTML = logEntries[logIndex];
+            newLog.className = 'opacity-0 transition-opacity duration-500';
+            logContainer.prepend(newLog);
+            setTimeout(() => newLog.classList.remove('opacity-0'), 100);
+            
+            if (logContainer.children.length > 8) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+            
+            logIndex = (logIndex + 1) % logEntries.length;
+        }, 3000);
+    </script>
+</body></html>

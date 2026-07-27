@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manajemen Pesanan &amp; Stok | AI Commerce OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Geist:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid #27272A;
+        }
+        .glow-primary {
+            box-shadow: 0 0 20px rgba(173, 198, 255, 0.15);
+        }
+        .glow-active {
+            box-shadow: 0 0 12px rgba(208, 188, 255, 0.3);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .status-pulse {
+            position: relative;
+        }
+        .status-pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.4;
+            animation: sonar 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d8e2ff",
+                      "primary-container": "#4d8eff",
+                      "tertiary": "#4edea3",
+                      "surface": "#131315",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "surface-tint": "#adc6ff",
+                      "surface-dim": "#131315",
+                      "outline-variant": "#424754",
+                      "on-secondary-fixed-variant": "#5516be",
+                      "on-primary-fixed-variant": "#004395",
+                      "surface-variant": "#353437",
+                      "on-background": "#e5e1e4",
+                      "inverse-surface": "#e5e1e4",
+                      "secondary-container": "#571bc1",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "background": "#131315",
+                      "on-tertiary": "#003824",
+                      "on-secondary-container": "#c4abff",
+                      "on-primary-fixed": "#001a42",
+                      "on-surface-variant": "#c2c6d6",
+                      "secondary-fixed-dim": "#d0bcff",
+                      "on-error": "#690005",
+                      "tertiary-fixed": "#6ffbbe",
+                      "surface-container": "#201f22",
+                      "secondary-fixed": "#e9ddff",
+                      "outline": "#8c909f",
+                      "secondary": "#d0bcff",
+                      "on-secondary-fixed": "#23005c",
+                      "tertiary-container": "#00a572",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-tertiary-container": "#00311f",
+                      "error": "#ffb4ab",
+                      "on-primary": "#002e6a",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#2a2a2c",
+                      "inverse-on-surface": "#313032",
+                      "surface-bright": "#39393b",
+                      "primary": "#adc6ff",
+                      "on-secondary": "#3c0091",
+                      "surface-container-highest": "#353437",
+                      "surface-container-lowest": "#0e0e10",
+                      "on-tertiary-fixed": "#002113",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#005ac2",
+                      "surface-container-low": "#1c1b1d",
+                      "on-primary-container": "#00285d",
+                      "on-surface": "#e5e1e4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "margin-desktop": "48px",
+                      "lg": "24px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "data-mono": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "body-sm": ["Inter"],
+                      "display-lg": ["Geist"],
+                      "headline-lg-mobile": ["Geist"],
+                      "label-caps": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface/80 backdrop-blur-xl border-b border-outline-variant fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A futuristic AI circuit profile avatar with glowing blue neon lines on a deep obsidian background, representing a high-tech administrative interface user. The lighting is crisp and technological, matching the dark mode commerce operating system aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbsfsdwcF7BJ_gXd4Rfv7sDN2H8WWMOEYDlU96vbyNy5chPFHhmThhJ10w0KkruaSPq_TNRU2FvD5tCMm8_szQoecd7nvkeNCodVLbef_opBVk1F-FqL1UGg9X0UCkJ7lzkdp5Qyn2ARHEKSHuefHIKyTqpqfUd-rXKmtJ-3evy8hqdZfQSEwnGi_iklEiLzClJ46BsbpmbUSkRbUJoQnB7b4XZ-NCtKvEXW2SYQN4VJK1cSxxc4AvfdUx0EhYX89uJ2JgXVrAEDM4"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:bg-surface-variant/50 p-2 rounded-full transition-colors active:scale-95 duration-100">settings_input_component</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto w-full">
+<!-- Header Title Section -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="font-label-caps text-label-caps text-primary tracking-[0.2em] mb-2 block uppercase">Dashboard</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Manajemen Pesanan &amp; Stok</h2>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant">
+<div class="w-2 h-2 rounded-full bg-tertiary status-pulse"></div>
+<span class="font-data-mono text-data-mono text-tertiary">Sistem Sinkronisasi: Aktif</span>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="bento-grid">
+<!-- Summary Stats: Pending Orders -->
+<div class="col-span-12 md:col-span-8 glass-panel rounded-xl p-6 glow-primary">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">Ringkasan Pesanan Tertunda</h3>
+<button class="text-primary font-data-mono text-xs hover:underline">Lihat Semua</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Shopee -->
+<div class="bg-surface-container p-4 rounded-lg border border-outline-variant group hover:border-primary transition-colors">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-orange-500">shopping_bag</span>
+<span class="font-label-caps text-label-caps text-on-surface">SHOPEE</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-display-lg text-[32px] leading-none text-on-surface">24</span>
+<span class="text-error font-data-mono text-xs">+5 Baru</span>
+</div>
+</div>
+<!-- Tokopedia -->
+<div class="bg-surface-container p-4 rounded-lg border border-outline-variant group hover:border-primary transition-colors">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-green-500">storefront</span>
+<span class="font-label-caps text-label-caps text-on-surface">TOKOPEDIA</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-display-lg text-[32px] leading-none text-on-surface">18</span>
+<span class="text-on-surface-variant font-data-mono text-xs">Stabil</span>
+</div>
+</div>
+<!-- TikTok -->
+<div class="bg-surface-container p-4 rounded-lg border border-outline-variant group hover:border-primary transition-colors">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-on-surface">video_library</span>
+<span class="font-label-caps text-label-caps text-on-surface">TIKTOK SHOP</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-display-lg text-[32px] leading-none text-on-surface">42</span>
+<span class="text-tertiary font-data-mono text-xs">Trending</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Stock Sync Status Indicator -->
+<div class="col-span-12 md:col-span-4 glass-panel rounded-xl p-6 flex flex-col justify-between">
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4">Status Sinkronisasi Stok</h3>
+<div class="relative h-24 flex items-center justify-center">
+<!-- Animated Circular Indicator Placeholder -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-20 h-20 rounded-full border-4 border-outline-variant border-t-primary animate-spin"></div>
+</div>
+<div class="z-10 text-center">
+<span class="font-headline-md text-on-surface">98%</span>
+<p class="font-data-mono text-[10px] text-on-surface-variant">Sinkron</p>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Update terakhir: <span class="text-on-surface">2 menit yang lalu</span></p>
+</div>
+</div>
+<!-- Predictive Restock Alerts -->
+<div class="col-span-12 md:col-span-7 glass-panel rounded-xl p-6">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<h3 class="font-label-caps text-label-caps text-on-surface">Saran Restok Prediktif</h3>
+</div>
+<div class="space-y-3">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface rounded border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Minimalist high-tech wireless gaming mouse in sleek matte black on a clean obsidian background. Technological lighting with cyan edge-lights that emphasize the ergonomic curves, captured in a professional product photography style for a premium commerce OS." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnZSV_tIQXms5pt8DUsZ9y3J6n1GYphywKnXuHf1EMc_AnPO3fPzTmZWBF0paal60PuzcvO93gxRALC_DRm9pFFqoXpqprAXsYJARXlI_I5kcTZP9HHzwYvNMwCXfJMd3X7f6QXZbcv6OMbGdunfzMYHZHHDiKuJ8Dwk30t4rYcgyEXpm3wHpVB1-MNWMYv1XY4frZYaRqFLV0cJbvJzkp6u0F7jXmQASnVb2T6KV26mAbnsO1IUzldPnDkGgK1ed79toMo_4hEUge"/>
+</div>
+<div>
+<h4 class="font-body-md text-on-surface font-semibold">Wireless Mouse Pro</h4>
+<p class="font-data-mono text-[11px] text-error">Stok Rendah: 12 Unit tersisa</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-label-caps text-[10px] text-on-surface-variant">REKOMENDASI</span>
+<span class="font-data-mono text-tertiary">+50 Unit</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface rounded border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional mechanical keyboard with RGB backlighting, isolated on a dark reflective surface. The aesthetic is clean and modern, focusing on industrial design and precision manufacturing, suitable for a tech-focused inventory management platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIqHZ-uDMwQoMFRfV1dpaYjlq09xO2fc00nVQVXuAdjXdMizyvZz5tYb3fQ_c9MFLXbpgYz1IkusNP3TOgasvl6SsFDefYx517myzRYOdSHxkgJMCJh6KxnrxSXxwnppo6X5xGwtvnIwXMM9av70NnpBmGD7D7K2XFcvV85MWapLttfsXRxR21Jb9pwxaph59QCBAD3yUczZf9FlITgK_TUpz8MZAi0BXAybATA_2KzR40376ZBoRnqliFg31_Kg_0w4TvJCEI_vs2"/>
+</div>
+<div>
+<h4 class="font-body-md text-on-surface font-semibold">Mechanical Keyboard TKL</h4>
+<p class="font-data-mono text-[11px] text-error">Stok Rendah: 5 Unit tersisa</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-label-caps text-[10px] text-on-surface-variant">REKOMENDASI</span>
+<span class="font-data-mono text-tertiary">+20 Unit</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface rounded border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Sleek aluminum laptop stand with a minimalist foldable design, shown from a side profile on a dark, professional desk environment. Subtle light refraction and high-key metallic highlights create a sense of computational authority and professional quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt05Angg2U2C79G0fQ43L1ZUquUiJsGYIRzMDBjZc8O2Y03OJcTSDercYo-i_2ULsLLTmYZmEvuXKfflkEYyB51OEDPQR8aV_AG12mjwN450l4tbOBV42tZC4oohmdJlKTRE-m7BC0PiB1EhtD0SbHQr9PtxodI_8PuZsYEidi1vsdyBj-TVDV-GQgSzlXyyQ37VCbsripqKpSc5F6SO0kIITL8LVL7n3WAAifkkN1zfzQ-QV9svH4uuB9kCuP9TqGSxjszCEmXLOr"/>
+</div>
+<div>
+<h4 class="font-body-md text-on-surface font-semibold">Aluminium Laptop Stand</h4>
+<p class="font-data-mono text-[11px] text-on-tertiary-container">Prediksi Lonjakan Permintaan</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-label-caps text-[10px] text-on-surface-variant">REKOMENDASI</span>
+<span class="font-data-mono text-tertiary">+100 Unit</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Automated Routing Stats -->
+<div class="col-span-12 md:col-span-5 glass-panel rounded-xl p-6 relative overflow-hidden">
+
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">route</span>
+<h3 class="font-label-caps text-label-caps text-on-surface">Routing Pesanan Otomatis</h3>
+</div>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface">Gudang Jakarta</span>
+<span class="font-data-mono text-[11px] text-on-surface-variant">85% Kapasitas</span>
+</div>
+<div class="w-32 h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 85%"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface">Gudang Surabaya</span>
+<span class="font-data-mono text-[11px] text-on-surface-variant">42% Kapasitas</span>
+</div>
+<div class="w-32 h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-tertiary" style="width: 42%"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface">Gudang Medan</span>
+<span class="font-data-mono text-[11px] text-on-surface-variant">12% Kapasitas</span>
+</div>
+<div class="w-32 h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-error" style="width: 12%"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 bg-primary/10 border border-primary/20 rounded-lg p-3">
+<p class="font-body-sm text-[12px] text-primary">
+<span class="font-bold">AI Insight:</span> Routing dialihkan ke Surabaya untuk efisiensi ongkir wilayah Timur (+12.4% Margin).
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg">
+<a href="../index.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined mb-1">grid_view</span>
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<a href="../ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined mb-1">psychology</span>
+<span class="font-label-caps text-label-caps">Intelligence</span>
+</a>
+<a href="../manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] active:scale-90 transition-transform">
+<span class="material-symbols-outlined mb-1">inventory_2</span>
+<span class="font-label-caps text-label-caps">Orders</span>
+</a>
+<a href="../analitik_eksekutif/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined mb-1">monitoring</span>
+<span class="font-label-caps text-label-caps">Analytics</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for stock sync circle
+        const circle = document.querySelector('.animate-spin');
+        if (circle) {
+            circle.style.animationDuration = '3s';
+        }
+
+        // Simple observer for bento cards entrance
+        const cards = document.querySelectorAll('.glass-panel');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.transition = `all 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${index * 0.1}s`;
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            observer.observe(card);
+        });
+
+        // Marketplace cards click handler
+        const marketplaceCards = document.querySelectorAll('.group.hover\\:border-primary');
+        marketplaceCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const platform = this.querySelector('.font-label-caps').textContent;
+                alert(`Membuka detail pesanan ${platform}...`);
+            });
+        });
+
+        // Restock suggestion items click handler
+        const restockItems = document.querySelectorAll('.cursor-pointer');
+        restockItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const productName = this.querySelector('h4').textContent;
+                alert(`Membuka form restok untuk: ${productName}`);
+            });
+        });
+
+        // Lihat Semua button
+        const viewAllBtn = document.querySelector('button.text-primary');
+        if (viewAllBtn && viewAllBtn.textContent.includes('Lihat Semua')) {
+            viewAllBtn.addEventListener('click', () => {
+                alert('Membuka daftar lengkap pesanan tertunda...');
+            });
+        }
+
+        // Settings button
+        const settingsBtn = document.querySelector('button.material-symbols-outlined');
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', () => {
+                alert('Pengaturan Manajemen Pesanan');
+            });
+        }
+    </script>
+</body></html>

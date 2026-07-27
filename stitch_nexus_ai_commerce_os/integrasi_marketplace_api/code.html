@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Integrasi Marketplace &amp; API | AI Commerce OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .glass-card {
+            background: #18181B;
+            border: 1px solid #27272A;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: #adc6ff;
+            box-shadow: 0 0 15px rgba(173, 198, 255, 0.1);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+        }
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid currentColor;
+            animation: sonar 2s infinite;
+        }
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #adc6ff;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .log-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .log-container::-webkit-scrollbar-thumb {
+            background: #27272A;
+            border-radius: 2px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#571bc1",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "tertiary-fixed": "#6ffbbe",
+                        "primary-fixed-dim": "#adc6ff",
+                        "inverse-on-surface": "#313032",
+                        "on-background": "#e5e1e4",
+                        "secondary-fixed": "#e9ddff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "surface-tint": "#adc6ff",
+                        "surface-container-high": "#2a2a2c",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#002113",
+                        "on-primary-container": "#00285d",
+                        "inverse-surface": "#e5e1e4",
+                        "primary-container": "#4d8eff",
+                        "surface-container-highest": "#353437",
+                        "on-secondary-fixed": "#23005c",
+                        "on-primary": "#002e6a",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#c2c6d6",
+                        "secondary": "#d0bcff",
+                        "surface-bright": "#39393b",
+                        "surface-container-lowest": "#0e0e10",
+                        "surface-container": "#201f22",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "primary-fixed": "#d8e2ff",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-tertiary": "#003824",
+                        "on-surface": "#e5e1e4",
+                        "on-secondary-container": "#c4abff",
+                        "on-tertiary-container": "#00311f",
+                        "tertiary-container": "#00a572",
+                        "error": "#ffb4ab",
+                        "surface": "#131315",
+                        "on-secondary": "#3c0091",
+                        "inverse-primary": "#005ac2",
+                        "outline-variant": "#424754",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "surface-dim": "#131315",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#001a42",
+                        "background": "#131315",
+                        "surface-container-low": "#1c1b1d",
+                        "tertiary": "#4edea3",
+                        "outline": "#8c909f",
+                        "surface-variant": "#353437",
+                        "primary": "#adc6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "margin-desktop": "48px",
+                        "xl": "32px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Geist"],
+                        "data-mono": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Geist"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-mobile h-16 sticky top-0 z-50 border-b border-outline-variant bg-surface/80 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline">
+<img class="w-full h-full object-cover" data-alt="A futuristic circular interface avatar for a commerce operating system, featuring glowing blue circuit lines and complex data visualizations on a dark obsidian background, high-tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd-XfKZvIo5DJTutxO9Dezja43cpeJiSJLX10rY__KsIfN-1m_HhQuHHYCNtYf0JQJy-agK3JpZYxJr3xXu_bHWwZwP4DaYqyc6xGPyx7j6JOyQwKt9whGbfxmr04kPxPHjRu6LLaznTn0wzkkOLOgNlTvT937ow_3hfM77P741C3FJnDz8H8Z8uND35M_T4HlTgDnit1e_vWXvqnGEFvnqxiWRQL4JC-Qs9NVOqa3fEHHM7nWUI-KjsykFFlt8Vx2dAa2ZSY9KxIj"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-variant/50 transition-colors duration-200 rounded-lg active:scale-95">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-8">
+<!-- Title & Hero Status -->
+<div class="mb-8">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Integrasi Marketplace &amp; API</h2>
+<div class="flex items-center gap-2 font-label-caps text-label-caps text-on-surface-variant">
+<span class="status-dot bg-tertiary text-tertiary"></span>
+<span class="ml-1 uppercase tracking-widest">System Operational: High Performance</span>
+</div>
+</div>
+<div class="bento-grid">
+<!-- Connection Status Grid (Top row, 8 cols) -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Tokopedia -->
+<div class="glass-card rounded-xl p-4 flex flex-col justify-between h-44">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-surface-container-high rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary">storefront</span>
+</div>
+<span class="px-2 py-1 bg-tertiary/10 border border-tertiary/50 text-tertiary font-label-caps text-[10px] rounded">ACTIVE</span>
+</div>
+<div>
+<h3 class="font-headline-md text-sm text-on-surface mb-1">Tokopedia</h3>
+<div class="space-y-1">
+<p class="font-data-mono text-xs text-on-surface-variant flex justify-between">
+<span>Status:</span> <span class="text-tertiary">Terhubung</span>
+</p>
+<p class="font-data-mono text-xs text-on-surface-variant flex justify-between">
+<span>Latensi:</span> <span>45ms</span>
+</p>
+<p class="font-data-mono text-[10px] text-outline text-right mt-1 italic">
+                                Sync: 2m ago
+                            </p>
+</div>
+</div>
+</div>
+<!-- Shopee -->
+<div class="glass-card rounded-xl p-4 flex flex-col justify-between h-44">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-surface-container-high rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary">shopping_bag</span>
+</div>
+<span class="px-2 py-1 bg-tertiary/10 border border-tertiary/50 text-tertiary font-label-caps text-[10px] rounded">ACTIVE</span>
+</div>
+<div>
+<h3 class="font-headline-md text-sm text-on-surface mb-1">Shopee</h3>
+<div class="space-y-1">
+<p class="font-data-mono text-xs text-on-surface-variant flex justify-between">
+<span>Status:</span> <span class="text-tertiary">Terhubung</span>
+</p>
+<p class="font-data-mono text-xs text-on-surface-variant flex justify-between">
+<span>Latensi:</span> <span>52ms</span>
+</p>
+<p class="font-data-mono text-[10px] text-outline text-right mt-1 italic">
+                                Sync: Now
+                            </p>
+</div>
+</div>
+</div>
+<!-- Lazada -->
+<div class="glass-card rounded-xl p-4 flex flex-col justify-between h-44 border-dashed border-outline/50">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-surface-container-high rounded-lg border border-outline-variant opacity-50">
+<span class="material-symbols-outlined text-outline">local_mall</span>
+</div>
+<span class="px-2 py-1 bg-error/10 border border-error/50 text-error font-label-caps text-[10px] rounded">PENDING</span>
+</div>
+<div>
+<h3 class="font-headline-md text-sm text-on-surface mb-1 opacity-50">Lazada</h3>
+<div class="space-y-1">
+<p class="font-data-mono text-xs text-on-surface-variant flex justify-between">
+<span>Status:</span> <span class="text-error">Re-auth needed</span>
+</p>
+<button class="w-full mt-2 py-1 border border-primary text-primary font-label-caps text-[10px] hover:bg-primary/10 transition-all rounded">RECONNECT</button>
+</div>
+</div>
+</div>
+<!-- TikTok Shop -->
+<div class="glass-card rounded-xl p-4 flex flex-col justify-between h-44">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-surface-container-high rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary">video_library</span>
+</div>
+<span class="px-2 py-1 bg-tertiary/10 border border-tertiary/50 text-tertiary font-label-caps text-[10px] rounded">ACTIVE</span>
+</div>
+<div>
+<h3 class="font-headline-md text-sm text-on-surface mb-1">TikTok Shop</h3>
+<div class="space-y-1">
+<p class="font-data-mono text-xs text-on-surface-variant flex justify-between">
+<span>Status:</span> <span class="text-tertiary">Terhubung</span>
+</p>
+<p class="font-data-mono text-xs text-on-surface-variant flex justify-between">
+<span>Latensi:</span> <span>38ms</span>
+</p>
+<p class="font-data-mono text-[10px] text-outline text-right mt-1 italic">
+                                Sync: 5s ago
+                            </p>
+</div>
+</div>
+</div>
+<!-- Instagram/Meta Bridge -->
+<div class="col-span-1 md:col-span-2 glass-card rounded-xl p-4 flex flex-row items-center gap-6 h-44 bg-gradient-to-br from-[#18181B] to-[#1e1431]">
+<div class="flex-shrink-0 relative">
+<div class="w-20 h-20 rounded-full bg-secondary-container/20 border border-secondary/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-secondary">hub</span>
+</div>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-tertiary rounded-full border-4 border-[#1e1431] flex items-center justify-center">
+<span class="material-symbols-outlined text-[12px] text-on-tertiary font-bold">check</span>
+</div>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-1">
+<h3 class="font-headline-md text-lg text-on-surface">Meta Business Bridge</h3>
+<span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-body-sm text-on-surface-variant text-xs mb-3">Graph API v18.0 Connected via Meta Business Suite</p>
+<div class="flex gap-4">
+<div class="text-center">
+<p class="font-label-caps text-[10px] text-outline">ADS REACH</p>
+<p class="font-data-mono text-sm text-secondary">24.5k</p>
+</div>
+<div class="text-center">
+<p class="font-label-caps text-[10px] text-outline">CATALOG</p>
+<p class="font-data-mono text-sm text-secondary">Syncing</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- API Fetching Logs (Right column, 4 cols) -->
+<div class="col-span-12 lg:col-span-4 glass-card rounded-xl flex flex-col h-[368px] lg:h-full">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">terminal</span>
+<h3 class="font-label-caps text-on-surface">Real-time Logs</h3>
+</div>
+<span class="font-data-mono text-[10px] text-tertiary animate-pulse">STREAMING</span>
+</div>
+<div class="log-container flex-grow overflow-y-auto p-4 bg-surface-container-lowest font-data-mono text-[11px] leading-relaxed space-y-2">
+<p class="text-outline">
+<span class="text-secondary">[14:22:01]</span> <span class="text-tertiary">[SYNC]</span> Pesanan baru dari Shopee #SHP-9921
+                    </p>
+<p class="text-outline">
+<span class="text-secondary">[14:22:05]</span> <span class="text-primary">[API]</span> GET /v2/tokopedia/inventory (200 OK)
+                    </p>
+<p class="text-outline">
+<span class="text-secondary">[14:23:12]</span> <span class="text-tertiary">[SYNC]</span> Update stok ke Tokopedia: SK-001 -&gt; 12 unit
+                    </p>
+<p class="text-outline">
+<span class="text-secondary">[14:24:45]</span> <span class="text-error">[WARN]</span> Lazada latency threshold exceeded: 240ms
+                    </p>
+<p class="text-outline">
+<span class="text-secondary">[14:25:01]</span> <span class="text-primary">[API]</span> POST /v1/meta/catalog_sync
+                    </p>
+<p class="text-outline">
+<span class="text-secondary">[14:25:10]</span> <span class="text-tertiary">[SYNC]</span> Pesanan baru dari TikTok #TK-2210
+                    </p>
+<p class="text-outline">
+<span class="text-secondary">[14:25:30]</span> <span class="text-primary">[API]</span> Patch product info "Organic Coffee"
+                    </p>
+<p class="text-outline">
+<span class="text-secondary">[14:25:45]</span> <span class="text-on-surface">Connecting to listener...</span><span class="terminal-cursor"></span>
+</p>
+</div>
+<div class="p-3 border-t border-outline-variant text-center">
+<button class="font-label-caps text-[10px] text-primary hover:underline">EXPORT LOGS (.JSON)</button>
+</div>
+</div>
+<!-- API Keys & Permissions (Full width bottom) -->
+<div class="col-span-12 glass-card rounded-xl overflow-hidden mt-4">
+<div class="p-4 border-b border-outline-variant bg-surface-container-low/50 flex justify-between items-center">
+<h3 class="font-label-caps text-on-surface">API Authentication &amp; Key Management</h3>
+<button class="px-4 py-1.5 bg-primary text-on-primary font-label-caps text-xs rounded-lg flex items-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm">add</span> GENERATE KEY
+                    </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container text-outline font-label-caps text-[10px]">
+<tr>
+<th class="p-4">PLATFORM</th>
+<th class="p-4">API KEY</th>
+<th class="p-4">IZIN (PERMISSIONS)</th>
+<th class="p-4">QUOTA</th>
+<th class="p-4">ACTION</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-xs divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-bold text-on-surface">Tokopedia Prod</td>
+<td class="p-4 text-outline">tk_live_••••••••39A2</td>
+<td class="p-4">
+<div class="flex gap-2">
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">PRODUK</span>
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">PESANAN</span>
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">CHAT</span>
+</div>
+</td>
+<td class="p-4 text-tertiary">850 / 1000 daily</td>
+<td class="p-4">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-bold text-on-surface">Shopee Main</td>
+<td class="p-4 text-outline">shp_key_••••••••F412</td>
+<td class="p-4">
+<div class="flex gap-2">
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">PRODUK</span>
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">PESANAN</span>
+</div>
+</td>
+<td class="p-4 text-tertiary">1.2k / 5k daily</td>
+<td class="p-4">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-bold text-on-surface">Meta Graph</td>
+<td class="p-4 text-outline">EAAG_token_••••••••0Z9</td>
+<td class="p-4">
+<div class="flex gap-2">
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">ADS_MNG</span>
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">CATALOG</span>
+</div>
+</td>
+<td class="p-4 text-outline">No Limit</td>
+<td class="p-4">
+<button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant shadow-lg">
+<a href="../index.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-[10px] mt-1">Home</span>
+</a>
+<a href="../ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-[10px] mt-1">Intelligence</span>
+</a>
+<a href="../manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-1">Orders</span>
+</a>
+<a href="../analitik_eksekutif/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px] mt-1">Analytics</span>
+</a>
+</nav>
+<!-- Visual Polish: Background Light Leak -->
+<div class="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-primary/5 blur-[120px] pointer-events-none -z-10"></div>
+<div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-container/5 blur-[120px] pointer-events-none -z-10"></div>
+<script>
+        // Simple log interaction to simulate "live" updates
+        const logContainer = document.querySelector('.log-container');
+        const platforms = ['Shopee', 'Tokopedia', 'Lazada', 'TikTok', 'Meta'];
+        const types = ['[SYNC]', '[API]', '[WARN]'];
+        const messages = [
+            'Update stok item #SK-44',
+            'GET request successful',
+            'Synchronizing inventory catalog',
+            'New message from customer',
+            'Price parity check completed'
+        ];
+
+        setInterval(() => {
+            const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
+            const p = platforms[Math.floor(Math.random() * platforms.length)];
+            const t = types[Math.floor(Math.random() * types.length)];
+            const m = messages[Math.floor(Math.random() * messages.length)];
+            
+            const typeColor = t === '[SYNC]' ? 'text-tertiary' : (t === '[API]' ? 'text-primary' : 'text-error');
+            
+            const logEntry = document.createElement('p');
+            logEntry.className = 'text-outline opacity-0 transition-opacity duration-500';
+            logEntry.innerHTML = `<span class="text-secondary">[${time}]</span> <span class="${typeColor}">${t}</span> ${m} (${p})`;
+            
+            logContainer.insertBefore(logEntry, logContainer.firstChild);
+            setTimeout(() => logEntry.classList.remove('opacity-0'), 100);
+
+            if (logContainer.children.length > 20) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }, 4000);
+
+        // Reconnect button functionality
+        const reconnectButton = document.querySelector('button');
+        if (reconnectButton && reconnectButton.textContent.includes('RECONNECT')) {
+            reconnectButton.addEventListener('click', function() {
+                this.textContent = 'CONNECTING...';
+                this.disabled = true;
+                setTimeout(() => {
+                    this.textContent = 'RECONNECT';
+                    this.disabled = false;
+                    alert('Koneksi ke Lazada berhasil dipulihkan!');
+                }, 2000);
+            });
+        }
+
+        // Generate Key button
+        const generateKeyBtn = document.querySelector('button.bg-primary');
+        if (generateKeyBtn && generateKeyBtn.textContent.includes('GENERATE KEY')) {
+            generateKeyBtn.addEventListener('click', () => {
+                alert('Form pembuatan API Key baru akan dibuka...');
+            });
+        }
+
+        // Export logs button
+        const exportLogsBtn = document.querySelector('button.text-primary');
+        if (exportLogsBtn && exportLogsBtn.textContent.includes('EXPORT LOGS')) {
+            exportLogsBtn.addEventListener('click', () => {
+                alert('Mengunduh log dalam format JSON...');
+            });
+        }
+
+        // Settings button
+        const settingsBtn = document.querySelector('button.p-2');
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', () => {
+                alert('Pengaturan Integrasi API');
+            });
+        }
+    </script>
+</body></html>

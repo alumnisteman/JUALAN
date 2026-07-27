@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pusat Komando | Event-Driven Business OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131315;
+            color: #e5e1e4;
+            font-family: 'Geist', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: repeat(12, 1fr);
+        }
+        .bento-card {
+            background-color: #1c1c1f;
+            border: 1px solid #27272a;
+            border-radius: 0.25rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .bento-card:hover {
+            border-color: #adc6ff;
+            box-shadow: 0 0 15px rgba(173, 198, 255, 0.05);
+        }
+        .event-node::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -12px;
+            width: 2px;
+            height: 12px;
+            background: #424754;
+        }
+        .event-node:last-child::after {
+            display: none;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(173, 198, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            from { top: 0%; }
+            to { top: 100%; }
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131315;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#ffdcc6",
+                        "tertiary": "#ffb786",
+                        "surface-container-lowest": "#0e0e10",
+                        "error": "#ffb4ab",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#502400",
+                        "on-primary": "#002e6a",
+                        "primary-container": "#4d8eff",
+                        "surface-dim": "#131315",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "surface-tint": "#adc6ff",
+                        "surface-container-highest": "#353437",
+                        "inverse-surface": "#e5e1e4",
+                        "inverse-on-surface": "#303032",
+                        "surface-bright": "#39393b",
+                        "outline-variant": "#424754",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-container": "#d6a9ff",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-container-high": "#2a2a2c",
+                        "surface-container-low": "#1b1b1d",
+                        "primary": "#adc6ff",
+                        "surface-container": "#1f1f21",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "primary-fixed-dim": "#adc6ff",
+                        "inverse-primary": "#005ac2",
+                        "secondary": "#ddb7ff",
+                        "on-surface-variant": "#c2c6d6",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-background": "#e5e1e4",
+                        "on-secondary": "#490080",
+                        "outline": "#8c909f",
+                        "on-tertiary-container": "#461f00",
+                        "tertiary-container": "#df7412",
+                        "secondary-container": "#6f00be",
+                        "on-surface": "#e5e1e4",
+                        "surface-variant": "#353437",
+                        "on-error-container": "#ffdad6",
+                        "background": "#131315",
+                        "secondary-fixed": "#f0dbff",
+                        "surface": "#131315",
+                        "on-primary-container": "#00285d",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "on-tertiary-fixed": "#311400",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#001a42",
+                        "on-tertiary-fixed-variant": "#723600"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-mobile": "16px",
+                        "bento-gap": "12px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Geist"],
+                        "display-lg-mobile": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "body-base": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "code-label": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-base": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "code-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex items-center justify-between px-margin-desktop py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 duration-100">grid_view</span>
+<h1 class="font-headline-md text-headline-md tracking-tighter text-primary">PUSAT KOMANDO <span class="text-outline font-light">(EVENT-DRIVEN)</span></h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4 font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
+<span class="text-primary font-bold border-b-2 border-primary pb-1">Operational Hub</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Logistics</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Security</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-3 py-1.5 rounded border border-outline-variant/20">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-code-label text-code-label text-primary">NODE-01 LIVE</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant/50 p-1 transition-colors rounded cursor-pointer">search</span>
+</div>
+</header>
+<!-- Sidebar (Desktop Only) -->
+<aside class="fixed left-0 top-0 h-screen w-20 md:w-64 z-40 bg-surface-container-lowest border-r border-outline-variant/20 pt-24 hidden md:flex flex-col">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-4 p-3 bg-surface-container-low rounded border border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">account_circle</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Admin Node-01</span>
+<span class="font-code-label text-code-label text-primary uppercase">v2.4.0 Optimal</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<div class="flex items-center gap-4 px-4 py-3 bg-secondary-container/10 text-secondary-fixed-dim border-l-2 border-secondary font-code-label text-code-label transition-all cursor-pointer">
+<span class="material-symbols-outlined">hub</span>
+<span class="hidden md:inline">Core Operations</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high font-code-label text-code-label transition-all cursor-pointer group">
+<span class="material-symbols-outlined group-hover:text-tertiary">settings_input_component</span>
+<span class="hidden md:inline">Connectors</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high font-code-label text-code-label transition-all cursor-pointer group">
+<span class="material-symbols-outlined group-hover:text-primary">trending_up</span>
+<span class="hidden md:inline">Growth Metrics</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high font-code-label text-code-label transition-all cursor-pointer group">
+<span class="material-symbols-outlined group-hover:text-secondary">psychology</span>
+<span class="hidden md:inline">Intelligence</span>
+</div>
+</nav>
+<div class="p-6">
+<div class="p-4 bg-tertiary-container/10 border border-tertiary-container/20 rounded">
+<p class="font-code-label text-code-label text-tertiary uppercase mb-1">System Health</p>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-[98%] h-full bg-tertiary"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-20 md:pb-8 md:pl-64 px-4 md:pr-8">
+<div class="bento-grid">
+<!-- KPI Section -->
+<div class="col-span-12 md:col-span-4 bento-card p-5 relative overflow-hidden">
+<div class="scanline"></div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-code-label text-code-label text-outline uppercase tracking-widest">Workflow Health</h3>
+<span class="material-symbols-outlined text-primary text-sm">bolt</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface">99.8</span>
+<span class="text-primary font-code-label text-code-label">%</span>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-primary scale-75">trending_up</span>
+                    +0.2% from last cycle
+                </p>
+</div>
+<div class="col-span-12 md:col-span-4 bento-card p-5 relative overflow-hidden">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-code-label text-code-label text-outline uppercase tracking-widest">Active Connectors</h3>
+<span class="material-symbols-outlined text-tertiary text-sm">settings_input_component</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface">142</span>
+<span class="text-tertiary font-code-label text-code-label">LIVE</span>
+</div>
+<div class="flex gap-1 mt-4">
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary/20 rounded-full"></div>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 bento-card p-5">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-code-label text-code-label text-outline uppercase tracking-widest">System Uptime</h3>
+<span class="material-symbols-outlined text-secondary text-sm">timer</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface">14d</span>
+<span class="text-secondary font-code-label text-code-label">04h:22m</span>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(221,183,255,0.5)]"></div>
+<span class="text-body-sm text-on-surface-variant">No interruptions detected</span>
+</div>
+</div>
+<!-- Digital Twin Visualization -->
+<div class="col-span-12 md:col-span-8 bento-card p-6 min-h-[400px] relative overflow-hidden group">
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+
+</div>
+<div class="relative z-10">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Digital Twin</h2>
+<p class="font-code-label text-code-label text-primary">Supply Chain Macro Visualization</p>
+</div>
+<button class="bg-surface-variant/50 hover:bg-surface-variant px-4 py-2 rounded font-code-label text-code-label flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">open_in_full</span> EXPLORE MAP
+                        </button>
+</div>
+<!-- Supply Chain Visualizer -->
+<div class="flex flex-col md:flex-row items-center justify-between mt-12 px-10 gap-12 md:gap-0">
+<div class="flex flex-col items-center gap-4">
+<div class="w-20 h-20 rounded-full border-2 border-primary/50 flex items-center justify-center bg-background group-hover:border-primary transition-all duration-500">
+<span class="material-symbols-outlined text-primary text-3xl">factory</span>
+</div>
+<span class="font-code-label text-code-label text-on-surface uppercase">Supplier</span>
+</div>
+<div class="hidden md:block flex-1 h-px bg-gradient-to-r from-primary/50 to-secondary/50 relative">
+<div class="absolute -top-1 left-0 w-2 h-2 rounded-full bg-primary animate-ping"></div>
+</div>
+<div class="flex flex-col items-center gap-4">
+<div class="w-24 h-24 rounded-xl border-2 border-secondary/50 flex items-center justify-center bg-background group-hover:border-secondary transition-all duration-500 rotate-45">
+<span class="material-symbols-outlined text-secondary text-4xl -rotate-45">warehouse</span>
+</div>
+<span class="font-code-label text-code-label text-on-surface uppercase mt-2">Warehouse</span>
+</div>
+<div class="hidden md:block flex-1 h-px bg-gradient-to-r from-secondary/50 to-tertiary/50 relative">
+<div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+</div>
+<div class="flex flex-col items-center gap-4">
+<div class="w-20 h-20 rounded-full border-2 border-tertiary/50 flex items-center justify-center bg-background group-hover:border-tertiary transition-all duration-500">
+<span class="material-symbols-outlined text-tertiary text-3xl">person</span>
+</div>
+<span class="font-code-label text-code-label text-on-surface uppercase">Customer</span>
+</div>
+</div>
+<div class="mt-16 grid grid-cols-3 gap-4 border-t border-outline-variant/20 pt-6">
+<div>
+<p class="font-code-label text-code-label text-outline">Lead Time</p>
+<p class="font-body-base text-body-base text-on-surface font-bold">12.4 Hours</p>
+</div>
+<div>
+<p class="font-code-label text-code-label text-outline">Queue Load</p>
+<p class="font-body-base text-body-base text-on-surface font-bold text-tertiary">Normal</p>
+</div>
+<div>
+<p class="font-code-label text-code-label text-outline">Risk Factor</p>
+<p class="font-body-base text-body-base text-on-surface font-bold text-primary">0.02%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Event Stream Section -->
+<div class="col-span-12 md:col-span-4 bento-card p-6 flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Event Stream</h2>
+<span class="px-2 py-1 bg-primary/10 text-primary font-code-label text-code-label rounded">LIVE</span>
+</div>
+<div class="flex-1 space-y-6 relative">
+<div class="absolute left-6 top-4 bottom-4 w-px bg-outline-variant/30"></div>
+<!-- Event Node 1 -->
+<div class="relative pl-12 group cursor-pointer">
+<div class="absolute left-4 top-1.5 w-4 h-4 rounded-full border-4 border-background bg-primary z-10 group-hover:scale-125 transition-transform"></div>
+<div class="flex flex-col">
+<span class="font-code-label text-code-label text-primary uppercase font-bold tracking-widest">Produk Baru</span>
+<span class="text-body-sm text-on-surface-variant">SKU-9921 'Arctic-X' initialized</span>
+<span class="font-code-label text-[10px] text-outline mt-1">12:44:02.001</span>
+</div>
+</div>
+<!-- Event Node 2 -->
+<div class="relative pl-12 group cursor-pointer">
+<div class="absolute left-4 top-1.5 w-4 h-4 rounded-full border-4 border-background bg-secondary z-10 group-hover:scale-125 transition-transform"></div>
+<div class="flex flex-col">
+<span class="font-code-label text-code-label text-secondary uppercase font-bold tracking-widest">Stock Sync OK</span>
+<span class="text-body-sm text-on-surface-variant">Global nodes consistency 100%</span>
+<span class="font-code-label text-[10px] text-outline mt-1">12:44:02.482</span>
+</div>
+</div>
+<!-- Event Node 3 -->
+<div class="relative pl-12 group cursor-pointer">
+<div class="absolute left-4 top-1.5 w-4 h-4 rounded-full border-4 border-background bg-tertiary z-10 group-hover:scale-125 transition-transform"></div>
+<div class="flex flex-col">
+<span class="font-code-label text-code-label text-tertiary uppercase font-bold tracking-widest">Post TikTok Success</span>
+<span class="text-body-sm text-on-surface-variant">API: 200 OK | Reach Projected: 12k</span>
+<span class="font-code-label text-[10px] text-outline mt-1">12:44:05.119</span>
+</div>
+</div>
+<!-- Event Node 4 (Placeholder for simulation) -->
+<div class="relative pl-12 opacity-50 group cursor-pointer">
+<div class="absolute left-4 top-1.5 w-4 h-4 rounded-full border-4 border-background bg-outline-variant z-10"></div>
+<div class="flex flex-col">
+<span class="font-code-label text-code-label text-outline uppercase">Awaiting Event...</span>
+<span class="text-body-sm text-outline italic">System polling...</span>
+</div>
+</div>
+</div>
+<div class="mt-6 p-4 bg-surface-container-low rounded border border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="animate-spin text-primary">
+<span class="material-symbols-outlined">sync</span>
+</div>
+<span class="font-code-label text-code-label text-on-surface-variant">Processing event buffer [4KB]</span>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Data Dense Lists -->
+<div class="col-span-12 md:col-span-6 bento-card p-6">
+<h3 class="font-code-label text-code-label text-outline uppercase mb-4 tracking-widest">Event Store Log</h3>
+<div class="overflow-x-auto">
+<table class="w-full font-code-label text-code-label border-separate border-spacing-y-1">
+<thead>
+<tr class="text-left text-outline opacity-70">
+<th class="pb-2 font-normal">TIMESTAMP</th>
+<th class="pb-2 font-normal">EVENT_ID</th>
+<th class="pb-2 font-normal">STATUS</th>
+<th class="pb-2 font-normal text-right">LATENCY</th>
+</tr>
+</thead>
+<tbody class="space-y-1">
+<tr class="bg-surface-container/50 hover:bg-surface-variant/30 transition-colors">
+<td class="py-2 pl-2">12:43:55</td>
+<td>EVT_3391A</td>
+<td class="text-primary">PROCESSED</td>
+<td class="pr-2 text-right">12ms</td>
+</tr>
+<tr class="bg-background hover:bg-surface-variant/30 transition-colors">
+<td class="py-2 pl-2">12:43:52</td>
+<td>EVT_3390B</td>
+<td class="text-primary">PROCESSED</td>
+<td class="pr-2 text-right">8ms</td>
+</tr>
+<tr class="bg-surface-container/50 hover:bg-surface-variant/30 transition-colors">
+<td class="py-2 pl-2">12:43:48</td>
+<td>EVT_3389X</td>
+<td class="text-error">RETRYING</td>
+<td class="pr-2 text-right">450ms</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="col-span-12 md:col-span-6 bento-card p-6 overflow-hidden relative">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-code-label text-code-label text-outline uppercase tracking-widest">Macro Analytics</h3>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+</div>
+<!-- Mini Area Chart Simulation -->
+<div class="h-32 w-full flex items-end gap-1 px-2">
+<div class="w-full bg-primary/20 h-[40%] rounded-t-sm border-t border-primary relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-primary text-on-primary px-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">42</div>
+</div>
+<div class="w-full bg-primary/30 h-[65%] rounded-t-sm border-t border-primary"></div>
+<div class="w-full bg-primary/25 h-[55%] rounded-t-sm border-t border-primary"></div>
+<div class="w-full bg-primary/40 h-[80%] rounded-t-sm border-t border-primary"></div>
+<div class="w-full bg-secondary/30 h-[45%] rounded-t-sm border-t border-secondary"></div>
+<div class="w-full bg-secondary/50 h-[95%] rounded-t-sm border-t border-secondary"></div>
+<div class="w-full bg-primary/20 h-[30%] rounded-t-sm border-t border-primary"></div>
+<div class="w-full bg-primary/10 h-[20%] rounded-t-sm border-t border-primary"></div>
+</div>
+<div class="flex justify-between mt-4 font-code-label text-[10px] text-outline">
+<span>00:00</span>
+<span>06:00</span>
+<span>12:00</span>
+<span>18:00</span>
+<span>NOW</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-dim/90 backdrop-blur-2xl border-t border-outline-variant/50 flex justify-around items-center px-4 pb-safe h-20 rounded-t-xl shadow-[0_-4px_24px_rgba(0,0,0,0.8)]">
+<div class="flex flex-col items-center justify-center bg-primary/10 text-primary rounded-xl p-2 scale-110 duration-300">
+<span class="material-symbols-outlined">token</span>
+<span class="font-code-label text-[10px] uppercase">Hub</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2 hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-code-label text-[10px] uppercase">Flow</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2 hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined">database</span>
+<span class="font-code-label text-[10px] uppercase">MDM</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2 hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-code-label text-[10px] uppercase">Reports</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2 hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-code-label text-[10px] uppercase">Bash</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for event stream simulation
+        document.addEventListener('DOMContentLoaded', () => {
+            const nodes = document.querySelectorAll('.event-node');
+            
+            // Random flickering effect for background elements
+            const scanline = document.querySelector('.scanline');
+            setInterval(() => {
+                if (Math.random() > 0.95) {
+                    scanline.style.opacity = '0.5';
+                    setTimeout(() => scanline.style.opacity = '1', 50);
+                }
+            }, 500);
+
+            // Simple event stream ticker simulation
+            const streamContainer = document.querySelector('.event-stream-container');
+            if (streamContainer) {
+                setInterval(() => {
+                    const lastNode = streamContainer.lastElementChild;
+                    if (lastNode) {
+                        lastNode.style.transition = 'all 0.5s ease';
+                        lastNode.style.transform = 'translateY(-10px)';
+                        lastNode.style.opacity = '0';
+                        setTimeout(() => {
+                            lastNode.style.transform = 'translateY(0)';
+                            lastNode.style.opacity = '1';
+                            streamContainer.prepend(lastNode);
+                        }, 500);
+                    }
+                }, 8000);
+            }
+        });
+    </script>
+</body></html>

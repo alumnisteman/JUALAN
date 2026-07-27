@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Commerce OS - Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(24, 24, 27, 0.7);
+            --glass-border: rgba(39, 39, 42, 1);
+        }
+        body {
+            background-color: #09090B;
+            color: #e5e1e4;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:active {
+            transform: scale(0.98);
+            border-color: #adc6ff;
+        }
+        .active-glow {
+            box-shadow: 0 0 15px rgba(173, 198, 255, 0.15);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #adc6ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .sonar-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid #4edea3;
+            animation: sonar 2s ease-out infinite;
+        }
+        @keyframes sonar {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#4d8eff",
+                      "surface-container-low": "#1c1b1d",
+                      "secondary-container": "#571bc1",
+                      "surface-container": "#201f22",
+                      "on-tertiary-fixed": "#002113",
+                      "on-background": "#e5e1e4",
+                      "inverse-surface": "#e5e1e4",
+                      "tertiary-container": "#00a572",
+                      "secondary-fixed-dim": "#d0bcff",
+                      "surface": "#131315",
+                      "error": "#ffb4ab",
+                      "primary-fixed": "#d8e2ff",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-secondary-fixed": "#23005c",
+                      "surface-container-high": "#2a2a2c",
+                      "on-primary-fixed": "#001a42",
+                      "surface-dim": "#131315",
+                      "on-secondary-fixed-variant": "#5516be",
+                      "outline": "#8c909f",
+                      "on-primary-fixed-variant": "#004395",
+                      "surface-bright": "#39393b",
+                      "secondary": "#d0bcff",
+                      "surface-tint": "#adc6ff",
+                      "secondary-fixed": "#e9ddff",
+                      "on-error": "#690005",
+                      "inverse-on-surface": "#313032",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "on-surface-variant": "#c2c6d6",
+                      "on-primary": "#002e6a",
+                      "on-surface": "#e5e1e4",
+                      "tertiary-fixed": "#6ffbbe",
+                      "on-error-container": "#ffdad6",
+                      "background": "#131315",
+                      "surface-container-lowest": "#0e0e10",
+                      "error-container": "#93000a",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "on-secondary": "#3c0091",
+                      "on-primary-container": "#00285d",
+                      "surface-container-highest": "#353437",
+                      "primary": "#adc6ff",
+                      "on-tertiary-container": "#00311f",
+                      "tertiary": "#4edea3",
+                      "inverse-primary": "#005ac2",
+                      "surface-variant": "#353437",
+                      "on-secondary-container": "#c4abff",
+                      "outline-variant": "#424754",
+                      "on-tertiary": "#003824"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "xs": "4px",
+                      "margin-mobile": "16px",
+                      "unit": "4px",
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "lg": "24px"
+              },
+              "fontFamily": {
+                      "data-mono": ["JetBrains Mono"],
+                      "display-lg": ["Geist"],
+                      "headline-lg-mobile": ["Geist"],
+                      "body-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-caps": ["JetBrains Mono"],
+                      "headline-md": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/30">
+<img alt="Profil AI" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZpINMNv_LFSH6U0D0gRFL3wBVPe6hZV_HHobjPYfBPvwkC61taxLK9l9qXKeXN4b2nkP2MiDD1QiivQSRNXutsxFsAFXwBcZ-MqAcLpgGUXIPNtsjgpO1_zmlaIAGtZZuglrSchJpDAfy7Q6hCS6KU0eS6cgAo_-pup7ED7xL6LUETevOrz7F4jJNinTpENmBadGYxlLTU7D3SwLwTDZIZIr_uPnl1ZWA2KKmtW7AQQwxfgDKxvqrInD53e21u_n8mdMdrFoj7aVB"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">AI Commerce OS</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-20 pb-28 px-margin-mobile space-y-6">
+<!-- Market Search & Greeting -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-tertiary">SISTEM: SIAP</p>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile">Hub Marketplace<span class="terminal-cursor"></span></h2>
+</div>
+<div class="relative w-10 h-10">
+<div class="sonar-ring"></div>
+<div class="w-2 h-2 bg-tertiary rounded-full absolute inset-0 m-auto"></div>
+</div>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-3 pl-12 pr-4 font-data-mono text-data-mono focus:border-primary focus:ring-0 transition-all outline-none" placeholder="Cari plugin, tema..." type="text"/>
+</div>
+</section>
+<!-- Revenue Tracking (Bento Module) -->
+<section class="glass-card rounded-xl p-5 border-primary/20 bg-primary/5">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Bagi Hasil Pengembang</p>
+<h3 class="font-headline-md text-headline-md text-primary">$12,482.90</h3>
+</div>
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-1 space-y-1">
+<div class="flex justify-between font-label-caps text-[10px]">
+<span>KOMISI (15%)</span>
+<span class="text-error">-$1,872.43</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 85%;"></div>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-3 py-1.5 rounded-lg font-label-caps text-[10px] active:scale-95 transition-transform uppercase">TARIK TUNAI</button>
+</div>
+</section>
+<!-- Categories (Horizontal Scroll) -->
+<section>
+<div class="flex overflow-x-auto no-scrollbar gap-3 -mx-margin-mobile px-margin-mobile">
+<button class="bg-secondary-container text-on-secondary-container px-5 py-2 rounded-full font-label-caps whitespace-nowrap active:scale-95 transition-transform">PLUGIN</button>
+<button class="bg-surface-container border border-outline-variant text-on-surface-variant px-5 py-2 rounded-full font-label-caps whitespace-nowrap active:scale-95 transition-transform">TEMA</button>
+<button class="bg-surface-container border border-outline-variant text-on-surface-variant px-5 py-2 rounded-full font-label-caps whitespace-nowrap active:scale-95 transition-transform">ALUR KERJA</button>
+<button class="bg-surface-container border border-outline-variant text-on-surface-variant px-5 py-2 rounded-full font-label-caps whitespace-nowrap active:scale-95 transition-transform">CETAK BIRU</button>
+</div>
+</section>
+<!-- Featured Products (Bento Grid) -->
+<section class="space-y-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase">Penerapan Unggulan</h3>
+<div class="bento-grid">
+<!-- Product 1 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="h-24 relative">
+<img class="w-full h-full object-cover" data-alt="Grafik teknologi minimalis dengan elemen logo TikTok neon biru terintegrasi dalam jaringan visualisasi data canggih." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIle6CzF3TgaHXJHzjQdRWCxQPiMQNrNcsHnZsg6fwRX_nDsoDS0vm3Bwm1Um_3dUcnHNN2POBNw-ZxBKnH1IROLgz1Se8aAWquClCnQluNtwBvpvUbxvb_GPB7Lfcln63f-jg8n0X6eGV4GP5n3S8UjNXBk2sHKi4J_A9ugyllU7YvahayP7-ZODzD16S9sYDI8S4BIZXpqbpRrqKDNBxuIJjFD_yeHmwXgpVRfGYMomhX0mvKLmfDBg6gQxBJNwtqbfjkTd5VVDs"/>
+<div class="absolute top-2 right-2 bg-surface-container-highest/80 backdrop-blur-md px-2 py-0.5 rounded border border-outline-variant">
+<p class="font-label-caps text-[9px] text-tertiary">RATING TERTINGGI</p>
+</div>
+</div>
+<div class="p-3 flex-grow flex flex-col">
+<h4 class="font-headline-md text-sm mb-1 leading-tight">Konektor TikTok</h4>
+<p class="text-[11px] text-on-surface-variant font-body-sm line-clamp-2 mb-3">Sinkronisasi stok &amp; pesanan langsung ke TikTok Shop.</p>
+<div class="mt-auto space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-data-mono text-xs text-primary">$49.00</span>
+<span class="font-label-caps text-[9px] opacity-60">SEKALI BAYAR</span>
+</div>
+<button class="w-full bg-primary text-on-primary py-2 rounded-lg font-label-caps text-[10px] active:scale-95 transition-transform flex items-center justify-center gap-1 uppercase">
+<span class="material-symbols-outlined text-sm">install_desktop</span> PASANG
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="h-24 relative">
+<img class="w-full h-full object-cover" data-alt="Diagram alur kerja abstrak dengan garis-garis ungu cair mengalir, mewakili logika bisnis binatu otomatis." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgt_pdpgDMmt_PDdOd0U14E3xCb_n2Tem6gRf9ICUH6PTqwCoJLRn4TiIhlqEogddgxYe4mc-kQpF25Fv6wt4vOhrO_mchbl_TKP4XI6nCF0C8Y0glrpL6uSizBmIL_Abv8CysIfZShLYJG0ry8jVTNO1JSuG-OxeJXsmts63oZXZlykAWpzMp0VLvl-g5rlPuNTKu5PJHKiqNRYXnPlAjwo4dbkGOxluJR3ZoO1PqxkBdR5R2PQWDOMbk6aicjQ-d-bUEN2WUvHn4"/>
+</div>
+<div class="p-3 flex-grow flex flex-col">
+<h4 class="font-headline-md text-sm mb-1 leading-tight">Alur Kerja Binatu</h4>
+<p class="text-[11px] text-on-surface-variant font-body-sm line-clamp-2 mb-3">Penjadwalan otonom untuk layanan antar-jemput.</p>
+<div class="mt-auto space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-data-mono text-xs text-primary">$19/bln</span>
+<span class="font-label-caps text-[9px] opacity-60">LANGGANAN</span>
+</div>
+<button class="w-full bg-surface-container-high border border-outline-variant text-on-surface py-2 rounded-lg font-label-caps text-[10px] active:scale-95 transition-transform flex items-center justify-center gap-1 uppercase">
+<span class="material-symbols-outlined text-sm">rocket_launch</span> LUNCURKAN
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col col-span-2">
+<div class="flex">
+<div class="w-1/3 h-32 relative">
+<img class="w-full h-full object-cover" data-alt="Cetak biru konsep fashion kelas atas dengan tipografi elegan dan garis kisi bercahaya." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlEtNrb9Y5VT_RahL_UHPeu011Y5TKuTDkp0MQLeXnnHDpGlcWoSDLybRZ3Wc3QAIqgJWHIFUcr09q-0t9FT3Q-Pq5LcqDxd-9fTpo2BpZAF_3XVQfTHDCDlm6iyAVg8IAtVGLOcd1eThOOn_ZWRV4YSCWmV0Iv81ZhOYEM5Vf6r9_AM9UOVZccqNUMlUrb4BrGU4vORxM6yNNWyyQfh_lRZOzxx03gghVhtfBrLrZok7JIqwSkOXc9fptJ7CAfK10SFU__mAdkOsw"/>
+</div>
+<div class="w-2/3 p-4 flex flex-col">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-headline-md text-md mb-1">Cetak Biru Toko Fashion</h4>
+<p class="text-xs text-on-surface-variant font-body-sm mb-4">Arsitektur toko ujung-ke-ujung lengkap untuk merek ritel mewah.</p>
+</div>
+<span class="bg-tertiary/10 text-tertiary border border-tertiary/30 px-2 py-0.5 rounded text-[8px] font-label-caps">TERVERIFIKASI</span>
+</div>
+<div class="mt-auto flex justify-between items-center">
+<span class="font-data-mono text-lg text-primary">$129.00</span>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-caps text-xs active:scale-95 transition-transform uppercase">BELI &amp; KLONING</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Ecosystem Stats -->
+<section class="grid grid-cols-2 gap-4">
+<div class="glass-card rounded-xl p-4 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary mb-2">group</span>
+<span class="font-headline-md text-lg">14.2rb</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase">PENGEMBANG AKTIF</span>
+</div>
+<div class="glass-card rounded-xl p-4 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-tertiary mb-2">hub</span>
+<span class="font-headline-md text-lg">892</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase">CETAK BIRU</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-caps text-[10px] mt-1">Pusat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-[10px] mt-1">Kecerdasan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-1">Pesanan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px] mt-1">Analitik</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for glass cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.classList.add('active-glow');
+            });
+            card.addEventListener('touchend', () => {
+                card.classList.remove('active-glow');
+            });
+        });
+
+        // Search input terminal effect
+        const searchInput = document.querySelector('input[type="text"]');
+        if (searchInput) {
+            searchInput.addEventListener('focus', () => {
+                searchInput.parentElement.classList.add('scale-[1.02]');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchInput.parentElement.classList.remove('scale-[1.02]');
+            });
+        }
+    </script>
+</body></html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RESELLER_HUB.OS | Market Intelligence Engine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "inverse-primary": "#006970",
+                "on-primary-fixed": "#002022",
+                "on-background": "#dae2fd",
+                "on-tertiary": "#003907",
+                "tertiary-fixed-dim": "#00e639",
+                "on-primary": "#00363a",
+                "surface-bright": "#31394d",
+                "error-container": "#93000a",
+                "primary-fixed-dim": "#00dbe9",
+                "data-node": "#38BDF8",
+                "secondary-container": "#7000ff",
+                "surface-variant": "#2d3449",
+                "tertiary": "#ddffd3",
+                "secondary-fixed-dim": "#d1bcff",
+                "tertiary-container": "#00fb40",
+                "surface-container-lowest": "#060e20",
+                "intelligence-score": "#FACC15",
+                "on-tertiary-container": "#006e16",
+                "primary-fixed": "#7df4ff",
+                "primary": "#dbfcff",
+                "inverse-on-surface": "#283044",
+                "surface-container-highest": "#2d3449",
+                "secondary-fixed": "#e9ddff",
+                "surface-container": "#171f33",
+                "secondary": "#d1bcff",
+                "api-disconnected": "#94A3B8",
+                "primary-container": "#00f0ff",
+                "surface": "#0b1326",
+                "outline": "#849495",
+                "on-surface": "#dae2fd",
+                "market-growth": "#00FF41",
+                "surface-tint": "#00dbe9",
+                "surface-dim": "#0b1326",
+                "on-primary-fixed-variant": "#004f54",
+                "on-surface-variant": "#b9cacb",
+                "risk-danger": "#FF4B4B",
+                "tertiary-fixed": "#72ff70",
+                "surface-container-low": "#131b2e",
+                "background": "#0b1326",
+                "on-secondary-container": "#ddcdff",
+                "on-tertiary-fixed-variant": "#00530e",
+                "error": "#ffb4ab",
+                "api-connected": "#22C55E",
+                "on-tertiary-fixed": "#002203",
+                "on-secondary-fixed": "#23005b",
+                "on-secondary-fixed-variant": "#5700c9",
+                "on-error-container": "#ffdad6",
+                "on-primary-container": "#006970",
+                "outline-variant": "#3b494b",
+                "on-secondary": "#3c0090",
+                "inverse-surface": "#dae2fd",
+                "on-error": "#690005"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "unit": "4px",
+                "density-compact": "8px",
+                "gutter": "16px",
+                "margin-desktop": "32px",
+                "margin-mobile": "16px",
+                "density-comfortable": "16px"
+            },
+            "fontFamily": {
+                "headline-md": ["Hanken Grotesk"],
+                "headline-lg": ["Hanken Grotesk"],
+                "label-caps": ["JetBrains Mono"],
+                "body-md": ["Inter"],
+                "display-lg": ["Hanken Grotesk"],
+                "headline-lg-mobile": ["Hanken Grotesk"],
+                "body-sm": ["Inter"],
+                "data-mono": ["JetBrains Mono"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: #0b1326; color: #dae2fd; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(23, 31, 51, 0.7); backdrop-filter: blur(12px); border: 1px solid #3b494b; }
+        .score-glow { filter: drop-shadow(0 0 8px rgba(0, 251, 64, 0.4)); }
+        .data-stream-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .neural-line { background: linear-gradient(90deg, transparent, #00f0ff, transparent); height: 1px; width: 100%; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant docked full-width top-0 fixed w-full h-16 z-50 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<h1 class="font-label-caps text-label-caps text-primary tracking-widest">RESELLER_HUB.OS</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-primary font-bold font-label-caps text-label-caps" href="#">Intel</a>
+<a class="text-outline-variant hover:text-primary transition-colors duration-200 font-label-caps text-label-caps" href="#">Marketplace</a>
+<a class="text-outline-variant hover:text-primary transition-colors duration-200 font-label-caps text-label-caps" href="#">Logs</a>
+</nav>
+<div class="flex items-center gap-4 border-l border-outline-variant pl-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-api-connected data-stream-pulse"></span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">NODE_01_ACTIVE</span>
+</div>
+<span class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all cursor-pointer" data-icon="sensors">sensors</span>
+</div>
+</div>
+</header>
+<!-- NavigationDrawer (Desktop Only) -->
+<aside class="hidden lg:flex fixed inset-y-0 left-0 z-[60] flex flex-col h-full w-72 rounded-r-xl bg-surface-container-low border-r border-outline-variant pt-20">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 border border-primary flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-tech digital portrait of a cybernetic entity with glowing blue neural pathways visible under the skin, set against a dark industrial server room. The lighting is cold and clinical, emphasizing a futuristic intelligence theme with sharp neon cyan accents and deep navy shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFvp7SEf4e3-JrznBGSk71gKduU0kW3DaxZ4E6auCFiBkP-oxPSFxPQKxDTSC5Miyr_kHgf-2r9b2_kpflXRm--QH6apTqhTw2UkQE_YxbQO0lPfyBVFP7Q4pySwAX6po4WY8xLj5XtyxOq43LseDj21BhlVY_Jtj0klvN2W6SYpJSiCJ3-LMKLud4PJ2EMpNONMOhXK8NoU-33exdT1zHT8o7AvSw5Plomw9ipnF3mQQByveD-yIJp8WB8ur9DVKl8j2ySZgYrZtt"/>
+</div>
+<div>
+<p class="font-data-mono text-data-mono text-tertiary">INTEL_UNIT_01</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">STATUS: SYNCING</p>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 text-tertiary bg-tertiary-container/10 border-l-2 border-tertiary px-4 py-3 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-data-mono text-data-mono">Market Intel</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-data-mono text-data-mono">Marketplace Scan</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble_outline">chat_bubble_outline</span>
+<span class="font-data-mono text-data-mono">Social Sentiment</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="api">api</span>
+<span class="font-data-mono text-data-mono">Supplier API</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-data-mono text-data-mono">System Logs</span>
+</a>
+</nav>
+<div class="p-6 border-t border-outline-variant">
+<p class="font-label-caps text-[10px] text-outline-variant">v2.4.0-alpha</p>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-72 pt-20 pb-24 px-4 md:px-gutter">
+<!-- Header & Breadcrumbs -->
+<div class="mb-8">
+<div class="flex items-center gap-2 text-outline text-[12px] font-label-caps mb-2">
+<span>INTEL_CORE</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary">MARKET_INTELLIGENCE_ENGINE</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Market Intelligence Engine</h2>
+</div>
+<!-- Intelligence Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Trend Score Center (Large Widget) -->
+<div class="md:col-span-8 glass-card rounded-xl p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="trending_up">trending_up</span>
+</div>
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-label-caps text-label-caps text-outline mb-1">PRODUCT CATEGORY TRENDS</h3>
+<p class="font-headline-md text-headline-md text-on-surface">Neural Growth Analysis</p>
+</div>
+<div class="bg-primary-container/10 border border-primary-container px-3 py-1 rounded-full">
+<span class="font-data-mono text-data-mono text-primary">SCANNED: 2m ago</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Category 1 -->
+<div class="bg-surface-container-high p-4 rounded-lg border border-outline-variant hover:border-primary transition-all group">
+<div class="flex justify-between items-center mb-3">
+<span class="font-label-caps text-[10px] text-outline">HARDWARE.V2</span>
+<span class="material-symbols-outlined text-market-growth" data-icon="arrow_upward">arrow_upward</span>
+</div>
+<div class="flex items-end gap-2 mb-2">
+<span class="font-display-lg text-display-lg text-market-growth score-glow">84</span>
+<span class="font-label-caps text-label-caps text-outline-variant pb-2">/100</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden">
+<div class="bg-market-growth h-full" style="width: 84%"></div>
+</div>
+<p class="mt-3 text-[12px] text-on-surface-variant">Velocity increase: +12.4%</p>
+</div>
+<!-- Category 2 -->
+<div class="bg-surface-container-high p-4 rounded-lg border border-outline-variant hover:border-primary transition-all group">
+<div class="flex justify-between items-center mb-3">
+<span class="font-label-caps text-[10px] text-outline">WEARABLES.X</span>
+<span class="material-symbols-outlined text-intelligence-score" data-icon="horizontal_rule">horizontal_rule</span>
+</div>
+<div class="flex items-end gap-2 mb-2">
+<span class="font-display-lg text-display-lg text-intelligence-score">62</span>
+<span class="font-label-caps text-label-caps text-outline-variant pb-2">/100</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden">
+<div class="bg-intelligence-score h-full" style="width: 62%"></div>
+</div>
+<p class="mt-3 text-[12px] text-on-surface-variant">Market saturation: High</p>
+</div>
+<!-- Category 3 -->
+<div class="bg-surface-container-high p-4 rounded-lg border border-outline-variant hover:border-primary transition-all group">
+<div class="flex justify-between items-center mb-3">
+<span class="font-label-caps text-[10px] text-outline">IOT_NODES</span>
+<span class="material-symbols-outlined text-market-growth" data-icon="arrow_upward">arrow_upward</span>
+</div>
+<div class="flex items-end gap-2 mb-2">
+<span class="font-display-lg text-display-lg text-tertiary-fixed-dim">91</span>
+<span class="font-label-caps text-label-caps text-outline-variant pb-2">/100</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary-fixed-dim h-full" style="width: 91%"></div>
+</div>
+<p class="mt-3 text-[12px] text-on-surface-variant">Emerging demand spike</p>
+</div>
+</div>
+<!-- Price History Chart (Simplified) -->
+<div class="mt-8">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-label-caps text-label-caps text-outline">AGGREGATE PRICE HISTORY (30D)</h4>
+<div class="flex gap-2">
+<button class="text-[10px] font-label-caps px-2 py-1 rounded border border-outline-variant hover:bg-surface-bright">DAILY</button>
+<button class="text-[10px] font-label-caps px-2 py-1 rounded bg-primary-container text-on-primary-container">HOURLY</button>
+</div>
+</div>
+<div class="h-48 w-full relative flex items-end justify-between px-2 pt-10 border-l border-b border-outline-variant/30">
+<!-- Simulated Chart Bars -->
+<div class="w-[8%] bg-primary/20 h-[60%] rounded-t-sm hover:bg-primary transition-all relative group">
+<div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container-highest px-2 py-1 rounded text-[10px] font-data-mono z-10">$240</div>
+</div>
+<div class="w-[8%] bg-primary/20 h-[55%] rounded-t-sm hover:bg-primary transition-all relative group"></div>
+<div class="w-[8%] bg-primary/20 h-[65%] rounded-t-sm hover:bg-primary transition-all relative group"></div>
+<div class="w-[8%] bg-primary/20 h-[75%] rounded-t-sm hover:bg-primary transition-all relative group"></div>
+<div class="w-[8%] bg-primary/30 h-[85%] rounded-t-sm hover:bg-primary transition-all relative group"></div>
+<div class="w-[8%] bg-primary/40 h-[70%] rounded-t-sm hover:bg-primary transition-all relative group"></div>
+<div class="w-[8%] bg-primary/60 h-[50%] rounded-t-sm hover:bg-primary transition-all relative group"></div>
+<div class="w-[8%] bg-primary/80 h-[45%] rounded-t-sm hover:bg-primary transition-all relative group"></div>
+<div class="w-[8%] bg-primary h-[35%] rounded-t-sm hover:bg-primary transition-all relative group">
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 text-risk-danger flex flex-col items-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_down">trending_down</span>
+<span class="font-label-caps text-[10px]">DIP</span>
+</div>
+</div>
+<div class="w-[8%] bg-primary h-[40%] rounded-t-sm hover:bg-primary transition-all relative group"></div>
+</div>
+</div>
+</div>
+<!-- Smart Notifications Panel -->
+<div class="md:col-span-4 glass-card rounded-xl p-6 flex flex-col">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="notifications_active">notifications_active</span>
+<h3 class="font-label-caps text-label-caps text-outline">INTEL ALERTS</h3>
+</div>
+<div class="space-y-4 overflow-y-auto max-h-[500px] pr-2">
+<!-- Alert 1 -->
+<div class="bg-risk-danger/10 border border-risk-danger/30 p-4 rounded-lg relative overflow-hidden group hover:bg-risk-danger/20 transition-all cursor-pointer">
+<div class="absolute top-0 left-0 h-full w-1 bg-risk-danger"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-[10px] text-risk-danger">PRICE_DROP_DETECTED</span>
+<span class="font-data-mono text-[10px] text-outline">14:22</span>
+</div>
+<p class="text-body-sm font-semibold mb-1">Competitor "ALPHA_TECH" dropped price by 15%</p>
+<p class="text-[12px] text-on-surface-variant">Target SKU: X-400 Series. Counter-measure recommended.</p>
+</div>
+<!-- Alert 2 -->
+<div class="bg-primary-container/10 border border-primary-container/30 p-4 rounded-lg relative overflow-hidden group hover:bg-primary-container/20 transition-all cursor-pointer">
+<div class="absolute top-0 left-0 h-full w-1 bg-primary-container"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-[10px] text-primary">NEW_PROMO_SCAN</span>
+<span class="font-data-mono text-[10px] text-outline">12:05</span>
+</div>
+<p class="text-body-sm font-semibold mb-1">"OMEGA_RETAIL" launched 'Flash Sale' bundle</p>
+<p class="text-[12px] text-on-surface-variant">Free shipping on all Hardware.V2 categories.</p>
+</div>
+<!-- Alert 3 -->
+<div class="bg-tertiary-container/10 border border-tertiary-container/30 p-4 rounded-lg relative overflow-hidden group hover:bg-tertiary-container/20 transition-all cursor-pointer">
+<div class="absolute top-0 left-0 h-full w-1 bg-tertiary-container"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-[10px] text-tertiary-container">INVENTORY_LOW</span>
+<span class="font-data-mono text-[10px] text-outline">09:11</span>
+</div>
+<p class="text-body-sm font-semibold mb-1">Market shortage detected: IOT_NODES</p>
+<p class="text-[12px] text-on-surface-variant">Competitors reporting OOS on major channels.</p>
+</div>
+</div>
+<button class="mt-6 w-full py-3 border border-outline-variant rounded font-label-caps text-label-caps hover:bg-surface-bright transition-all">VIEW ALL LOGS</button>
+</div>
+<!-- Seller Score & Competitor Table -->
+<div class="md:col-span-12 glass-card rounded-xl p-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+<div>
+<h3 class="font-label-caps text-label-caps text-outline mb-1">COMPETITOR BENCHMARKING</h3>
+<p class="font-headline-md text-headline-md text-on-surface">Seller Reliability Index</p>
+</div>
+<div class="flex gap-3">
+<div class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="filter_list">filter_list</span>
+<span class="font-label-caps text-[12px]">FILTER BY SCORE</span>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/30">
+<th class="py-4 px-4 font-label-caps text-[10px] text-outline uppercase tracking-wider">Entity Name</th>
+<th class="py-4 px-4 font-label-caps text-[10px] text-outline uppercase tracking-wider">Seller Score</th>
+<th class="py-4 px-4 font-label-caps text-[10px] text-outline uppercase tracking-wider">Market Share</th>
+<th class="py-4 px-4 font-label-caps text-[10px] text-outline uppercase tracking-wider">Avg Response</th>
+<th class="py-4 px-4 font-label-caps text-[10px] text-outline uppercase tracking-wider">Status</th>
+<th class="py-4 px-4 font-label-caps text-[10px] text-outline uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-data-mono text-on-surface">
+<!-- Row 1 -->
+<tr class="border-b border-outline-variant/10 hover:bg-primary/5 transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-bright rounded flex items-center justify-center font-bold text-primary">A</div>
+<span>ALPHA_TECH_SOLUTIONS</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="flex text-intelligence-score">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+</td>
+<td class="py-4 px-4">24.5%</td>
+<td class="py-4 px-4">1.2 hrs</td>
+<td class="py-4 px-4">
+<span class="px-2 py-0.5 bg-tertiary-container/10 text-tertiary-container text-[10px] border border-tertiary-container/30 rounded">AGGRESSIVE</span>
+</td>
+<td class="py-4 px-4 text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-outline-variant/10 hover:bg-primary/5 transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-bright rounded flex items-center justify-center font-bold text-secondary">O</div>
+<span>OMEGA_RETAIL_CORP</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="flex text-intelligence-score">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</td>
+<td class="py-4 px-4">18.2%</td>
+<td class="py-4 px-4">0.8 hrs</td>
+<td class="py-4 px-4">
+<span class="px-2 py-0.5 bg-primary-container/10 text-primary-container text-[10px] border border-primary-container/30 rounded">STABLE</span>
+</td>
+<td class="py-4 px-4 text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-outline-variant/10 hover:bg-primary/5 transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-bright rounded flex items-center justify-center font-bold text-tertiary">B</div>
+<span>BETA_WAREHOUSE</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="flex text-intelligence-score">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 0;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+</td>
+<td class="py-4 px-4">12.9%</td>
+<td class="py-4 px-4">4.5 hrs</td>
+<td class="py-4 px-4">
+<span class="px-2 py-0.5 bg-risk-danger/10 text-risk-danger text-[10px] border border-risk-danger/30 rounded">AT_RISK</span>
+</td>
+<td class="py-4 px-4 text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Review Intelligence (Sentiment Patterns) -->
+<div class="md:col-span-12 glass-card rounded-xl p-6">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-secondary" data-icon="psychology">psychology</span>
+<h3 class="font-label-caps text-label-caps text-outline">REVIEW INTELLIGENCE &amp; SENTIMENT MAPPING</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Positive Sentiments -->
+<div class="bg-surface-container-high/50 p-5 rounded-lg border border-tertiary-container/20">
+<h4 class="font-data-mono text-tertiary-container mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="thumb_up">thumb_up</span>
+                            KEY SATISFACTION DRIVERS
+                        </h4>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-body-sm">Shipping Speed</span>
+<span class="font-data-mono text-market-growth">88% Match</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1 rounded-full">
+<div class="bg-market-growth h-full" style="width: 88%"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-sm">Build Quality</span>
+<span class="font-data-mono text-market-growth">72% Match</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1 rounded-full">
+<div class="bg-market-growth h-full" style="width: 72%"></div>
+</div>
+</div>
+</div>
+<!-- Complaint Patterns -->
+<div class="bg-surface-container-high/50 p-5 rounded-lg border border-risk-danger/20">
+<h4 class="font-data-mono text-risk-danger mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="report">report</span>
+                            CUSTOMER COMPLAINT PATTERNS (AI DETECTED)
+                        </h4>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="shrink-0 w-10 h-10 rounded bg-risk-danger/10 flex items-center justify-center text-risk-danger font-bold">P1</div>
+<div>
+<p class="text-body-sm font-semibold">"DOA" (Dead on Arrival) Units</p>
+<p class="text-[12px] text-on-surface-variant">Pattern detected in 12% of hardware reviews in last 14 days.</p>
+</div>
+</div>
+<div class="neural-line opacity-20"></div>
+<div class="flex gap-4">
+<div class="shrink-0 w-10 h-10 rounded bg-intelligence-score/10 flex items-center justify-center text-intelligence-score font-bold">P2</div>
+<div>
+<p class="text-body-sm font-semibold">Packaging Fragility</p>
+<p class="text-[12px] text-on-surface-variant">Mentioned in 8% of low-score reviews across top 3 competitors.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container/90 backdrop-blur-2xl border-t border-outline-variant shadow-lg">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1.5 Active: scale-90 duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps">Hub</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">Intel</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="font-label-caps text-label-caps">Trends</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed bottom-24 right-6 md:bottom-8 md:right-8 w-14 h-14 bg-primary-container text-on-primary-container rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-40">
+<span class="material-symbols-outlined text-[28px]" data-icon="bolt">bolt</span>
+</button>
+<script>
+        // Simple Micro-interaction for hover effects and data updates simulation
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('border-primary/50');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('border-primary/50');
+            });
+        });
+
+        // Simulating "real-time" notification dots
+        setInterval(() => {
+            const nodes = document.querySelectorAll('.data-stream-pulse');
+            nodes.forEach(node => {
+                node.classList.toggle('bg-api-connected');
+                node.classList.toggle('bg-primary-container');
+            });
+        }, 3000);
+    </script>
+</body></html>
