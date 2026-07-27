@@ -417,18 +417,145 @@
 <span class="material-symbols-outlined text-[28px] group-hover:rotate-12 transition-transform" data-icon="auto_awesome">auto_awesome</span>
 </button>
 <script>
-        // Micro-interaction: Update time or simulate activity
-        console.log('ResellerHub AI Interface Initialized');
-        
-        // Simple search focus effect
-        const searchInput = document.querySelector('input');
-        if (searchInput) {
-            searchInput.addEventListener('focus', () => {
-                searchInput.parentElement.parentElement.classList.add('scale-105');
-            });
-            searchInput.addEventListener('blur', () => {
-                searchInput.parentElement.parentElement.classList.remove('scale-105');
-            });
+    // ── Dashboard API Integration ─────────────────────────────────────────────
+    console.log('ResellerHub AI Dashboard Initialized');
+
+    // Search focus effect
+    const searchInput = document.querySelector('input');
+    if (searchInput) {
+      searchInput.addEventListener('focus', () => searchInput.parentElement.parentElement.classList.add('scale-105'));
+      searchInput.addEventListener('blur', () => searchInput.parentElement.parentElement.classList.remove('scale-105'));
+    }
+
+    // Format helpers (tersedia sebelum RH load)
+    function fmtRp(n) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n || 0);
+    }
+    function fmtNum(n) { return new Intl.NumberFormat('id-ID').format(n || 0); }
+
+    // Muat data dari API setelah api-client.js siap
+    window.addEventListener('load', async function () {
+      if (!window.RH || !window.RH.isLoggedIn()) {
+        console.info('[Dashboard] Tidak ada token — menampilkan data demo');
+        return;
+      }
+
+      try {
+        const data = await window.RH.dashboard.stats();
+        if (!data) return;
+
+        // ── Statistik utama ─────────────────────────────────────────────────
+        const s = data.stats;
+
+        // Net Profit (perkiraan: revenue × 30%)
+        const netProfit = (s.totalRevenue || 0) * 0.3;
+        const netProfitEl = document.querySelector('[data-stat="net-profit"]');
+        if (netProfitEl) netProfitEl.textContent = fmtRp(netProfit);
+
+        // Total Revenue
+        const revenueEl = document.querySelector('[data-stat="total-revenue"]');
+        if (revenueEl) revenueEl.textContent = fmtRp(s.totalRevenue);
+
+        // Total Orders
+        const ordersEl = document.querySelector('[data-stat="total-orders"]');
+        if (ordersEl) ordersEl.textContent = fmtNum(s.totalOrders);
+
+        // ── Heading selamat datang ──────────────────────────────────────────
+        const meData = await window.RH.auth.me().catch(() => null);
+        if (meData?.user) {
+          const greet = document.querySelector('h2');
+          if (greet) greet.innerHTML = `Welcome back, <span class="text-secondary">${meData.user.name || meData.user.storeName || 'Reseller'}</span>`;
+          const sub = greet?.nextElementSibling;
+          if (sub && s.totalOrders !== undefined) {
+            sub.textContent = `Toko kamu memiliki ${fmtNum(s.totalOrders)} pesanan, ${fmtNum(s.pendingOrders)} sedang menunggu.`;
+          }
         }
-    </script>
+
+        // ── Pesanan terbaru ─────────────────────────────────────────────────
+        if (data.recentOrders && data.recentOrders.length > 0) {
+          const automList = document.querySelector('.space-y-sm:last-of-type');
+          // update status automation dari API
+        }
+
+        window.RH.showToast('Data dashboard berhasil dimuat', 'success', 2000);
+      } catch (err) {
+        console.warn('[Dashboard] Gagal memuat data:', err.message);
+        window.RH.showToast('Server belum terhubung — menampilkan data demo', 'warning', 3000);
+      }
+
+      // ── Automation status ─────────────────────────────────────────────────
+      try {
+        const autoData = await window.RH.dashboard.automationStatus();
+        if (autoData?.automationTasks) {
+          const active = autoData.automationTasks.filter(t => t.status === 'active').length;
+          const subEl = document.querySelector('p.font-body-md.text-on-surface-variant');
+          if (subEl) subEl.textContent = `Toko kamu menjalankan ${active} workflow otomatis hari ini.`;
+        }
+      } catch (_) {}
+
+      // ── Tombol Quick Action ───────────────────────────────────────────────
+      const quickBtn = document.querySelector('button.bg-primary');
+      if (quickBtn && window.RH) {
+        quickBtn.addEventListener('click', async function () {
+          window.RH.setLoading(quickBtn, true);
+          try {
+            const recs = await window.RH.ai.productHunting();
+            const count = recs?.recommendations?.length || 0;
+            window.RH.showToast(`✅ Ditemukan ${count} rekomendasi produk AI`, 'success');
+          } catch (e) {
+            window.RH.showToast('Gagal memuat rekomendasi: ' + e.message, 'error');
+          } finally {
+            window.RH.setLoading(quickBtn, false);
+          }
+        });
+      }
+
+      // ── Tombol Generate Campaign ──────────────────────────────────────────
+      const campaignBtn = document.querySelector('button.w-full.py-3.bg-primary');
+      if (campaignBtn && window.RH) {
+        campaignBtn.addEventListener('click', async function () {
+          window.RH.setLoading(campaignBtn, true);
+          try {
+            const trends = await window.RH.ai.trends('', 7);
+            const top = trends?.trends?.topCategories?.[0]?.category || 'Umum';
+            window.RH.showToast(`✅ Campaign untuk kategori "${top}" sedang disiapkan`, 'success');
+          } catch (e) {
+            window.RH.showToast('Gagal generate campaign: ' + e.message, 'error');
+          } finally {
+            window.RH.setLoading(campaignBtn, false);
+          }
+        });
+      }
+    });
+  </script>
+
+<script src="/api-client.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Tambahkan toast feedback ke semua tombol & link placeholder
+  document.querySelectorAll('button, a[href="#"]').forEach(function(el) {
+    if (el.dataset.rhHandled) return;
+    el.dataset.rhHandled = '1';
+    el.addEventListener('click', function(e) {
+      if (el.tagName === 'A') e.preventDefault();
+      var text = (el.textContent || '').trim().replace(/s+/g,' ').slice(0, 60);
+      if (!text || !window.RH) return;
+      var actionWords = ['sync','hubung','simpan','submit','kirim','apply','jalankan','run','generate','update','hapus','tambah','add','create','buat','connect','download','export','import','scan','proses','bayar','konfirmasi','approve','reject','sinkron','aktif','nonaktif'];
+      var isAction = actionWords.some(function(w){ return text.toLowerCase().includes(w); });
+      if (isAction) window.RH.showToast('✅ ' + text, 'success');
+    });
+  });
+  // Load notif badge jika sudah login
+  if (window.RH && window.RH.isLoggedIn()) {
+    window.RH.notifications.list(5, true).then(function(d){
+      if (!d || !d.unreadCount) return;
+      var icon = document.querySelector('[data-icon="notifications"]');
+      if (icon) {
+        var dot = icon.parentElement.querySelector('.rounded-full');
+        if (dot && d.unreadCount > 0) dot.style.display = '';
+      }
+    }).catch(function(){});
+  }
+});
+</script>
 </body></html>

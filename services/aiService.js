@@ -14,12 +14,13 @@ if (process.env.OPENAI_API_KEY) {
 async function analyzeProduct(product) {
   if (!openai) {
     // Fallback to basic analysis when OpenAI is not available
-    const margin = ((product.pricing.sellingPrice - product.pricing.costPrice) / product.pricing.sellingPrice) * 100;
+    const sp = product.pricing.sellingPrice || 0;
+    const margin = sp > 0 ? ((sp - product.pricing.costPrice) / sp) * 100 : 0;
     return {
       demandScore: 50,
       competitionLevel: 'medium',
       trendDirection: 'stable',
-      recommendedPrice: product.pricing.sellingPrice,
+      recommendedPrice: sp,
       profitMargin: margin
     };
   }
@@ -59,12 +60,13 @@ async function analyzeProduct(product) {
   } catch (error) {
     console.error('AI Analysis error:', error);
     // Fallback to basic analysis
-    const margin = ((product.pricing.sellingPrice - product.pricing.costPrice) / product.pricing.sellingPrice) * 100;
+    const sp = product.pricing.sellingPrice || 0;
+    const margin = sp > 0 ? ((sp - product.pricing.costPrice) / sp) * 100 : 0;
     return {
       demandScore: 50,
       competitionLevel: 'medium',
       trendDirection: 'stable',
-      recommendedPrice: product.pricing.sellingPrice,
+      recommendedPrice: sp,
       profitMargin: margin
     };
   }

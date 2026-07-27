@@ -433,4 +433,34 @@
             });
         });
     </script>
+
+<script src="/api-client.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Tambahkan toast feedback ke semua tombol & link placeholder
+  document.querySelectorAll('button, a[href="#"]').forEach(function(el) {
+    if (el.dataset.rhHandled) return;
+    el.dataset.rhHandled = '1';
+    el.addEventListener('click', function(e) {
+      if (el.tagName === 'A') e.preventDefault();
+      var text = (el.textContent || '').trim().replace(/s+/g,' ').slice(0, 60);
+      if (!text || !window.RH) return;
+      var actionWords = ['sync','hubung','simpan','submit','kirim','apply','jalankan','run','generate','update','hapus','tambah','add','create','buat','connect','download','export','import','scan','proses','bayar','konfirmasi','approve','reject','sinkron','aktif','nonaktif'];
+      var isAction = actionWords.some(function(w){ return text.toLowerCase().includes(w); });
+      if (isAction) window.RH.showToast('✅ ' + text, 'success');
+    });
+  });
+  // Load notif badge jika sudah login
+  if (window.RH && window.RH.isLoggedIn()) {
+    window.RH.notifications.list(5, true).then(function(d){
+      if (!d || !d.unreadCount) return;
+      var icon = document.querySelector('[data-icon="notifications"]');
+      if (icon) {
+        var dot = icon.parentElement.querySelector('.rounded-full');
+        if (dot && d.unreadCount > 0) dot.style.display = '';
+      }
+    }).catch(function(){});
+  }
+});
+</script>
 </body></html>

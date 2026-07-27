@@ -66,18 +66,28 @@ async function syncViaAPI(supplier, userId) {
           await existingProduct.save();
           results.updated++;
         } else {
+          // Pastikan field wajib ada sebelum membuat produk baru
+          if (!productData.name || !productData.sku) {
+            results.errors++;
+            continue;
+          }
+          const costPrice = parseFloat(productData.costPrice) || 0;
+          if (costPrice <= 0) {
+            results.errors++;
+            continue;
+          }
           const newProduct = new Product({
             name: productData.name,
             sku: productData.sku,
             category: productData.category || 'uncategorized',
             pricing: {
-              costPrice: productData.costPrice,
-              sellingPrice: productData.costPrice * 1.3, // 30% markup
+              costPrice,
+              sellingPrice: Math.round(costPrice * 1.3 / 100) * 100, // 30% markup, bulatkan ke 100
               currency: 'IDR'
             },
             inventory: {
-              quantity: productData.stock,
-              available: productData.stock,
+              quantity: parseInt(productData.stock) || 0,
+              available: parseInt(productData.stock) || 0,
               reorderLevel: 10,
               supplierId: supplier._id
             },

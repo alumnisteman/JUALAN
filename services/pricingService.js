@@ -66,8 +66,9 @@ async function applyDynamicPricing(userId) {
       let shouldUpdate = false;
 
       // Rule 1: Minimum margin check
-      const currentMargin = ((product.pricing.sellingPrice - product.pricing.costPrice) / product.pricing.sellingPrice) * 100;
-      if (currentMargin < 20) {
+      const sp = product.pricing.sellingPrice || 0;
+      const currentMargin = sp > 0 ? ((sp - product.pricing.costPrice) / sp) * 100 : 0;
+      if (currentMargin < 20 && product.pricing.costPrice > 0) {
         newPrice = product.pricing.costPrice / 0.8; // Ensure 20% margin
         shouldUpdate = true;
       }

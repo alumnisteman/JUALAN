@@ -70,6 +70,9 @@ app.use('/api/pricing', authMiddleware, pricingRoutes);
 const fs = require('fs');
 const path = require('path');
 
+// Serve shared public assets (api-client.js, etc.)
+app.use(express.static(path.join(__dirname, 'public')));
+
 const uiModules = [
   'resellerhub_dashboard',
   'resellerhub_os',

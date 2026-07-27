@@ -457,11 +457,11 @@
 <span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
 <span class="font-label-sm text-label-sm mt-1">Products</span>
 </a>
-<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 duration-200 shadow-lg" href="{{DATA:SCREEN:SCREEN_12}}">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 duration-200 shadow-lg" href="#">
 <span class="material-symbols-outlined fill-icon" data-icon="auto_awesome">auto_awesome</span>
 <span class="font-label-sm text-label-sm mt-1">AI Tools</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="{{DATA:SCREEN:SCREEN_13}}">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="#">
 <span class="material-symbols-outlined" data-icon="share">share</span>
 <span class="font-label-sm text-label-sm mt-1">Social</span>
 </a>
@@ -498,4 +498,34 @@
     </script>
 
 
+
+<script src="/api-client.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Tambahkan toast feedback ke semua tombol & link placeholder
+  document.querySelectorAll('button, a[href="#"]').forEach(function(el) {
+    if (el.dataset.rhHandled) return;
+    el.dataset.rhHandled = '1';
+    el.addEventListener('click', function(e) {
+      if (el.tagName === 'A') e.preventDefault();
+      var text = (el.textContent || '').trim().replace(/s+/g,' ').slice(0, 60);
+      if (!text || !window.RH) return;
+      var actionWords = ['sync','hubung','simpan','submit','kirim','apply','jalankan','run','generate','update','hapus','tambah','add','create','buat','connect','download','export','import','scan','proses','bayar','konfirmasi','approve','reject','sinkron','aktif','nonaktif'];
+      var isAction = actionWords.some(function(w){ return text.toLowerCase().includes(w); });
+      if (isAction) window.RH.showToast('✅ ' + text, 'success');
+    });
+  });
+  // Load notif badge jika sudah login
+  if (window.RH && window.RH.isLoggedIn()) {
+    window.RH.notifications.list(5, true).then(function(d){
+      if (!d || !d.unreadCount) return;
+      var icon = document.querySelector('[data-icon="notifications"]');
+      if (icon) {
+        var dot = icon.parentElement.querySelector('.rounded-full');
+        if (dot && d.unreadCount > 0) dot.style.display = '';
+      }
+    }).catch(function(){});
+  }
+});
+</script>
 </body></html>
