@@ -1,5 +1,3 @@
-const { authenticateSocket } = require('../middleware/auth');
-
 const initializeWebSocket = (io) => {
   io.use(async (socket, next) => {
     try {

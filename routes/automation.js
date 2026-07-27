@@ -103,22 +103,25 @@ router.post('/:automationId/run', async (req, res) => {
   try {
     const { automationId } = req.params;
 
+    const {
+      runAutoPricing,
+      runAutoContent,
+      runInventorySync,
+      runOrderSync
+    } = require('../services/automationService');
+
     let result;
     switch (automationId) {
       case 'auto-pricing':
-        const { runAutoPricing } = require('../services/automationService');
         result = await runAutoPricing(req.userId);
         break;
       case 'auto-content':
-        const { runAutoContent } = require('../services/automationService');
         result = await runAutoContent(req.userId);
         break;
       case 'inventory-sync':
-        const { runInventorySync } = require('../services/automationService');
         result = await runInventorySync(req.userId);
         break;
       case 'order-sync':
-        const { runOrderSync } = require('../services/automationService');
         result = await runOrderSync(req.userId);
         break;
       default:

@@ -119,10 +119,25 @@ router.put('/:id/segment', async (req, res) => {
 // Get customer orders
 router.get('/:id/orders', async (req, res) => {
   try {
-    const orders = await Order.find({
-      'customer.email': req.params.id,
+    const customer = await Customer.findOne({
+      _id: req.params.id,
       createdBy: req.userId
-    }).sort({ createdAt: -1 });
+    });
+
+    if (!customer) {
+      return res.status(404).json({ error: 'Customer not found' });
+    }
+
+    const query = { createdBy: req.userId };
+    if (customer.email) {
+      query['customer.email'] = customer.email;
+    } else if (customer.phone) {
+      query['customer.phone'] = customer.phone;
+    } else {
+      return res.json({ orders: [] });
+    }
+
+    const orders = await Order.find(query).sort({ createdAt: -1 });
 
     res.json({ orders });
   } catch (error) {

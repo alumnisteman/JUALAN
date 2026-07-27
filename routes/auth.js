@@ -118,6 +118,9 @@ router.get('/me', async (req, res) => {
 router.put('/profile', async (req, res) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret_key_here');
     
     const { name, storeName, phone, notificationSettings, aiSettings } = req.body;

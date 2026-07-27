@@ -106,9 +106,9 @@ router.post('/bulk-update', async (req, res) => {
       };
     } else if (strategy === 'fixed') {
       const { amount, type } = updates;
-      const operator = type === 'increase' ? '$add' : '$subtract';
+      const increment = type === 'increase' ? amount : -amount;
       updateQuery = {
-        [operator]: { 'pricing.sellingPrice': amount }
+        $inc: { 'pricing.sellingPrice': increment }
       };
     } else {
       updateQuery = { $set: updates };
