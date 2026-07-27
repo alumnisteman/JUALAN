@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResellerHub AI - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+        .ai-glow {
+            border: 0.5px solid rgba(20, 184, 166, 0.3);
+            box-shadow: 0 0 15px rgba(20, 184, 166, 0.1);
+        }
+        body {
+            background-color: #0F172A;
+            color: #e4e1ed;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #13131b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-secondary-fixed-variant": "#005048",
+                "inverse-surface": "#e4e1ed",
+                "tertiary": "#ffb783",
+                "surface-bright": "#393841",
+                "surface-container-highest": "#34343d",
+                "surface-container-high": "#292932",
+                "tertiary-container": "#d97721",
+                "on-surface": "#e4e1ed",
+                "primary-fixed-dim": "#c0c1ff",
+                "inverse-primary": "#494bd6",
+                "surface-container": "#1f1f27",
+                "surface": "#13131b",
+                "on-tertiary-container": "#452000",
+                "surface-tint": "#c0c1ff",
+                "on-primary-fixed-variant": "#2f2ebe",
+                "on-secondary-container": "#003f38",
+                "on-secondary-fixed": "#00201c",
+                "on-tertiary": "#4f2500",
+                "background": "#13131b",
+                "on-surface-variant": "#c7c4d7",
+                "secondary-fixed-dim": "#4fdbc8",
+                "primary-container": "#8083ff",
+                "on-secondary": "#003731",
+                "outline-variant": "#464554",
+                "inverse-on-surface": "#303038",
+                "on-tertiary-fixed-variant": "#703700",
+                "surface-dim": "#13131b",
+                "on-tertiary-fixed": "#301400",
+                "on-primary-container": "#0d0096",
+                "primary-fixed": "#e1e0ff",
+                "error-container": "#93000a",
+                "tertiary-fixed-dim": "#ffb783",
+                "secondary-container": "#04b4a2",
+                "surface-container-low": "#1b1b23",
+                "secondary-fixed": "#71f8e4",
+                "surface-variant": "#34343d",
+                "surface-container-lowest": "#0d0d15",
+                "on-error-container": "#ffdad6",
+                "secondary": "#4fdbc8",
+                "on-primary-fixed": "#07006c",
+                "on-primary": "#1000a9",
+                "on-background": "#e4e1ed",
+                "on-error": "#690005",
+                "error": "#ffb4ab",
+                "primary": "#c0c1ff",
+                "outline": "#908fa0",
+                "tertiary-fixed": "#ffdcc5"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "sm": "16px",
+                "xs": "8px",
+                "margin-desktop": "48px",
+                "lg": "40px",
+                "gutter": "24px",
+                "md": "24px",
+                "margin-mobile": "16px",
+                "xl": "64px",
+                "base": "4px"
+              },
+              "fontFamily": {
+                "headline-lg-mobile": ["Plus Jakarta Sans"],
+                "headline-md": ["Plus Jakarta Sans"],
+                "label-md": ["Inter"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "body-md": ["Inter"],
+                "label-sm": ["Inter"],
+                "display-lg": ["Plus Jakarta Sans"],
+                "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="pb-32 md:pb-0">
+<!-- Top AppBar Component -->
+<header class="bg-surface-dim dark:bg-surface-dim sticky top-0 z-50 shadow-sm border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 transition-all duration-300 backdrop-blur-md">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<h1 class="font-headline-md text-headline-md-mobile font-bold tracking-tight text-primary">ResellerHub AI</h1>
+</div>
+<div class="hidden md:flex items-center flex-1 max-w-md mx-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border-outline-variant/30 rounded-xl pl-10 pr-4 py-2 text-label-md focus:ring-2 focus:ring-primary/50 transition-all outline-none" placeholder="Search insights..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full border border-surface"></span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs cursor-pointer overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a young entrepreneur in a modern office, wearing a stylish smart-casual outfit. The lighting is bright and even, with soft corporate blue tones. The background is a clean, slightly blurred minimalist workspace with high-tech monitors and indoor plants, reinforcing a sense of reliable intelligence and success." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNr2668sUsnXLuIEnwjWWRhj9ZxEX6-njIcH-mI6i-npC5jTb8hIHYVdEWdGBP-HgNdtoHk3yatIhlquZicnCJhNfDMA82qmOtDjZ-L73Q7L4pIrsBNRXP2Q4QpcGzfdCPuG0yM1ogw3DWsmFiJs1p0VwiRCi-EUzqHCmTMX-Zv7_-i8SV41F0uwUDyoct7IWdZ949LQFapgBTIvdJPF4Z7t3qpk58Jugi88NjFWSA2MunlfQCOwptImx44UJzWJpkO1ZPGoV0iDg"/>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg space-y-lg">
+<!-- Welcome Section -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile text-on-surface">Welcome back, Alex</h2>
+<p class="font-body-md text-on-surface-variant mt-base">Your store is running 14 automated workflows today.</p>
+</div>
+<div class="flex gap-xs">
+<button class="bg-primary hover:bg-primary-container text-on-primary px-sm py-2 rounded-xl font-label-md flex items-center gap-xs transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="bolt">bolt</span>
+                    Quick Action
+                </button>
+</div>
+</section>
+<!-- Section 1: Financial Summary Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Net Profit Card -->
+<div class="glass-card p-md rounded-xl space-y-sm group hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-secondary/10 rounded-lg">
+<span class="material-symbols-outlined text-secondary" data-icon="payments">payments</span>
+</div>
+<span class="text-secondary font-label-md flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                        +12.5%
+                    </span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Net Profit</p>
+<p class="font-headline-lg text-headline-lg-mobile text-on-surface">$14,280.00</p>
+</div>
+<div class="h-16 w-full opacity-50 group-hover:opacity-100 transition-opacity flex items-end gap-1">
+<!-- Simple Bar Chart Placeholder -->
+<div class="bg-secondary/40 w-full rounded-t-sm transition-all duration-700" style="height: 40%"></div>
+<div class="bg-secondary/40 w-full rounded-t-sm transition-all duration-700" style="height: 60%"></div>
+<div class="bg-secondary/40 w-full rounded-t-sm transition-all duration-700" style="height: 45%"></div>
+<div class="bg-secondary/40 w-full rounded-t-sm transition-all duration-700" style="height: 75%"></div>
+<div class="bg-secondary/40 w-full rounded-t-sm transition-all duration-700" style="height: 85%"></div>
+<div class="bg-secondary/40 w-full rounded-t-sm transition-all duration-700" style="height: 65%"></div>
+<div class="bg-secondary w-full rounded-t-sm transition-all duration-700" style="height: 95%"></div>
+</div>
+</div>
+<!-- Total Revenue Card -->
+<div class="glass-card p-md rounded-xl space-y-sm group hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<span class="text-primary font-label-md flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                        +8.2%
+                    </span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Total Revenue</p>
+<p class="font-headline-lg text-headline-lg-mobile text-on-surface">$42,950.40</p>
+</div>
+<div class="h-16 w-full opacity-50 group-hover:opacity-100 transition-opacity flex items-end gap-1">
+<div class="bg-primary/40 w-full rounded-t-sm" style="height: 30%"></div>
+<div class="bg-primary/40 w-full rounded-t-sm" style="height: 40%"></div>
+<div class="bg-primary/40 w-full rounded-t-sm" style="height: 55%"></div>
+<div class="bg-primary/40 w-full rounded-t-sm" style="height: 50%"></div>
+<div class="bg-primary/40 w-full rounded-t-sm" style="height: 70%"></div>
+<div class="bg-primary/40 w-full rounded-t-sm" style="height: 60%"></div>
+<div class="bg-primary w-full rounded-t-sm" style="height: 80%"></div>
+</div>
+</div>
+<!-- Total Orders Card -->
+<div class="glass-card p-md rounded-xl space-y-sm group hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-tertiary/10 rounded-lg">
+<span class="material-symbols-outlined text-tertiary" data-icon="shopping_bag">shopping_bag</span>
+</div>
+<span class="text-tertiary font-label-md flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px]" data-icon="expand_more">expand_more</span>
+                        -1.4%
+                    </span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Total Orders</p>
+<p class="font-headline-lg text-headline-lg-mobile text-on-surface">1,248</p>
+</div>
+<div class="h-16 w-full opacity-50 group-hover:opacity-100 transition-opacity flex items-end gap-1">
+<div class="bg-tertiary/40 w-full rounded-t-sm" style="height: 60%"></div>
+<div class="bg-tertiary/40 w-full rounded-t-sm" style="height: 70%"></div>
+<div class="bg-tertiary/40 w-full rounded-t-sm" style="height: 65%"></div>
+<div class="bg-tertiary/40 w-full rounded-t-sm" style="height: 55%"></div>
+<div class="bg-tertiary/40 w-full rounded-t-sm" style="height: 50%"></div>
+<div class="bg-tertiary/40 w-full rounded-t-sm" style="height: 45%"></div>
+<div class="bg-tertiary w-full rounded-t-sm" style="height: 40%"></div>
+</div>
+</div>
+</section>
+<!-- Section 2: AI Recommendations Carousel -->
+<section class="space-y-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="font-headline-md text-on-surface">AI Predicted Trends</h3>
+</div>
+<a class="text-primary font-label-md hover:underline" href="#">View All Analysis</a>
+</div>
+<div class="flex overflow-x-auto pb-4 gap-md no-scrollbar snap-x">
+<!-- Trending Product 1 -->
+<div class="snap-start min-w-[280px] md:min-w-[320px] glass-card rounded-2xl overflow-hidden ai-glow group">
+<div class="h-40 relative">
+<img class="w-full h-full object-cover" data-alt="Close-up artistic studio shot of a high-end ergonomic mechanical keyboard with deep purple and indigo backlighting. The aesthetics are futuristic and high-tech, fitting for a premium tech reseller platform. The image uses sharp focus on the keycaps and a soft bokeh in the background, dominated by navy and electric indigo tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdSEjEA5hLV3aSUuQ1S070dsp3aMgGcAiCgw9EFy4azsVU0QuyYl8Pp5TpPw74GfheoTvz1YEnMiHAabxQN-YopVKcV-sVqdGtRyxDJ7kc0Dwb5dXAP31r_WVP24c6QS1joI3zAWPrpYVmHYsro2hHBh1HrYc_O_h-Yxe6jUjJ4ZLCqDcDzUmmLH1u9pp8ZVXO3Jfz1mk56fe4j0nbYvOlVN-DtSkZDMvYiEW52bCsr8j6Rq6CwN5lPf3vMR9jqd3RZXptl_0ouuU"/>
+<div class="absolute top-2 left-2 bg-secondary/80 text-on-secondary text-[10px] px-2 py-1 rounded-full font-bold uppercase backdrop-blur-sm">98% Match</div>
+</div>
+<div class="p-sm space-y-xs">
+<h4 class="font-label-md text-on-surface truncate">Hyper-Ergo Mechanical Keyboard</h4>
+<div class="flex justify-between items-center">
+<span class="text-secondary font-bold">$129.00</span>
+<span class="text-on-surface-variant text-[12px]">Est. Profit: +$42.00</span>
+</div>
+<button class="w-full mt-sm py-2 bg-secondary/10 hover:bg-secondary text-secondary hover:text-on-secondary rounded-lg font-label-md transition-all flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="sync">sync</span>
+                            Sync Now
+                        </button>
+</div>
+</div>
+<!-- Trending Product 2 -->
+<div class="snap-start min-w-[280px] md:min-w-[320px] glass-card rounded-2xl overflow-hidden ai-glow group">
+<div class="h-40 relative">
+<img class="w-full h-full object-cover" data-alt="A minimalist and sleek design of a portable ultra-slim projector displayed in a dimly lit, contemporary living room. The device glows softly with indigo LED accents. The environment is calm and luxurious, focusing on high-quality materials and intelligent home automation aesthetics. Indigo and slate grey dominate the scene." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX0re6H_MxSWJyU4qU4iR3_SwZJDWrxgflYnOxjBjBvunXD9UpX6qg_dvGtuIjwkoYwNbWijo_WCTfY8e-A_qDQ3Qb7wjbw1Xr7KZC74tQQwn-igjj6qO3kQCcekw63lP2izb3Ad-EtoHED0ru8_dC4_0C1gQrFV9OrjCl-10Kn7lxqxQ2kZjIHHrJgy4QydMdCzvuWjG-CS7Bowo1ohBao0Nn0IWLY5ubTACL2llh-_7YVJJzgjDOk7qiv8b5Vu00pxYSF-_VQMc"/>
+<div class="absolute top-2 left-2 bg-secondary/80 text-on-secondary text-[10px] px-2 py-1 rounded-full font-bold uppercase backdrop-blur-sm">85% Match</div>
+</div>
+<div class="p-sm space-y-xs">
+<h4 class="font-label-md text-on-surface truncate">Lumina Mini Pro Projector</h4>
+<div class="flex justify-between items-center">
+<span class="text-secondary font-bold">$245.00</span>
+<span class="text-on-surface-variant text-[12px]">Est. Profit: +$85.00</span>
+</div>
+<button class="w-full mt-sm py-2 bg-secondary/10 hover:bg-secondary text-secondary hover:text-on-secondary rounded-lg font-label-md transition-all flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="sync">sync</span>
+                            Sync Now
+                        </button>
+</div>
+</div>
+<!-- Trending Product 3 -->
+<div class="snap-start min-w-[280px] md:min-w-[320px] glass-card rounded-2xl overflow-hidden ai-glow group">
+<div class="h-40 relative">
+<img class="w-full h-full object-cover" data-alt="Macro photography of premium noise-canceling headphones with a metallic midnight-blue finish. The lighting highlights the fine textures of the leather and aluminum. The background is a sophisticated dark gradient that complements the corporate modern style of the ResellerHub brand. Accents of indigo light define the edges of the device." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKHISW7ps1cRJ_0-QfMy9aP2sJVzZ6bRrW7iMquvbWfElV6NEWs5xMKoiONlsnseSqniZKNXincejoh2Kq3fMj5-tmvSrZsi7yH1Mf6s2KQe49Xbe4wjTObh5CNY4ADG9_ACETQPo5s0dmTeDcEQyf3yJJaSJ8UZwmP3OePzFLUR5u13reLyVrdrKRC77uoGKF4S9xC7uE5FbUXxeU6iYWGzCzXkN6oJr1qpMAVFR2d3VP9xU2H8q65OhGWizm8Ys8pQW5mHsuknU"/>
+<div class="absolute top-2 left-2 bg-secondary/80 text-on-secondary text-[10px] px-2 py-1 rounded-full font-bold uppercase backdrop-blur-sm">92% Match</div>
+</div>
+<div class="p-sm space-y-xs">
+<h4 class="font-label-md text-on-surface truncate">AcousticFlow ANC Headphones</h4>
+<div class="flex justify-between items-center">
+<span class="text-secondary font-bold">$189.00</span>
+<span class="text-on-surface-variant text-[12px]">Est. Profit: +$60.00</span>
+</div>
+<button class="w-full mt-sm py-2 bg-secondary/10 hover:bg-secondary text-secondary hover:text-on-secondary rounded-lg font-label-md transition-all flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="sync">sync</span>
+                            Sync Now
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Automation Status & Activity -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-lg">
+<!-- Automation Activity List -->
+<div class="space-y-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="settings_suggest">settings_suggest</span>
+<h3 class="font-headline-md text-on-surface">Automation Status</h3>
+</div>
+<div class="space-y-sm">
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-sm flex items-center gap-md hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary animate-spin-slow" data-icon="sync" style="animation-duration: 3s">sync</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-on-surface">Supplier A Synced</p>
+<p class="font-label-sm text-on-surface-variant">1,204 products updated 10 mins ago</p>
+</div>
+<span class="text-[10px] font-bold text-secondary-fixed bg-secondary-fixed-variant px-2 py-0.5 rounded-full">ACTIVE</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-sm flex items-center gap-md hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="calendar_month">calendar_month</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-on-surface">Instagram Post Scheduled</p>
+<p class="font-label-sm text-on-surface-variant">Product 'Hyper-Ergo' to go live at 18:00</p>
+</div>
+<span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded-full">PENDING</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-sm flex items-center gap-md hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded-full bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="forum">forum</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-on-surface">Auto-reply active on 5 chats</p>
+<p class="font-label-sm text-on-surface-variant">Handled queries about shipping and returns</p>
+</div>
+<span class="text-[10px] font-bold text-secondary-fixed bg-secondary-fixed-variant px-2 py-0.5 rounded-full">ACTIVE</span>
+</div>
+</div>
+</div>
+<!-- Insights / AI Agent Visualization -->
+<div class="glass-card rounded-2xl p-md flex flex-col justify-between overflow-hidden relative border-primary/20">
+<div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/20 rounded-full blur-3xl"></div>
+<div class="relative z-10 space-y-sm">
+<div class="flex items-center gap-xs text-primary font-label-md">
+<span class="material-symbols-outlined text-[20px]" data-icon="smart_toy">smart_toy</span>
+                        AI Market Insight
+                    </div>
+<h4 class="font-headline-md text-on-surface leading-tight">Demand for <span class="text-secondary">Ergonomic Peripherals</span> is projected to rise by 22% this weekend.</h4>
+<p class="font-body-md text-on-surface-variant">Our analysis shows a correlation between regional rain forecasts and home-office equipment searches.</p>
+</div>
+<div class="relative z-10 pt-lg">
+<button class="w-full py-3 bg-primary text-on-primary rounded-xl font-bold hover:bg-primary-container transition-all flex items-center justify-center gap-xs">
+                        Generate Campaign
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container dark:bg-surface-container backdrop-blur-md border-t border-outline-variant/20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] md:hidden">
+<div class="flex justify-around items-center w-full h-20 px-2 pb-safe">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm mt-0.5">Home</span>
+</a>
+<!-- Products -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm text-label-sm mt-0.5">Products</span>
+</a>
+<!-- AI Tools -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-sm text-label-sm mt-0.5">AI Tools</span>
+</a>
+<!-- Social -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+<span class="font-label-sm text-label-sm mt-0.5">Social</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Profile</span>
+</a>
+</div>
+</nav>
+<!-- FAB for AI assistant (Contextual) -->
+<button class="fixed bottom-24 right-6 md:bottom-8 md:right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg hover:shadow-primary/40 hover:scale-110 transition-all flex items-center justify-center z-40 active:scale-95 group">
+<span class="material-symbols-outlined text-[28px] group-hover:rotate-12 transition-transform" data-icon="auto_awesome">auto_awesome</span>
+</button>
+<script>
+        // Micro-interaction: Update time or simulate activity
+        console.log('ResellerHub AI Interface Initialized');
+        
+        // Simple search focus effect
+        const searchInput = document.querySelector('input');
+        if (searchInput) {
+            searchInput.addEventListener('focus', () => {
+                searchInput.parentElement.parentElement.classList.add('scale-105');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchInput.parentElement.parentElement.classList.remove('scale-105');
+            });
+        }
+    </script>
+</body></html>

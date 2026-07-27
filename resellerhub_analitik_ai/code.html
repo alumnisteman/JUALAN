@@ -1,0 +1,501 @@
+<!DOCTYPE html><html class="dark" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ResellerHub AI - Dashboard Analitik</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            background-color: #13131b;
+            color: #e4e1ed;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #c0c1ff;
+            box-shadow: 0 0 20px rgba(192, 193, 255, 0.1);
+        }
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(20, 184, 166, 0.2);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #c0c1ff 0%, #4fdbc8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .chart-bar {
+            transition: height 1s ease-out;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#003731",
+                    "surface-container-lowest": "#0d0d15",
+                    "on-secondary-fixed-variant": "#005048",
+                    "surface-container": "#1f1f27",
+                    "surface": "#13131b",
+                    "secondary-fixed-dim": "#4fdbc8",
+                    "primary-fixed": "#e1e0ff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-background": "#e4e1ed",
+                    "on-tertiary": "#4f2500",
+                    "on-tertiary-fixed": "#301400",
+                    "surface-dim": "#13131b",
+                    "surface-container-high": "#292932",
+                    "surface-variant": "#34343d",
+                    "surface-container-low": "#1b1b23",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "on-primary-fixed": "#07006c",
+                    "tertiary-fixed": "#ffdcc5",
+                    "outline-variant": "#464554",
+                    "on-surface": "#e4e1ed",
+                    "inverse-primary": "#494bd6",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#4fdbc8",
+                    "surface-tint": "#c0c1ff",
+                    "on-primary-container": "#0d0096",
+                    "on-primary": "#1000a9",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#303038",
+                    "background": "#13131b",
+                    "outline": "#908fa0",
+                    "on-tertiary-container": "#452000",
+                    "secondary-container": "#04b4a2",
+                    "error": "#ffb4ab",
+                    "primary": "#c0c1ff",
+                    "tertiary": "#ffb783",
+                    "surface-bright": "#393841",
+                    "surface-container-highest": "#34343d",
+                    "on-tertiary-fixed-variant": "#703700",
+                    "inverse-surface": "#e4e1ed",
+                    "tertiary-fixed-dim": "#ffb783",
+                    "tertiary-container": "#d97721",
+                    "on-secondary-container": "#003f38",
+                    "secondary-fixed": "#71f8e4",
+                    "on-surface-variant": "#c7c4d7",
+                    "error-container": "#93000a",
+                    "primary-container": "#8083ff",
+                    "on-secondary-fixed": "#00201c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "gutter": "24px",
+                    "margin-desktop": "48px",
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "sm": "16px",
+                    "xl": "64px",
+                    "md": "24px",
+                    "lg": "40px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- Top AppBar -->
+<header class="bg-surface-dim dark:bg-surface-dim docked full-width top-0 sticky z-50 shadow-sm border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<h1 class="font-headline-md text-headline-md-mobile font-bold tracking-tight text-primary">ResellerHub AI</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-1.5 border border-outline-variant/50">
+<span class="material-symbols-outlined text-sm text-secondary mr-2" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="text-label-sm text-on-surface-variant uppercase tracking-widest">AI Active</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">
+                JD
+            </div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-md pb-32">
+<!-- Welcome & AI Summary -->
+<section class="mb-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile text-on-surface">Dashboard Analitik</h2>
+<p class="text-on-surface-variant font-body-md">Ringkasan performa bisnis Anda yang didukung oleh AI.</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-high p-1 rounded-lg">
+<button class="px-4 py-2 bg-primary text-on-primary rounded-md text-label-md shadow-lg">Hari Ini</button>
+<button class="px-4 py-2 text-on-surface-variant hover:bg-surface-container text-label-md rounded-md transition-colors">7 Hari</button>
+<button class="px-4 py-2 text-on-surface-variant hover:bg-surface-container text-label-md rounded-md transition-colors">30 Hari</button>
+</div>
+</div>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-sm">
+<!-- Stat 1 -->
+<div class="glass-card p-sm rounded-xl flex flex-col justify-between h-32 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<span class="text-label-md text-on-surface-variant">Total Penjualan</span>
+<span class="text-secondary font-bold text-label-sm flex items-center">+12.5% <span class="material-symbols-outlined text-sm ml-0.5">trending_up</span></span>
+</div>
+<div class="text-headline-md font-bold text-on-surface">Rp 42.500.000</div>
+<div class="absolute -right-4 -bottom-4 opacity-5">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'wght' 700;">payments</span>
+</div>
+</div>
+<!-- Stat 2 -->
+<div class="glass-card p-sm rounded-xl flex flex-col justify-between h-32 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<span class="text-label-md text-on-surface-variant">Prediksi Laba (AI)</span>
+<span class="text-primary font-bold text-label-sm flex items-center">Optimis <span class="material-symbols-outlined text-sm ml-0.5">verified</span></span>
+</div>
+<div class="text-headline-md font-bold text-on-surface">Rp 12.850.000</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 text-primary">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'wght' 700;">monitoring</span>
+</div>
+</div>
+<!-- Stat 3 -->
+<div class="glass-card p-sm rounded-xl flex flex-col justify-between h-32 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<span class="text-label-md text-on-surface-variant">Pesanan Baru</span>
+<span class="text-secondary font-bold text-label-sm flex items-center">+8 <span class="material-symbols-outlined text-sm ml-0.5">add_circle</span></span>
+</div>
+<div class="text-headline-md font-bold text-on-surface">156</div>
+<div class="absolute -right-4 -bottom-4 opacity-5">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'wght' 700;">shopping_cart</span>
+</div>
+</div>
+<!-- Stat 4 -->
+<div class="glass-card p-sm rounded-xl flex flex-col justify-between h-32 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<span class="text-label-md text-on-surface-variant">Retensi Pelanggan</span>
+<span class="text-error font-bold text-label-sm flex items-center">-2.1% <span class="material-symbols-outlined text-sm ml-0.5">trending_down</span></span>
+</div>
+<div class="text-headline-md font-bold text-on-surface">68%</div>
+<div class="absolute -right-4 -bottom-4 opacity-5">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'wght' 700;">group</span>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Main Analytics Section -->
+<div class="lg:col-span-2 space-y-gutter">
+<!-- Tren Penjualan Chart -->
+<div class="glass-card rounded-xl p-md">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">show_chart</span>
+                            Tren Penjualan &amp; Prediksi
+                        </h3>
+<span class="text-label-sm text-on-surface-variant italic">Data terupdate 5 menit yang lalu</span>
+</div>
+<div class="h-64 flex items-end justify-between gap-2 px-2 relative">
+<!-- Simulated Chart Grid -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="border-t border-on-surface-variant w-full"></div>
+<div class="border-t border-on-surface-variant w-full"></div>
+<div class="border-t border-on-surface-variant w-full"></div>
+<div class="border-t border-on-surface-variant w-full"></div>
+</div>
+<!-- Chart Bars -->
+<div class="flex-1 group relative">
+<div class="bg-surface-container-highest w-full rounded-t-sm chart-bar" style="height: 40%;"></div>
+<div class="text-[10px] text-center mt-2 text-on-surface-variant">Sen</div>
+</div>
+<div class="flex-1 group relative">
+<div class="bg-surface-container-highest w-full rounded-t-sm chart-bar" style="height: 55%;"></div>
+<div class="text-[10px] text-center mt-2 text-on-surface-variant">Sel</div>
+</div>
+<div class="flex-1 group relative">
+<div class="bg-surface-container-highest w-full rounded-t-sm chart-bar" style="height: 48%;"></div>
+<div class="text-[10px] text-center mt-2 text-on-surface-variant">Rab</div>
+</div>
+<div class="flex-1 group relative">
+<div class="bg-primary w-full rounded-t-sm chart-bar shadow-[0_0_15px_rgba(192,193,255,0.3)]" style="height: 85%;"></div>
+<div class="text-[10px] text-center mt-2 text-primary font-bold">Kam</div>
+</div>
+<div class="flex-1 group relative">
+<div class="bg-surface-container-highest w-full rounded-t-sm chart-bar" style="height: 60%;"></div>
+<div class="text-[10px] text-center mt-2 text-on-surface-variant">Jum</div>
+</div>
+<div class="flex-1 group relative">
+<!-- Prediction Bar -->
+<div class="bg-secondary/40 border-2 border-dashed border-secondary w-full rounded-t-sm chart-bar" style="height: 75%;"></div>
+<div class="text-[10px] text-center mt-2 text-secondary">Sab*</div>
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-secondary text-on-secondary text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Prediksi AI</div>
+</div>
+<div class="flex-1 group relative">
+<div class="bg-secondary/40 border-2 border-dashed border-secondary w-full rounded-t-sm chart-bar" style="height: 90%;"></div>
+<div class="text-[10px] text-center mt-2 text-secondary">Min*</div>
+</div>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant/30 flex flex-wrap gap-md">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="text-label-sm text-on-surface-variant">Realisasi</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary border border-dashed border-on-secondary"></div>
+<span class="text-label-sm text-on-surface-variant">Prediksi AI</span>
+</div>
+</div>
+</div>
+<!-- Analisis Produk Terlaris -->
+<div class="glass-card rounded-xl p-md">
+<h3 class="font-headline-md text-on-surface mb-md">Produk Terlaris Minggu Ini</h3>
+<div class="space-y-sm">
+<!-- Product Item -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex-shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio product shot of a sleek modern smartwatch with a silicon strap, isolated against a dark slate background with indigo neon highlights. Cinematic lighting, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZilyYgGT-ZFdivk5wsX0bNl9_VtAIX5wg-fJnSqTRpD5nCpS6RfswM_TbYQAsNnKi0rwGGXWmK06i6Nr4tgmgF9kkz8IhFlVRAFofbSZVFe2Uc7HnM6yRZSH_4SCUaxrVi1alsqtNRBqyz5jyb0b_B6_ZC7xhtToEitVE8B5VwAY82q-v_t-xwv8C9WdXY8lMTMVeamznfYx_pxmZIUB07cubmF1xUalSB00yKvECnu5XIPM0bfWAE1JDsk8xll7-H6Ae1IWV8X8">
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-label-md font-bold text-on-surface truncate">Smartwatch Pro Gen 5</h4>
+<p class="text-label-sm text-on-surface-variant">Elektronik • 42 terjual</p>
+</div>
+<div class="text-right">
+<div class="text-label-md font-bold text-on-surface">Rp 12.6M</div>
+<div class="text-[10px] text-emerald-400 font-medium">+15.2%</div>
+</div>
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden hidden sm:block">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+</div>
+<!-- Product Item -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex-shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Minimalist design of a high-quality leather wallet, premium texture detail, deep brown leather, macro photography, soft glowing atmosphere, dark theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApJwVi_YdEZ7CWsBy0OB5WLio902s1ZCb0rnVXD1Lz1_X56N2RLEw8xUUYIP4ZcdycXIUE7dtbN7YPMDITy4OqPTNDiwyWMSN9No2jXVMvQMvWvJK55otGHbR80fnI0B9C7kIo8qCfU-fKag3c-l3cQZp7uYKtEjqWsv7Ce6OeQfBXs8T32dXCTf2gdbLNETN2Ndv9TkYlJg8K2ioXUxUcn2IxZe9ytRlu9uH7qr4f9c0c7DU3Is7Wc6LKiyPZA3-NlGnGrlS5hXc">
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-label-md font-bold text-on-surface truncate">Dompet Kulit Eksklusif</h4>
+<p class="text-label-sm text-on-surface-variant">Aksesoris • 38 terjual</p>
+</div>
+<div class="text-right">
+<div class="text-label-md font-bold text-on-surface">Rp 8.4M</div>
+<div class="text-[10px] text-emerald-400 font-medium">+8.7%</div>
+</div>
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden hidden sm:block">
+<div class="bg-primary h-full w-[72%]"></div>
+</div>
+</div>
+<!-- Product Item -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex-shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Ergonomic mechanical keyboard with custom RGB lighting, indigo and teal light rays, high-tech vibe, dark office setting, professional equipment photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2G8Zsf8hG2Xtm5DLzkIN_9XfE59XpmXh6mIxNcfNDIjvc4-eSCsWfQ2xaqYMKdvWFtG1DyhhMZCqurFqhdGuA_U4KxzoeK1KkXk7C6HlNgUbBFiytuz-8lxOBWV0SdhyZ6bG8e1HNw4nzI2MWtstVWV5CsAabvqpq_AjEEGuFBgKmP6ZC53DiRaSX7QWedSa-oDjtfJi8YWtroNn9taISJsj8r1oM8VGMvlmbvKWqmdTn6sSfZN1jw0NLIBjFwZ4Q5YpI4hwG1o0">
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-label-md font-bold text-on-surface truncate">Keyboard Mekanik RGB</h4>
+<p class="text-label-sm text-on-surface-variant">Elektronik • 25 terjual</p>
+</div>
+<div class="text-right">
+<div class="text-label-md font-bold text-on-surface">Rp 5.2M</div>
+<div class="text-[10px] text-error font-medium">-2.4%</div>
+</div>
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden hidden sm:block">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar AI Insights -->
+<div class="space-y-gutter">
+<!-- AI Smart Advisor Card -->
+<div class="glass-card ai-glow rounded-xl overflow-hidden relative">
+<div class="bg-secondary-container/20 p-md border-b border-secondary/20">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary fill-icon" style="font-size: 20px;">auto_awesome</span>
+<h3 class="text-label-md font-bold text-secondary tracking-wide uppercase">AI Smart Advisor</h3>
+</div>
+<p class="text-body-md text-on-surface">Saran Strategis Baru</p>
+</div>
+<div class="p-md space-y-md">
+<!-- Insight 1 -->
+<div class="flex gap-3">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-error-container/30 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+</div>
+<div>
+<p class="text-label-md font-bold text-on-surface">Stok Menipis!</p>
+<p class="text-label-sm text-on-surface-variant mt-1">Produk <span class="text-primary">Smartwatch Pro Gen 5</span> tersisa 5 unit. Prediksi habis dalam 2 hari. Segera restock untuk menjaga momentum penjualan.</p>
+<button class="mt-2 text-xs font-bold text-primary flex items-center gap-1 hover:underline">
+                                    Restock Sekarang <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="border-t border-outline-variant/20"></div>
+<!-- Insight 2 -->
+<div class="flex gap-3">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-sm">campaign</span>
+</div>
+<div>
+<p class="text-label-md font-bold text-on-surface">Peluang Promosi</p>
+<p class="text-label-sm text-on-surface-variant mt-1">Data menunjukkan lonjakan pencarian untuk "Aksesoris Meja" di akhir pekan. Buat kampanye bundling untuk produk Keyboard.</p>
+<button class="mt-2 text-xs font-bold text-secondary flex items-center gap-1 hover:underline">
+                                    Buat Campaign <span class="material-symbols-outlined text-xs">auto_fix_high</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Perilaku Pelanggan Card -->
+<div class="glass-card rounded-xl p-md">
+<h3 class="text-label-md font-bold text-on-surface mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">psychology</span>
+                        Insight Perilaku
+                    </h3>
+<div class="space-y-md">
+<div class="flex justify-between items-center">
+<span class="text-label-sm text-on-surface-variant">Jam Puncak Belanja</span>
+<span class="text-label-md font-bold text-on-surface">19:00 - 21:00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-label-sm text-on-surface-variant">Metode Bayar Favorit</span>
+<span class="text-label-md font-bold text-on-surface">E-Wallet (72%)</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-label-sm text-on-surface-variant">Wilayah Teraktif</span>
+<span class="text-label-md font-bold text-on-surface">Jakarta, Surabaya</span>
+</div>
+<div class="pt-sm">
+<div class="text-[10px] text-on-surface-variant mb-2">Skor Kepuasan (Sentiment AI)</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-secondary h-full w-[88%]"></div>
+</div>
+<span class="text-label-sm font-bold text-secondary">4.8/5</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Real-time Activity -->
+<div class="glass-card rounded-xl p-md">
+<h3 class="text-label-md font-bold text-on-surface mb-md">Aktivitas Terbaru</h3>
+<div class="space-y-md relative before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant/30">
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-on-secondary border-4 border-background">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">sync</span>
+</div>
+<p class="text-[12px] text-on-surface font-medium">Auto-Sync Inventory Selesai</p>
+<p class="text-[10px] text-on-surface-variant">Just now</p>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary border-4 border-background">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+</div>
+<p class="text-[12px] text-on-surface font-medium">Order Baru #RH-9921</p>
+<p class="text-[10px] text-on-surface-variant">12 menit yang lalu</p>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant border-4 border-background">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">person_add</span>
+</div>
+<p class="text-[12px] text-on-surface font-medium">Pelanggan Baru Terdaftar</p>
+<p class="text-[10px] text-on-surface-variant">45 menit yang lalu</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container dark:bg-surface-container backdrop-blur-md border-t border-outline-variant/20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] flex justify-around items-center h-20 px-2 pb-safe md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm text-label-sm mt-1">Products</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 duration-200 shadow-lg" href="{{DATA:SCREEN:SCREEN_12}}">
+<span class="material-symbols-outlined fill-icon" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-sm text-label-sm mt-1">AI Tools</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="{{DATA:SCREEN:SCREEN_13}}">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+<span class="font-label-sm text-label-sm mt-1">Social</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button (Desktop Contextual) -->
+<button class="hidden md:flex fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full items-center justify-center shadow-xl hover:scale-105 transition-transform active:scale-95 group z-40">
+<span class="material-symbols-outlined" style="font-size: 28px;">add</span>
+<span class="absolute right-full mr-4 bg-surface-container-high text-on-surface text-xs py-2 px-4 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-outline-variant/30">Tambah Produk Baru</span>
+</button>
+<script>
+        // Simple interaction for the charts
+        document.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach(bar => {
+                const height = bar.style.height;
+                bar.style.height = '0';
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 300);
+            });
+
+            // Notification click effect
+            const notifBtn = document.querySelector('header button');
+            notifBtn.addEventListener('click', () => {
+                const icon = notifBtn.querySelector('.material-symbols-outlined');
+                icon.classList.add('animate-bounce');
+                setTimeout(() => icon.classList.remove('animate-bounce'), 1000);
+            });
+        });
+    </script>
+
+
+</body></html>

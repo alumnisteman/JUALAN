@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Predictive Restock Analytics - ResellerHub OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#d97721",
+                        "on-tertiary-fixed": "#301400",
+                        "inverse-on-surface": "#2b3137",
+                        "surface": "#0e141a",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dde3eb",
+                        "inverse-surface": "#dde3eb",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#00311f",
+                        "primary-container": "#8083ff",
+                        "surface-container": "#1a2026",
+                        "primary-fixed": "#e1e0ff",
+                        "outline": "#908fa0",
+                        "surface-dim": "#0e141a",
+                        "surface-container-lowest": "#080f14",
+                        "on-secondary": "#003824",
+                        "secondary": "#4edea3",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface-container-low": "#161c22",
+                        "surface-container-highest": "#2f353c",
+                        "on-surface-variant": "#c7c4d7",
+                        "on-primary": "#1000a9",
+                        "tertiary-fixed": "#ffdcc5",
+                        "surface-variant": "#2f353c",
+                        "secondary-container": "#00a572",
+                        "primary": "#c0c1ff",
+                        "on-tertiary-container": "#452000",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "surface-tint": "#c0c1ff",
+                        "on-secondary-fixed": "#002113",
+                        "inverse-primary": "#494bd6",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "outline-variant": "#464554",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-primary-fixed": "#07006c",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-bright": "#333a40",
+                        "tertiary": "#ffb783",
+                        "background": "#0e141a",
+                        "surface-container-high": "#242b31",
+                        "on-primary-container": "#0d0096",
+                        "on-tertiary": "#4f2500",
+                        "on-background": "#dde3eb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "gutter": "16px",
+                        "xs": "8px",
+                        "margin": "24px",
+                        "lg": "24px",
+                        "sm": "12px",
+                        "base": "4px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["JetBrains Mono"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        .ai-accent-border {
+            border-left: 2px solid #8083ff;
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(128, 131, 255, 0.3);
+        }
+        .neon-text-secondary {
+            text-shadow: 0 0 8px rgba(78, 222, 163, 0.6);
+        }
+        body {
+            background-color: #0d0d15;
+            color: #dde3eb;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0e141a; }
+        ::-webkit-scrollbar-thumb { background: #2a2a3c; border-radius: 10px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-20 md:pb-0 md:pl-72">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin h-16 bg-surface-container dark:bg-surface-container border-b border-outline-variant dark:border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary font-headline-md text-headline-md">hub</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">ResellerHub OS</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-xs rounded-full hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-on-surface-variant">search</span>
+</button>
+<button class="p-xs rounded-full hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-on-surface-variant">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">
+                EA
+            </div>
+</div>
+</header>
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-72 z-[60] flex flex-col py-margin bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant dark:border-outline-variant shadow-lg dark:shadow-none rounded-r-xl">
+<div class="px-md mb-xl flex items-center gap-md">
+<div class="w-10 h-10 rounded-xl bg-surface-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic professional avatar for an enterprise administrator, featuring a high-tech sleek aesthetic with subtle neon blue highlights. The person is wearing a minimalist dark tactical suit, set against a dark industrial background with soft bokeh lights. The lighting is dramatic and cool-toned, conveying intelligence and authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4kAbbZOch22C5YAMkRQIPbG4zYwNApWgGNegnmbHcF_9t2Dzcq3neNQ5TbwtzFNFFu0Q94NGn8gIPn6W6_huSsZsf3si3TIO3GAG0_USAxgBTmkJewB5Jyzp9GH37u6BpBpYiWkokWcgFwjxAda7Fda53Z5nfzUPKtKLQJ_-rRxruvYNzkrv4-3yxRh9sKPJoMkTyA6GOwH1zbLz8vZ83_ibIyQyaw2O55I5gIDjNYnR_bV-L0aB-1xjeOppoqwVUcKZCOAmhNwQ"/>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Enterprise Admin</p>
+<p class="text-xs text-on-surface-variant">ResellerHub Pro</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest rounded-full mx-xs transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-full mx-xs transition-all duration-300 font-bold" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">AI Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest rounded-full mx-xs transition-all duration-300" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Warehouse</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest rounded-full mx-xs transition-all duration-300" href="#">
+<span class="material-symbols-outlined">sync_alt</span>
+<span class="font-body-md text-body-md">Integrations</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest rounded-full mx-xs transition-all duration-300" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md">Financials</span>
+</a>
+<div class="mt-auto px-md">
+<div class="p-md glass-panel rounded-xl ai-accent-border">
+<p class="text-xs font-bold text-primary mb-xs">AI AGENT ACTIVE</p>
+<p class="text-[11px] text-on-surface-variant leading-tight">Optimizing 432 SKUs based on real-time market volatility.</p>
+</div>
+</div>
+</nav>
+<div class="px-md mt-md text-[10px] text-outline flex justify-between">
+<span>v2.4.0</span>
+<span>SYSTEM STABLE</span>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-20 px-4 md:px-margin max-w-7xl mx-auto">
+<header class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface">Predictive Restock</h2>
+<p class="text-on-surface-variant font-body-md text-body-md">Autonomous inventory forecasting powered by ResellerHub AI</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm bg-surface-container-highest border border-outline-variant rounded-lg font-label-md text-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+                    Last 90 Days
+                </button>
+<button class="px-md py-sm bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+                    Run Fresh Forecast
+                </button>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-xl">
+<!-- FEATURE 1: Main Forecast Graph Card -->
+<section class="md:col-span-8 glass-panel rounded-xl p-lg flex flex-col relative overflow-hidden">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary neon-text-secondary">PREDICTIVE RESTOCK FORECAST</h3>
+<p class="text-xs text-outline font-mono-data">NOV 15 - FORECAST HORIZON 30D</p>
+</div>
+<div class="text-right">
+<span class="text-secondary font-bold text-xs uppercase tracking-widest neon-text-secondary">Restock Recommended</span>
+<p class="text-headline-lg font-headline-lg text-on-surface">98% <span class="text-sm font-normal text-on-surface-variant">Accuracy</span></p>
+</div>
+</div>
+<!-- Forecast Visualization Placeholder (Using image-72 inspiration) -->
+<div class="relative w-full aspect-[21/9] bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover opacity-90" data-alt="A highly detailed, futuristic UI data visualization showing a luminous cyan trend line graph fluctuating across a dark grid. The graph transitions into a dotted purple predictive path that climbs upward. Subtle glowing points mark critical data nodes, with elegant sans-serif typography indicating 24 percent stock levels and high forecast accuracy in an industrial dark-mode aesthetic with neon accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLf-bOFEb1y09bIIuUQfnhR41od9To3BhpBSdLOhV7iU9b92sW1ZwIyUJLH6aJ1zSKr0saioHV72GhjgT2iBUvL12DQ4dcpL9PJ5XX9WIfDj5nak7YwmR7XilZ9GKOUmOX32k4daa9sPuSd1lzU4rL9_nILRA_bD26B5j58v5WVkccdMr_u3911UmvqqmzLNs7xXXL9dM4aepYTQo_0gKzwKnVqwbd8aTyM6VeNxP2AZKFMkn--rd5fUYdbO3Gl3jOjAzbtQa91iE"/>
+<!-- Overlay Elements -->
+<div class="absolute bottom-4 left-4 flex gap-lg">
+<div class="flex flex-col">
+<span class="text-[10px] text-outline uppercase font-bold">Current Stock</span>
+<span class="text-primary font-mono-data text-lg">24%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-outline uppercase font-bold">Burn Rate</span>
+<span class="text-error font-mono-data text-lg">4.2u/day</span>
+</div>
+</div>
+<div class="absolute top-4 right-4 bg-primary/10 border border-primary/20 p-2 rounded backdrop-blur-sm">
+<p class="text-[10px] text-primary font-bold">AI INSIGHT</p>
+<p class="text-[11px] text-on-primary-container max-w-[120px]">Impending demand surge detected for Electronics category.</p>
+</div>
+</div>
+</section>
+<!-- FEATURE 2: Reorder Point Widget -->
+<section class="md:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container border border-outline-variant rounded-xl p-md flex-1">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-outline">Critical Reorder Points</h3>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">inventory</span>
+</div>
+<div class="space-y-md">
+<!-- Reorder Item -->
+<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low border border-outline-variant">
+<div class="flex gap-sm items-center">
+<div class="w-10 h-10 bg-surface-variant rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">devices</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Pro Tablet G2</p>
+<p class="text-[11px] text-error">12 units left (Crit.)</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-mono-data text-on-surface">ROP: 15</p>
+<button class="mt-1 text-[10px] bg-secondary-container/20 text-secondary border border-secondary/30 px-2 py-0.5 rounded uppercase font-bold">Order Now</button>
+</div>
+</div>
+<!-- Reorder Item -->
+<div class="flex items-center justify-between p-sm rounded-lg bg-surface-container-low border border-outline-variant">
+<div class="flex gap-sm items-center">
+<div class="w-10 h-10 bg-surface-variant rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">headphones</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Air Buds Pro</p>
+<p class="text-[11px] text-tertiary">45 units left (Low)</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-mono-data text-on-surface">ROP: 50</p>
+<button class="mt-1 text-[10px] bg-surface-container-highest text-on-surface-variant border border-outline-variant px-2 py-0.5 rounded uppercase font-bold">Review</button>
+</div>
+</div>
+</div>
+<button class="w-full mt-md py-sm border border-dashed border-outline-variant rounded-lg text-xs text-outline hover:text-primary hover:border-primary transition-colors">
+                        View all 14 pending reorders
+                    </button>
+</div>
+<!-- FEATURE 3: Notification Hub -->
+<div class="glass-panel rounded-xl p-md ai-accent-border">
+<div class="flex items-center gap-sm mb-sm">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-primary">Alert Channels Active</h3>
+</div>
+<div class="flex flex-col gap-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-[#25D366]">chat</span>
+<span class="text-xs font-medium">WhatsApp Sync</span>
+</div>
+<div class="w-8 h-4 bg-secondary-container rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-3 h-3 bg-on-secondary rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-[#0088cc]">send</span>
+<span class="text-xs font-medium">Telegram Bot</span>
+</div>
+<div class="w-8 h-4 bg-secondary-container rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-3 h-3 bg-on-secondary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Row 2: Detailed Demand Analysis -->
+<section class="mb-xl">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+                    Demand Forecast Analysis
+                    <span class="text-xs font-mono-data bg-surface-container-highest px-2 py-1 rounded text-outline">H3:AUG-OCT DATA</span>
+</h3>
+<div class="flex gap-sm">
+<span class="flex items-center gap-xs text-xs text-outline">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Historical
+                    </span>
+<span class="flex items-center gap-xs text-xs text-outline">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Predicted
+                    </span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Stat Card -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl">
+<p class="text-xs text-outline mb-base uppercase font-bold">Projected Sales Vol.</p>
+<div class="flex items-end justify-between">
+<span class="text-headline-lg font-headline-lg text-on-surface">1.2k</span>
+<span class="text-secondary flex items-center text-xs font-bold mb-xs">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                            +12.4%
+                        </span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-sm overflow-hidden">
+<div class="h-full bg-secondary w-[70%]"></div>
+</div>
+</div>
+<!-- Stat Card -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl">
+<p class="text-xs text-outline mb-base uppercase font-bold">Inventory Turn Rate</p>
+<div class="flex items-end justify-between">
+<span class="text-headline-lg font-headline-lg text-on-surface">5.8x</span>
+<span class="text-secondary flex items-center text-xs font-bold mb-xs">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                            +0.2
+                        </span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-sm overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+</div>
+<!-- Stat Card -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl">
+<p class="text-xs text-outline mb-base uppercase font-bold">Lost Sales Risk</p>
+<div class="flex items-end justify-between">
+<span class="text-headline-lg font-headline-lg text-error">$4.3k</span>
+<span class="text-error flex items-center text-xs font-bold mb-xs">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                            High
+                        </span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-sm overflow-hidden">
+<div class="h-full bg-error w-[40%]"></div>
+</div>
+</div>
+<!-- Stat Card -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl">
+<p class="text-xs text-outline mb-base uppercase font-bold">Lead Time Variance</p>
+<div class="flex items-end justify-between">
+<span class="text-headline-lg font-headline-lg text-on-surface">4.2d</span>
+<span class="text-tertiary flex items-center text-xs font-bold mb-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            Stable
+                        </span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-sm overflow-hidden">
+<div class="h-full bg-tertiary w-[30%]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Dynamic Recommendation Feed -->
+<section class="mb-24">
+<h3 class="font-label-md text-label-md uppercase tracking-widest text-outline mb-md">Autonomous Recommendations</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Rec Card -->
+<div class="glass-panel p-md rounded-xl flex gap-md">
+<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary">psychology</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-on-surface">Optimize Safety Stock for 'Seasonal' SKU Group</h4>
+<p class="text-xs text-on-surface-variant mt-xs leading-relaxed">Based on 3-month historical drift, increasing safety stock by 15% will prevent $1.2k in projected stockouts during the upcoming holiday peak.</p>
+<div class="mt-md flex gap-sm">
+<button class="px-3 py-1 bg-primary text-on-primary rounded text-[11px] font-bold">Apply Optimization</button>
+<button class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded text-[11px] font-bold">Dismiss</button>
+</div>
+</div>
+</div>
+<!-- Rec Card -->
+<div class="glass-panel p-md rounded-xl flex gap-md">
+<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center border border-secondary/20">
+<span class="material-symbols-outlined text-secondary">local_shipping</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-on-surface">Supplier Switching Opportunity Detected</h4>
+<p class="text-xs text-on-surface-variant mt-xs leading-relaxed">Global Logistics Inc. has reduced lead time for your Region B by 2 days. Switching current pending orders could improve fulfillment speed by 18%.</p>
+<div class="mt-md flex gap-sm">
+<button class="px-3 py-1 bg-secondary text-on-secondary rounded text-[11px] font-bold">Update Suppliers</button>
+<button class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded text-[11px] font-bold">Analysis Details</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-xs pb-safe h-16 bg-surface-container dark:bg-surface-container border-t border-outline-variant dark:border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary-container transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary font-bold transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-md text-label-md">AI Tools</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary-container transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary-container transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Warehouse</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary-container transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md text-label-md">Coach</span>
+</a>
+</nav>
+<!-- FAB (Floating Action Button) - Contextual for restocking -->
+<button class="fixed bottom-20 right-6 md:bottom-10 md:right-10 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform z-40 neon-glow-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_shopping_cart</span>
+</button>
+<script>
+        // Simple micro-interaction for hovering cards
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+                card.style.transition = 'transform 0.2s ease-out';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

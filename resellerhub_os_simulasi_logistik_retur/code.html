@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResellerHub OS - Simulasi Alur Retur</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(128, 131, 255, 0.2);
+        }
+        /* Custom scrollbar for high-density tables */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0d0d15; }
+        ::-webkit-scrollbar-thumb { background: #2a2a3c; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #464554; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#d97721",
+                        "surface-tint": "#c0c1ff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-background": "#dde3eb",
+                        "on-surface": "#dde3eb",
+                        "surface-container-lowest": "#080f14",
+                        "inverse-on-surface": "#2b3137",
+                        "surface-dim": "#0e141a",
+                        "surface-container-highest": "#2f353c",
+                        "surface-container-low": "#161c22",
+                        "on-secondary-container": "#00311f",
+                        "error-container": "#93000a",
+                        "tertiary": "#ffb783",
+                        "on-primary": "#1000a9",
+                        "primary": "#c0c1ff",
+                        "on-surface-variant": "#c7c4d7",
+                        "inverse-surface": "#dde3eb",
+                        "on-tertiary": "#4f2500",
+                        "on-primary-container": "#0d0096",
+                        "primary-container": "#8083ff",
+                        "surface-container-high": "#242b31",
+                        "outline": "#908fa0",
+                        "on-secondary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-bright": "#333a40",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#e1e0ff",
+                        "on-error": "#690005",
+                        "surface": "#0e141a",
+                        "secondary": "#4edea3",
+                        "outline-variant": "#464554",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "inverse-primary": "#494bd6",
+                        "on-primary-fixed": "#07006c",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-tertiary-container": "#452000",
+                        "on-secondary": "#003824",
+                        "surface-variant": "#2f353c",
+                        "background": "#0e141a",
+                        "secondary-container": "#00a572",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#6ffbbe",
+                        "tertiary-fixed": "#ffdcc5",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface-container": "#1a2026"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "sm": "12px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "margin": "24px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "mono-data": ["JetBrains Mono"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "mono-data": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24 md:pb-0">
+<!-- Top Navigation Bar -->
+<header class="bg-surface-container-low dark:bg-surface-container-lowest border-b border-outline-variant dark:border-outline-variant flex justify-between items-center w-full px-margin h-16 sticky top-0 z-50">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary font-bold text-headline-md" style="font-variation-settings: 'FILL' 1;">hub</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">ResellerHub OS</h1>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<nav class="flex gap-md">
+<a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-highest transition-colors px-sm py-xs rounded" href="#">Dashboard</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-highest transition-colors px-sm py-xs rounded" href="#">AI Tools</a>
+<a class="font-label-md text-label-md text-primary font-bold px-sm py-xs rounded" href="#">Retur Barang</a>
+</nav>
+<div class="flex items-center gap-xs bg-surface-container px-sm py-xs rounded border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-48 text-on-surface" placeholder="Cari nomor resi..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-highest p-xs rounded transition-colors">notifications</button>
+<div class="w-8 h-8 rounded-full border border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a warehouse operations manager in their 40s, wearing a subtle dark navy uniform. The background is a clean, technologically advanced industrial office with soft blue ambient lighting. High-end photography with sharp focus and professional color grading." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp0xXyCk9LXXqTSypnbRH0wAjHzlm8Xh4_GvpvqStL-8Qp7IAU_QI5MlNRRjWCmQqrFtrf4eWJXN5ndoXRAlj_ykBCxWvj9K_SI1Yo6VcOIsj7AiQs33VtKEF7M1XvaxCUVssVnP0QFhiSLz_JMvjYFNF6ybTQxtTgoxWiEv7PhvueBBSgIc6JdrubEP3n-hkBZYloHy6Z_7Krb4Exkema9vnf9DemnF0wiElVkehoSKCd7Pbte9_ajXagVMUl3WKUoxzPuWF2xGM"/>
+</div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto p-margin grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Header Section -->
+<section class="col-span-full mb-xs">
+<div class="flex justify-between items-end">
+<div>
+<p class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-base">Warehouse Operations</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Manajemen Retur Logistik</h2>
+</div>
+<div class="flex gap-xs">
+<button class="flex items-center gap-xs bg-surface-container px-md py-sm rounded border border-outline-variant hover:bg-surface-container-high transition-colors text-on-surface font-label-md">
+<span class="material-symbols-outlined text-[18px]">barcode_scanner</span>
+                        Scan Barcode
+                    </button>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-md py-sm rounded font-bold hover:opacity-90 active:scale-95 transition-all text-label-md">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        Retur Baru
+                    </button>
+</div>
+</div>
+</section>
+<!-- KPI Metrics -->
+<section class="col-span-full md:col-span-3 bg-surface-container p-md rounded-xl border border-outline-variant">
+<div class="flex justify-between items-start mb-xs">
+<span class="material-symbols-outlined text-primary">pending_actions</span>
+<span class="font-label-md text-label-md text-tertiary-container bg-tertiary-fixed-dim/20 px-xs py-[2px] rounded">+12%</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase">Antrian Inspeksi</h3>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface">24</span>
+<span class="font-label-md text-label-md text-on-surface-variant">paket</span>
+</div>
+</section>
+<section class="col-span-full md:col-span-3 bg-surface-container p-md rounded-xl border border-outline-variant">
+<div class="flex justify-between items-start mb-xs">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<span class="font-label-md text-label-md text-secondary bg-secondary-container/20 px-xs py-[2px] rounded">+5.2%</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase">Selesai Restock</h3>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface">142</span>
+<span class="font-label-md text-label-md text-on-surface-variant">minggu ini</span>
+</div>
+</section>
+<section class="col-span-full md:col-span-3 bg-surface-container p-md rounded-xl border border-outline-variant">
+<div class="flex justify-between items-start mb-xs">
+<span class="material-symbols-outlined text-error">priority_high</span>
+<span class="font-label-md text-label-md text-error bg-error-container/20 px-xs py-[2px] rounded">-2%</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase">Tingkat Kerusakan</h3>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface">3.8%</span>
+<span class="font-label-md text-label-md text-on-surface-variant">avg</span>
+</div>
+</section>
+<section class="col-span-full md:col-span-3 bg-surface-container p-md rounded-xl border border-outline-variant">
+<div class="flex justify-between items-start mb-xs">
+<span class="material-symbols-outlined text-tertiary">speed</span>
+<span class="font-label-md text-label-md text-secondary bg-secondary-container/20 px-xs py-[2px] rounded">Sangat Baik</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase">Waktu Proses AI</h3>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface">1.2</span>
+<span class="font-label-md text-label-md text-on-surface-variant">menit/item</span>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="col-span-full md:col-span-8 space-y-gutter">
+<!-- Table Controls -->
+<div class="flex flex-wrap items-center justify-between gap-sm bg-surface-container-low p-sm rounded border border-outline-variant">
+<div class="flex gap-xs">
+<button class="bg-primary-container text-on-primary-container px-sm py-xs rounded font-label-md">Semua</button>
+<button class="hover:bg-surface-container-highest text-on-surface-variant px-sm py-xs rounded font-label-md transition-colors">Butuh Inspeksi</button>
+<button class="hover:bg-surface-container-highest text-on-surface-variant px-sm py-xs rounded font-label-md transition-colors">Terselesaikan</button>
+</div>
+<div class="flex items-center gap-xs">
+<span class="font-label-md text-on-surface-variant">Urutkan:</span>
+<select class="bg-transparent border-none text-label-md text-on-surface focus:ring-0 cursor-pointer">
+<option>Terbaru</option>
+<option>Prioritas Tinggi</option>
+<option>Status</option>
+</select>
+</div>
+</div>
+<!-- Returns List -->
+<div class="bg-surface-container-low rounded-xl border border-outline-variant overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-md uppercase border-b border-outline-variant">
+<th class="px-md py-sm font-label-md">Produk & ID</th>
+<th class="px-md py-sm font-label-md">Alasan Retur</th>
+<th class="px-md py-sm font-label-md">Status</th>
+<th class="px-md py-sm font-label-md">Keputusan AI</th>
+<th class="px-md py-sm font-label-md text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container/50 transition-colors group cursor-pointer" onclick="toggleDetails(1)">
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A macro studio shot of a high-end mechanical keyboard with custom lavender keycaps, sleek industrial design. Dark mode product photography with soft accent lighting, emphasizing metallic textures and clean lines. Professional e-commerce style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDloCcbLvSOMRfAnsOUnk0_4BFDUuNOF9fCi2t4hO8GcC2oJolcW8MeJAKtE23wU93SABVl2DiM6hKe5nlD1cs8xghKn0sAWxKwzMIzOdieHUWNGPTHiuHbSiqCPmpc0tZ3YNG1rHvLXnMjLjDYiZT33TC1UxqIiTwAWhcPIW7jVYwBopz0n071um_3-VdVDUHprPyVSSbojNQrvnADtUIQTZWvX03nFUNmyIZvy8khAkheuu4_PADX-D8gYhLeMQvgqlkelLAxa9o"/>
+</div>
+<div>
+<p class="font-body-md font-bold text-on-surface">Mechanical Keyboard K8</p>
+<p class="font-mono-data text-on-surface-variant">RT-99201-X</p>
+</div>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="bg-error-container/20 text-error px-xs py-[2px] rounded text-label-md border border-error/30">Barang Rusak</span>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+<span class="text-on-surface-variant font-label-md">Menunggu Inspeksi</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs text-primary font-bold font-label-md">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+                                    Ganti Baru
+                                </div>
+</td>
+<td class="px-md py-md text-right">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">chevron_right</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container/50 transition-colors group cursor-pointer">
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Minimalist design of a high-performance wireless gaming mouse in matte black, placed on a dark carbon fiber texture. Futuristic industrial aesthetic with subtle blue LED indicators glowing. Sharp focus, cinematic lighting, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmG_laWZ7VLOhd4ToSVmxrGSTq6mztT_QxNvDBFvceXMmYkto3faAg82iKFwS9KV8LlAqQHbRGJqS8BlysWU4MI2-8mmIA1h1cMnnsEz6VjahmaFhUuUlD6FxyCjVFQXbLevSwx3rfssbfeNLeBubrZtatkX7PGXqVgDvnECl_XzGxf6NX_bbY16DteMNn7lA00-5LozxNdczKsU0ovPWgMdn6Wff0tHMMLxBj9jvgmVMSLwx7xHq2Xd2_NuzRMBFfzciHourXS7I"/>
+</div>
+<div>
+<p class="font-body-md font-bold text-on-surface">Pro Gaming Mouse Z2</p>
+<p class="font-mono-data text-on-surface-variant">RT-98312-L</p>
+</div>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="bg-surface-container-highest text-on-surface-variant px-xs py-[2px] rounded text-label-md border border-outline-variant">Salah Barang</span>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-on-surface-variant font-label-md">Selesai Restock</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs text-secondary font-bold font-label-md">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+                                    Restock Penuh
+                                </div>
+</td>
+<td class="px-md py-md text-right">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">chevron_right</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container/50 transition-colors group cursor-pointer">
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A pair of sleek, over-ear active noise-cancelling headphones in midnight blue. Professional industrial design with leather ear cups and matte finish. Soft spotlighting creates highlights on the curves, dark background, ultra-high quality photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaFktGDds9hYdgiD1IW9L3suMxcGMZAp_6CGla_q-zax0SnU_IZmkQMEh3uwd99tsB5T3kG4WXvnModZa8C0NnaPphhr6zTGFkX4lMW2Hdubrt3AUj8jd860BGlUWc7UUx9GTznxIY1KFduzj7wN6Ax9aq6BoqKlaN0eCRKXnqKksFGbpNdINAmzcB7GRUCPJ8BQEi3csQct9ecVJ07_2QIGLE1m7mTjJcryhlvF28sMHs53yVS_reau5fR6kvqQ1qeNs2QGJ1TTA"/>
+</div>
+<div>
+<p class="font-body-md font-bold text-on-surface">Studio Wireless ANC</p>
+<p class="font-mono-data text-on-surface-variant">RT-97405-M</p>
+</div>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="bg-tertiary-container/20 text-tertiary px-xs py-[2px] rounded text-label-md border border-tertiary/30">Kemasan Rusak</span>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-outline animate-pulse"></div>
+<span class="text-on-surface-variant font-label-md">Dalam Inspeksi</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs text-primary font-bold font-label-md">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+                                    Refund 75%
+                                </div>
+</td>
+<td class="px-md py-md text-right">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">chevron_right</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="bg-surface-container p-sm border-t border-outline-variant flex justify-between items-center">
+<p class="text-label-md text-on-surface-variant">Menampilkan 3 dari 24 permintaan</p>
+<div class="flex gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant bg-primary text-on-primary font-bold text-label-md">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-highest transition-colors text-label-md">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container-highest transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar / Inspection Details -->
+<aside class="col-span-full md:col-span-4 space-y-gutter">
+<!-- AI Recommendation Card (Glassmorphism) -->
+<div class="glass-panel p-md rounded-xl border-l-4 border-l-primary ai-glow">
+<div class="flex items-center gap-sm mb-md">
+<div class="p-xs bg-primary/20 rounded-full">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Rekomendasi AI</h4>
+<p class="text-label-md text-on-surface-variant">Berdasarkan data & foto bukti</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest/40 p-sm rounded border border-white/5 mb-md">
+<p class="text-body-md text-on-surface leading-relaxed mb-sm">
+                        "Terdeteksi kerusakan pada <span class="text-primary font-bold">PCB Internal</span>. Pola kerusakan serupa dengan 3 retur sebelumnya dari batch yang sama. Disarankan untuk <span class="text-primary font-bold">Ganti Baru</span> dan kirim laporan ke supplier."
+                    </p>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary text-[16px]">verified</span>
+<span class="text-label-md text-secondary">Tingkat Keyakinan: 94%</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-xs">
+<button class="bg-primary text-on-primary py-sm rounded font-bold text-label-md active:scale-95 transition-all">Setujui Retur</button>
+<button class="bg-surface-container-highest text-on-surface py-sm rounded font-bold text-label-md hover:bg-white/10 transition-colors">Banding Manual</button>
+</div>
+</div>
+<!-- Evidence Photo Gallery -->
+<div class="bg-surface-container p-md rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center mb-md">
+<h4 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Bukti Foto Konsumen</h4>
+<span class="text-label-md text-on-surface-variant">3 Foto</span>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="aspect-square rounded border border-outline-variant overflow-hidden group relative">
+<img class="w-full h-full object-cover" data-alt="A close-up high-resolution photograph of a damaged mechanical keyboard switch. The housing is cracked, showing copper elements inside. Industrial inspection lighting with high contrast. Macro photography style on a dark workbench." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbcVsDvePTceaonSOXil0dMsurbW1HngGzYXvUbfN7j87gbzt7LPU8Vs4b4MgrXNFYB4M_GsI5342RXNFwxCc2MxHDsRF4Gv7_aPqhenLdvT_XK0_V7DrAwNgKB4M_H9pLgGGiHdD_QFOj-tTOodug-Fey7KBmlwzKpPaegRHhdGh9Y87QyKMXU1M7CGuZTMQRb18PlO2fW6Pp_2t7jQHHNc9NNNwfzy699mcsRH4thizoehxPF_Ad2eZ84l7Fmdl4JmC4q3Lmwtc"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-zoom-in">
+<span class="material-symbols-outlined text-on-primary">zoom_in</span>
+</div>
+</div>
+<div class="aspect-square rounded border border-outline-variant overflow-hidden group relative">
+<img class="w-full h-full object-cover" data-alt="Photograph of a shipping box with a large dent and a torn corner. The label is visible but blurred. Harsh warehouse lighting with shadows. High detail, sharp focus on the physical damage of the cardboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiDc93smIeeJzrXoqyIRsgQAmBikvwiM-HvgwcQUAwkszvvcHHMid-K9C8fz3B80ULP9o1-NJXfvllC-yHAtMlb7d6-iLn3Ou2yJ-mRgpI_gNl6S-TJHoprvEqVmytXJ9Rx9Jxn_ncmN6c-iXaWIDJ0C2UstRLwcJQTeutPXWPGGIGbE5DEIYcucvPBanEyfZZj5BmIqZegZoT9cPNl9W1DrAKVKGI8jFHrXxoFScqs7IQyjeXRUN7JEVQI0lzStMiPLIWR_y2FkI"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-zoom-in">
+<span class="material-symbols-outlined text-on-primary">zoom_in</span>
+</div>
+</div>
+<div class="col-span-2 aspect-[16/9] rounded border border-outline-variant overflow-hidden group relative">
+<img class="w-full h-full object-cover" data-alt="Overhead wide shot of a tech product unboxing on a dark wooden table. The components are spread out, showing the full content of the package. Soft professional lighting, cinematic framing, clean composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASqA-u7hchZQXzSdnfWyhVyCKkT0jFpxGYnxS9P53xOvorZg2Ums_gFSTwxbwuFUHBqgGJvzcfyM6e-wI5oNC9Ry1mVww55vReIIzpbAR-Dk6HuNomeR2Mval8AaxuyhsrmdoQ0ClQ0oz3DHhSAKvC59LkVXeCHacXbvfZEzoHakp7yFrHs7sQ3OSKzAYdfj0zOnJu6CDsGtRJjHnjOZ5_d8Z_lbma8uIgtqU4qed7lMoeGFE88vadTic_XXP20PXMb0S_meWj_rE"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-zoom-in">
+<span class="material-symbols-outlined text-on-primary">zoom_in</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Warehouse Action Checklist -->
+<div class="bg-surface-container p-md rounded-xl border border-outline-variant">
+<h4 class="font-label-md text-label-md text-on-surface uppercase tracking-wider mb-md">Langkah Verifikasi Gudang</h4>
+<div class="space-y-sm">
+<label class="flex items-center gap-md p-sm rounded hover:bg-surface-container-high transition-colors cursor-pointer border border-transparent active:border-outline-variant">
+<input class="w-5 h-5 rounded border-outline bg-transparent text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-body-md text-on-surface">Verifikasi Nomor Seri (Serial)</span>
+</label>
+<label class="flex items-center gap-md p-sm rounded hover:bg-surface-container-high transition-colors cursor-pointer border border-transparent active:border-outline-variant">
+<input class="w-5 h-5 rounded border-outline bg-transparent text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-body-md text-on-surface">Cek Segel Garansi</span>
+</label>
+<label class="flex items-center gap-md p-sm rounded hover:bg-surface-container-high transition-colors cursor-pointer border border-transparent active:border-outline-variant">
+<input class="w-5 h-5 rounded border-outline bg-transparent text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-body-md text-on-surface">Kelengkapan Aksesoris</span>
+</label>
+<div class="pt-sm">
+<button class="w-full bg-secondary-container text-on-secondary-container py-sm rounded font-bold text-label-md flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+                            Update Inventori & Selesaikan
+                        </button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Nav for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container flex justify-around items-center h-20 px-xs pb-safe border-t border-outline-variant shadow-md">
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-md font-label-md mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="text-label-md font-label-md mt-1">AI Tools</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="text-label-md font-label-md mt-1">Retur</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-label-md font-label-md mt-1">Order</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-label-md font-label-md mt-1">Coach</span>
+</a>
+</nav>
+<!-- Contextual FAB -->
+<button class="fixed right-6 bottom-24 md:bottom-8 bg-primary text-on-primary w-14 h-14 rounded-full shadow-xl flex items-center justify-center active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined text-[28px]">barcode_scanner</span>
+</button>
+<script>
+        function toggleDetails(id) {
+            // Logic to show/hide details or load item data could go here
+            console.log('Loading details for return ID:', id);
+            // Visual feedback for clicking
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(r => r.classList.remove('bg-surface-container'));
+            event.currentTarget.classList.add('bg-surface-container');
+        }
+
+        // Simulating some activity
+        setInterval(() => {
+            const scanBtn = document.querySelector('.bg-primary-container');
+            if (scanBtn) {
+                scanBtn.classList.toggle('ring-2');
+                scanBtn.classList.toggle('ring-primary/50');
+            }
+        }, 3000);
+    </script>
+</body></html>

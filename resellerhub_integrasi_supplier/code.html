@@ -1,0 +1,426 @@
+<!DOCTYPE html><html class="dark" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Wizard Integrasi Supplier - ResellerHub AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(192, 193, 255, 0.15);
+        }
+        .step-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(192, 193, 255, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #464554;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-secondary": "#003731",
+                "surface-container-lowest": "#0d0d15",
+                "on-secondary-fixed-variant": "#005048",
+                "surface-container": "#1f1f27",
+                "surface": "#13131b",
+                "secondary-fixed-dim": "#4fdbc8",
+                "primary-fixed": "#e1e0ff",
+                "primary-fixed-dim": "#c0c1ff",
+                "on-background": "#e4e1ed",
+                "on-tertiary": "#4f2500",
+                "on-tertiary-fixed": "#301400",
+                "surface-dim": "#13131b",
+                "surface-container-high": "#292932",
+                "surface-variant": "#34343d",
+                "surface-container-low": "#1b1b23",
+                "on-primary-fixed-variant": "#2f2ebe",
+                "on-primary-fixed": "#07006c",
+                "tertiary-fixed": "#ffdcc5",
+                "outline-variant": "#464554",
+                "on-surface": "#e4e1ed",
+                "inverse-primary": "#494bd6",
+                "on-error-container": "#ffdad6",
+                "secondary": "#4fdbc8",
+                "surface-tint": "#c0c1ff",
+                "on-primary-container": "#0d0096",
+                "on-primary": "#1000a9",
+                "on-error": "#690005",
+                "inverse-on-surface": "#303038",
+                "background": "#13131b",
+                "outline": "#908fa0",
+                "on-tertiary-container": "#452000",
+                "secondary-container": "#04b4a2",
+                "error": "#ffb4ab",
+                "primary": "#c0c1ff",
+                "tertiary": "#ffb783",
+                "surface-bright": "#393841",
+                "surface-container-highest": "#34343d",
+                "on-tertiary-fixed-variant": "#703700",
+                "inverse-surface": "#e4e1ed",
+                "tertiary-fixed-dim": "#ffb783",
+                "tertiary-container": "#d97721",
+                "on-secondary-container": "#003f38",
+                "secondary-fixed": "#71f8e4",
+                "on-surface-variant": "#c7c4d7",
+                "error-container": "#93000a",
+                "primary-container": "#8083ff",
+                "on-secondary-fixed": "#00201c"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "xs": "8px",
+                "gutter": "24px",
+                "margin-desktop": "48px",
+                "margin-mobile": "16px",
+                "base": "4px",
+                "sm": "16px",
+                "xl": "64px",
+                "md": "24px",
+                "lg": "40px"
+              },
+              "fontFamily": {
+                "display-lg": ["Plus Jakarta Sans"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "label-md": ["Inter"],
+                "headline-md": ["Plus Jakarta Sans"],
+                "headline-lg-mobile": ["Plus Jakarta Sans"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "700"}],
+                "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary/30 min-h-screen flex flex-col">
+<!-- Top Navigation Bar (Shared Component Strategy) -->
+<header class="bg-surface-container-low border-b border-outline-variant/30 shadow-sm sticky top-0 z-50 h-16 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+<span class="font-headline-md text-headline-md-mobile md:text-headline-md font-bold tracking-tight text-primary">ResellerHub AI</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-xs">JD</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center py-lg px-margin-mobile md:px-gutter max-w-5xl mx-auto w-full">
+<!-- Progress Bar & Stepper -->
+<div class="w-full max-w-3xl mb-lg">
+<div class="flex justify-between items-center mb-4 px-2">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-on-primary-container font-bold mb-2 transition-all duration-300" id="step-node-1">1</div>
+<span class="font-label-sm text-label-sm text-primary">Metode</span>
+</div>
+<div class="flex-grow h-[2px] mx-4 bg-outline-variant/30 relative top-[-14px]">
+<div class="h-full bg-primary transition-all duration-500 w-0" id="progress-line-1"></div>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-high text-on-surface-variant font-bold mb-2 transition-all duration-300 border border-outline-variant" id="step-node-2">2</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Kredensial</span>
+</div>
+<div class="flex-grow h-[2px] mx-4 bg-outline-variant/30 relative top-[-14px]">
+<div class="h-full bg-primary transition-all duration-500 w-0" id="progress-line-2"></div>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-high text-on-surface-variant font-bold mb-2 transition-all duration-300 border border-outline-variant" id="step-node-3">3</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Pemetaan</span>
+</div>
+</div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-center mt-sm mb-xs">Integrasi Supplier</h1>
+<p class="text-on-surface-variant text-center font-body-md opacity-80">Hubungkan inventaris supplier Anda secara otomatis menggunakan kecerdasan buatan.</p>
+</div>
+<!-- Wizard Canvas -->
+<div class="w-full relative min-h-[500px]">
+<!-- Step 1: Pilih Metode -->
+<section class="step-transition w-full flex flex-col gap-md opacity-100 transform translate-x-0" id="wizard-step-1">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- API Option -->
+<div class="group glass-card p-md rounded-xl cursor-pointer hover:border-primary transition-all hover:scale-[1.02] active:scale-95 border-2 border-transparent" onclick="window.location.href='{{DATA:SCREEN:SCREEN_41}}'">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-sm group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-primary text-3xl">api</span>
+</div>
+<h3 class="font-headline-md text-[20px] mb-xs">Koneksi API</h3>
+<p class="font-body-md text-on-surface-variant text-sm leading-relaxed">Sinkronisasi real-time stok dan harga langsung dari server supplier.</p>
+<div class="mt-md flex items-center text-primary font-label-md gap-1">
+                            Pilih <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- CSV Option -->
+<div class="group glass-card p-md rounded-xl cursor-pointer hover:border-primary transition-all hover:scale-[1.02] active:scale-95 border-2 border-transparent" onclick="selectMethod('csv')">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-sm group-hover:bg-secondary/20">
+<span class="material-symbols-outlined text-secondary text-3xl">csv</span>
+</div>
+<h3 class="font-headline-md text-[20px] mb-xs">Upload CSV/Excel</h3>
+<p class="font-body-md text-on-surface-variant text-sm leading-relaxed">Impor data produk secara massal dari file spreadhseet Anda.</p>
+<div class="mt-md flex items-center text-secondary font-label-md gap-1">
+                            Pilih <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Marketplace Option -->
+<div class="group glass-card p-md rounded-xl cursor-pointer hover:border-primary transition-all hover:scale-[1.02] active:scale-95 border-2 border-transparent" onclick="selectMethod('marketplace')">
+<div class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center mb-sm group-hover:bg-tertiary/20">
+<span class="material-symbols-outlined text-tertiary text-3xl">storefront</span>
+</div>
+<h3 class="font-headline-md text-[20px] mb-xs">Marketplace</h3>
+<p class="font-body-md text-on-surface-variant text-sm leading-relaxed">Hubungkan langsung ke toko supplier di marketplace terkemuka.</p>
+<div class="mt-md flex items-center text-tertiary font-label-md gap-1">
+                            Pilih <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Info Section -->
+<div class="glass-card p-sm rounded-xl flex items-start gap-sm border-dashed border-outline-variant/50">
+<span class="material-symbols-outlined text-primary mt-1">info</span>
+<p class="text-sm text-on-surface-variant">Gunakan <strong>Koneksi API</strong> untuk hasil terbaik. Sistem kami akan memantau perubahan harga setiap 15 menit secara otomatis.</p>
+</div>
+</section>
+<!-- Step 2: Kredensial (Hidden by default) -->
+<section class="hidden step-transition w-full flex flex-col gap-md opacity-0 transform translate-x-20" id="wizard-step-2">
+<div class="glass-card p-lg rounded-2xl max-w-2xl mx-auto w-full">
+<div class="mb-lg">
+<h2 class="font-headline-md mb-xs">Konfigurasi API Supplier</h2>
+<p class="text-on-surface-variant text-sm">Masukkan detail kredensial API yang diberikan oleh supplier Anda.</p>
+</div>
+<form class="space-y-md" id="credential-form">
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant">Nama Supplier</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-sm text-on-surface focus:border-primary transition-all" placeholder="Contoh: Global Warehouse Indo" type="text">
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant">API Endpoint URL</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-sm text-on-surface focus:border-primary transition-all" placeholder="https://api.supplier.com/v1" type="url">
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant">Client ID / API Key</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-sm text-on-surface focus:border-primary transition-all" placeholder="••••••••••••" type="password">
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant">Secret Key</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-sm text-on-surface focus:border-primary transition-all" placeholder="••••••••••••" type="password">
+</div>
+</div>
+<div class="pt-md flex gap-sm">
+<button class="flex-1 py-sm border border-outline-variant rounded-lg font-label-md text-on-surface hover:bg-surface-container-high transition-all" onclick="goToStep(1)" type="button">Kembali</button>
+<button class="flex-[2] py-sm bg-primary text-on-primary-container rounded-lg font-label-md hover:opacity-90 transition-all flex items-center justify-center gap-2" onclick="goToStep(3)" type="button">
+                                Hubungkan &amp; Lanjut <span class="material-symbols-outlined text-sm">bolt</span>
+</button>
+</div>
+</form>
+</div>
+<!-- AI Helper Card -->
+<div class="max-w-2xl mx-auto w-full glass-card p-sm rounded-xl flex items-center gap-md border-primary/20 bg-primary/5">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+<div>
+<p class="text-sm font-label-md text-primary">AI Sedang Mendeteksi Struktur...</p>
+<p class="text-xs text-on-surface-variant">Kami akan mencoba memvalidasi koneksi Anda secara instan.</p>
+</div>
+</div>
+</section>
+<!-- Step 3: Pemetaan Kategori (Hidden by default) -->
+<section class="hidden step-transition w-full flex flex-col gap-md opacity-0 transform translate-x-20" id="wizard-step-3">
+<div class="glass-card rounded-2xl overflow-hidden">
+<div class="p-md bg-surface-container-high flex justify-between items-center border-b border-outline-variant/30">
+<div>
+<h2 class="font-headline-md">Pemetaan Kategori AI</h2>
+<p class="text-xs text-on-surface-variant">Sesuaikan kategori produk supplier dengan toko Anda.</p>
+</div>
+<div class="px-3 py-1 bg-secondary/20 text-secondary text-xs rounded-full flex items-center gap-1 font-bold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> 92% Keakuratan AI
+                        </div>
+</div>
+<div class="p-0 overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr class="text-on-surface-variant border-b border-outline-variant/20">
+<th class="p-md font-label-md">Kategori Supplier</th>
+<th class="p-md font-label-md">Aksi</th>
+<th class="p-md font-label-md">Kategori Toko Anda</th>
+<th class="p-md font-label-md text-right">Produk</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md font-body-md">Elektronik &gt; Aksesoris HP</td>
+<td class="p-md"><span class="material-symbols-outlined text-primary">trending_flat</span></td>
+<td class="p-md">
+<select class="bg-surface-container-high border-none rounded p-xs text-sm w-full focus:ring-1 focus:ring-primary">
+<option>Aksesoris Gadget</option>
+<option>Elektronik</option>
+</select>
+</td>
+<td class="p-md text-right text-on-surface-variant text-sm">452 items</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md font-body-md">Fashion &gt; Pria &gt; Kaos</td>
+<td class="p-md"><span class="material-symbols-outlined text-primary">trending_flat</span></td>
+<td class="p-md">
+<select class="bg-surface-container-high border-none rounded p-xs text-sm w-full focus:ring-1 focus:ring-primary">
+<option>Pakaian Pria</option>
+<option>Fashion Umum</option>
+</select>
+</td>
+<td class="p-md text-right text-on-surface-variant text-sm">1,204 items</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md font-body-md">Home &amp; Living &gt; Peralatan Dapur</td>
+<td class="p-md"><span class="material-symbols-outlined text-primary">trending_flat</span></td>
+<td class="p-md">
+<select class="bg-surface-container-high border-none rounded p-xs text-sm w-full focus:ring-1 focus:ring-primary">
+<option>Perlengkapan Rumah</option>
+<option>Hobi &amp; Gaya Hidup</option>
+</select>
+</td>
+<td class="p-md text-right text-on-surface-variant text-sm">89 items</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-md bg-surface-container-low flex justify-end gap-sm">
+<button class="px-md py-sm border border-outline-variant rounded-lg font-label-md text-on-surface hover:bg-surface-container-high transition-all" onclick="goToStep(2)" type="button">Kembali</button>
+<button class="px-md py-sm bg-primary text-on-primary-container rounded-lg font-label-md hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2" onclick="finishIntegration()" type="button">
+                            Selesaikan Integrasi <span class="material-symbols-outlined text-sm">check</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Success Overlay (Hidden) -->
+<div class="fixed inset-0 z-[100] bg-surface/90 backdrop-blur-md hidden flex items-center justify-center p-md" id="success-overlay">
+<div class="glass-card ai-glow p-xl rounded-3xl max-w-md w-full text-center flex flex-col items-center gap-md">
+<div class="w-20 h-20 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-5xl">task_alt</span>
+</div>
+<h2 class="font-headline-lg">Berhasil Terhubung!</h2>
+<p class="text-on-surface-variant">AI sedang mengimpor 1.745 produk dari supplier Anda. Anda dapat memantau perkembangannya di dashboard.</p>
+<button class="w-full py-sm bg-primary text-on-primary-container rounded-lg font-bold" onclick="location.reload()">Ke Dashboard</button>
+</div>
+</div>
+<!-- Bottom Navigation (Shared Component Logic) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container backdrop-blur-md border-t border-outline-variant/20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] flex justify-around items-center h-20 px-2 pb-safe md:hidden"><a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#"><span class="material-symbols-outlined" data-icon="home">home</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#"><span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span><span class="font-label-sm text-label-sm">Products</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#"><span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span><span class="font-label-sm text-label-sm">AI Tools</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#"><span class="material-symbols-outlined" data-icon="share">share</span><span class="font-label-sm text-label-sm">Social</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all" href="#"><span class="material-symbols-outlined" data-icon="person">person</span><span class="font-label-sm text-label-sm">Profile</span></a></nav>
+<script>
+        let currentStep = 1;
+
+        function selectMethod(method) {
+            // Animating selection feedback
+            const cards = document.querySelectorAll('#wizard-step-1 .glass-card');
+            cards.forEach(card => card.classList.remove('border-primary', 'bg-primary/5'));
+            
+            // Simulation logic
+            setTimeout(() => {
+                goToStep(2);
+            }, 300);
+        }
+
+        function goToStep(step) {
+            const currentElement = document.getElementById(`wizard-step-${currentStep}`);
+            const nextElement = document.getElementById(`wizard-step-${step}`);
+            
+            // Fade out current
+            currentElement.classList.add('opacity-0', step > currentStep ? '-translate-x-20' : 'translate-x-20');
+            
+            setTimeout(() => {
+                currentElement.classList.add('hidden');
+                nextElement.classList.remove('hidden');
+                
+                // Trigger reflow
+                nextElement.offsetHeight;
+                
+                nextElement.classList.remove('opacity-0', 'translate-x-20', '-translate-x-20');
+                nextElement.classList.add('opacity-100', 'translate-x-0');
+                
+                currentStep = step;
+                updateProgress(step);
+            }, 300);
+        }
+
+        function updateProgress(step) {
+            // Node coloring
+            for(let i=1; i<=3; i++) {
+                const node = document.getElementById(`step-node-${i}`);
+                const label = node.nextElementSibling;
+                
+                if (i <= step) {
+                    node.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+                    node.classList.add('bg-primary', 'text-on-primary-container');
+                    label.classList.add('text-primary');
+                    label.classList.remove('text-on-surface-variant');
+                } else {
+                    node.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                    node.classList.remove('bg-primary', 'text-on-primary-container');
+                    label.classList.remove('text-primary');
+                    label.classList.add('text-on-surface-variant');
+                }
+            }
+
+            // Progress lines
+            document.getElementById('progress-line-1').style.width = step >= 2 ? '100%' : '0%';
+            document.getElementById('progress-line-2').style.width = step >= 3 ? '100%' : '0%';
+        }
+
+        function finishIntegration() {
+            const overlay = document.getElementById('success-overlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('animate-in', 'fade-in', 'duration-500');
+        }
+
+        // Initialize state
+        window.onload = () => {
+            updateProgress(1);
+        };
+    </script>
+
+
+</body></html>

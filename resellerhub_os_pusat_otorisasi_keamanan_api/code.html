@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pusat Otorisasi &amp; Keamanan API | ResellerHub OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Injection -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "primary-fixed-dim": "#c0c1ff",
+                "error-container": "#93000a",
+                "outline-variant": "#464554",
+                "surface-container-high": "#242b31",
+                "secondary": "#4edea3",
+                "secondary-container": "#00a572",
+                "on-primary": "#1000a9",
+                "surface-container-low": "#161c22",
+                "on-tertiary": "#4f2500",
+                "on-background": "#dde3eb",
+                "on-primary-fixed": "#07006c",
+                "background": "#0e141a",
+                "surface-container-highest": "#2f353c",
+                "on-primary-container": "#0d0096",
+                "primary": "#c0c1ff",
+                "tertiary-fixed": "#ffdcc5",
+                "on-secondary": "#003824",
+                "on-surface-variant": "#c7c4d7",
+                "on-secondary-fixed": "#002113",
+                "primary-container": "#8083ff",
+                "on-tertiary-fixed-variant": "#703700",
+                "tertiary-container": "#d97721",
+                "on-surface": "#dde3eb",
+                "inverse-primary": "#494bd6",
+                "surface-dim": "#0e141a",
+                "inverse-on-surface": "#2b3137",
+                "surface-container-lowest": "#080f14",
+                "surface-container": "#1a2026",
+                "on-error": "#690005",
+                "secondary-fixed-dim": "#4edea3",
+                "primary-fixed": "#e1e0ff",
+                "tertiary-fixed-dim": "#ffb783",
+                "secondary-fixed": "#6ffbbe",
+                "on-primary-fixed-variant": "#2f2ebe",
+                "outline": "#908fa0",
+                "on-error-container": "#ffdad6",
+                "on-secondary-fixed-variant": "#005236",
+                "tertiary": "#ffb783",
+                "inverse-surface": "#dde3eb",
+                "error": "#ffb4ab",
+                "surface-tint": "#c0c1ff",
+                "on-secondary-container": "#00311f",
+                "on-tertiary-fixed": "#301400",
+                "surface-variant": "#2f353c",
+                "surface": "#0e141a",
+                "surface-bright": "#333a40",
+                "on-tertiary-container": "#452000"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "xl": "32px",
+                "lg": "24px",
+                "gutter": "16px",
+                "sm": "12px",
+                "md": "16px",
+                "base": "4px",
+                "margin": "24px",
+                "xs": "8px"
+            },
+            "fontFamily": {
+                "body-lg": ["Plus Jakarta Sans"],
+                "body-md": ["Plus Jakarta Sans"],
+                "headline-md": ["Plus Jakarta Sans"],
+                "mono-data": ["JetBrains Mono"],
+                "headline-xl": ["Plus Jakarta Sans"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "label-md": ["Plus Jakarta Sans"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #0e141a;
+            color: #dde3eb;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ai-accent-border {
+            border-left: 2px solid #8083ff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="dark selection:bg-primary selection:text-on-primary">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin h-16 bg-surface-container border-b border-outline-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-headline-md">hub</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ResellerHub OS</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center bg-surface-container-low px-sm py-1 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-secondary text-[18px] mr-2">security</span>
+<span class="font-label-md text-label-md uppercase text-secondary">Sistem Aman</span>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-high p-xs rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Side Navigation Drawer (Desktop) -->
+<aside class="fixed left-0 top-0 h-full w-72 z-[60] hidden md:flex flex-col py-margin bg-surface-container-low border-r border-outline-variant rounded-r-xl mt-16">
+<div class="px-md mb-lg">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">person</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Enterprise Admin</p>
+<p class="text-xs text-on-surface-variant">ResellerHub Pro</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-full mx-xs" href="#">
+<span class="material-symbols-outlined">sync_alt</span>
+<span class="font-body-md text-body-md">Integrations</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md">Financials</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Team Access</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="px-md mt-auto pt-md">
+<div class="bg-surface-container p-sm rounded-xl border border-outline-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">enhanced_encryption</span>
+<div class="flex-1">
+<p class="text-[10px] uppercase font-bold text-primary">Credential Vault</p>
+<p class="text-[11px] text-on-surface-variant">Enkripsi AES-256 Aktif</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-secondary status-pulse"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-72 pt-24 pb-20 px-margin min-h-screen">
+<!-- Global Auth Status & Health Header -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-lg mb-xl">
+<div class="md:col-span-8 flex flex-col justify-center">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Pusat Otorisasi &amp; Keamanan API</h2>
+<p class="text-on-surface-variant max-w-2xl">Kelola token akses platform marketplace Anda. Seluruh kredensial diamankan melalui gateway terpusat dengan rotasi otomatis.</p>
+</div>
+<div class="md:col-span-4 flex gap-md">
+<div class="flex-1 bg-surface-container p-md rounded-xl border border-outline-variant">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase mb-base block">Koneksi Aktif</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-lg text-headline-lg text-primary">12/15</span>
+<span class="material-symbols-outlined text-primary-fixed-dim">link</span>
+</div>
+</div>
+<div class="flex-1 bg-surface-container p-md rounded-xl border border-outline-variant">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase mb-base block">Skor Keamanan</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-lg text-headline-lg text-secondary">98%</span>
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Auto-Refresh Monitor (Cron Job Status) -->
+<section class="glass-panel p-lg rounded-xl mb-xl ai-accent-border relative overflow-hidden">
+<div class="flex flex-wrap items-center justify-between gap-md relative z-10">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container">update</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Background Token Refresher</h3>
+<p class="text-body-md text-on-surface-variant">Layanan otomatisasi rotasi token sedang berjalan (Cron Job active).</p>
+</div>
+</div>
+<div class="flex gap-xl text-right">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Eksekusi Terakhir</p>
+<p class="font-mono-data text-mono-data text-primary">2023-10-27 14:30:02</p>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase">Jadwal Berikutnya</p>
+<p class="font-mono-data text-mono-data text-secondary">2023-10-27 15:00:00</p>
+</div>
+<div class="hidden sm:block">
+<button class="bg-primary text-on-primary px-md py-sm rounded-lg font-bold text-label-md hover:bg-primary-container transition-colors">
+                            RESTART SERVICE
+                        </button>
+</div>
+</div>
+</div>
+<!-- Background Decoration -->
+<div class="absolute right-0 top-0 opacity-5">
+<span class="material-symbols-outlined text-[120px]">memory</span>
+</div>
+</section>
+<!-- Platform Token Cards Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg mb-xl">
+<!-- Shopee Card -->
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-high">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center font-bold text-white">S</div>
+<span class="font-headline-md text-headline-md">Shopee Indonesia</span>
+</div>
+<span class="bg-secondary-container/20 text-secondary px-xs py-0.5 rounded text-[10px] font-bold uppercase">Aktif</span>
+</div>
+<div class="p-lg flex-1">
+<div class="mb-md">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Status Access Token</p>
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span class="font-mono-data text-mono-data">Valid - Expires in 45m</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-sm border-y border-outline-variant mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">autorenew</span>
+<span class="text-body-md text-on-surface-variant">Auto-Refresh Mode</span>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<button class="w-full py-sm border border-primary text-primary rounded-lg font-bold text-label-md hover:bg-primary/10 transition-colors">
+                            MANUAL REFRESH
+                        </button>
+<button class="w-full py-sm text-on-surface-variant hover:text-on-surface transition-colors text-label-md">
+                            RE-AUTHORIZE PLATFORM
+                        </button>
+</div>
+</div>
+</div>
+<!-- Tokopedia Card -->
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-high">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center font-bold text-white">T</div>
+<span class="font-headline-md text-headline-md">Tokopedia</span>
+</div>
+<span class="bg-tertiary-container/20 text-tertiary px-xs py-0.5 rounded text-[10px] font-bold uppercase">Expiring Soon</span>
+</div>
+<div class="p-lg flex-1">
+<div class="mb-md">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Status Access Token</p>
+<div class="flex items-center gap-xs text-tertiary">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="font-mono-data text-mono-data">Expires in 12m</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-sm border-y border-outline-variant mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">autorenew</span>
+<span class="text-body-md text-on-surface-variant">Auto-Refresh Mode</span>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<button class="w-full py-sm bg-primary text-on-primary rounded-lg font-bold text-label-md hover:bg-primary-container transition-colors shadow-lg shadow-primary/20">
+                            MANUAL REFRESH
+                        </button>
+<button class="w-full py-sm text-on-surface-variant hover:text-on-surface transition-colors text-label-md">
+                            RE-AUTHORIZE PLATFORM
+                        </button>
+</div>
+</div>
+</div>
+<!-- TikTok Shop Card -->
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-high">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center font-bold text-white">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</div>
+<span class="font-headline-md text-headline-md">TikTok Shop</span>
+</div>
+<span class="bg-secondary-container/20 text-secondary px-xs py-0.5 rounded text-[10px] font-bold uppercase">Aktif</span>
+</div>
+<div class="p-lg flex-1">
+<div class="mb-md">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs">Status Access Token</p>
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span class="font-mono-data text-mono-data">Valid - Expires in 4h 22m</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-sm border-y border-outline-variant mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">autorenew</span>
+<span class="text-body-md text-on-surface-variant">Auto-Refresh Mode</span>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<button class="w-full py-sm border border-primary text-primary rounded-lg font-bold text-label-md hover:bg-primary/10 transition-colors">
+                            MANUAL REFRESH
+                        </button>
+<button class="w-full py-sm text-on-surface-variant hover:text-on-surface transition-colors text-label-md">
+                            RE-AUTHORIZE PLATFORM
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Logs & Shortcuts Split Layout -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Recent Auth Logs -->
+<div class="lg:col-span-8 bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-headline-md text-headline-md">Log Otorisasi Terbaru</h3>
+<button class="text-primary font-label-md text-label-md hover:underline">LIHAT SEMUA</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-on-surface-variant text-[10px] uppercase font-bold border-b border-outline-variant">
+<th class="px-lg py-sm">Timestamp</th>
+<th class="px-lg py-sm">Platform</th>
+<th class="px-lg py-sm">Aksi</th>
+<th class="px-lg py-sm">Status</th>
+<th class="px-lg py-sm">Detail</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-lg py-sm font-mono-data text-on-surface-variant">14:30:02</td>
+<td class="px-lg py-sm font-bold">Shopee ID</td>
+<td class="px-lg py-sm">Cron Refresh</td>
+<td class="px-lg py-sm">
+<span class="flex items-center gap-xs text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Sukses
+                                    </span>
+</td>
+<td class="px-lg py-sm text-on-surface-variant">Token rotated (AES)</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-lg py-sm font-mono-data text-on-surface-variant">14:15:45</td>
+<td class="px-lg py-sm font-bold">TikTok Shop</td>
+<td class="px-lg py-sm">Manual Refresh</td>
+<td class="px-lg py-sm">
+<span class="flex items-center gap-xs text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Sukses
+                                    </span>
+</td>
+<td class="px-lg py-sm text-on-surface-variant">Action by Admin</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-lg py-sm font-mono-data text-on-surface-variant">13:00:10</td>
+<td class="px-lg py-sm font-bold">Tokopedia</td>
+<td class="px-lg py-sm">Webhook Pull</td>
+<td class="px-lg py-sm">
+<span class="flex items-center gap-xs text-error">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Gagal
+                                    </span>
+</td>
+<td class="px-lg py-sm text-error">Invalid App Secret</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-lg py-sm font-mono-data text-on-surface-variant">12:45:22</td>
+<td class="px-lg py-sm font-bold">Shopee ID</td>
+<td class="px-lg py-sm">Cron Refresh</td>
+<td class="px-lg py-sm">
+<span class="flex items-center gap-xs text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Sukses
+                                    </span>
+</td>
+<td class="px-lg py-sm text-on-surface-variant">System routine</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Technical Shortcuts & Vault Status -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<div class="bg-surface-container p-lg rounded-xl border border-outline-variant">
+<h3 class="font-headline-md text-headline-md mb-md">Pintasan Teknis</h3>
+<div class="space-y-sm">
+<button class="w-full flex items-center justify-between p-md bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container-highest transition-all group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">key</span>
+<span class="font-body-md text-body-md">Signature Generator</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-md bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container-highest transition-all group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">webhook</span>
+<span class="font-body-md text-body-md">Webhook Settings</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-md bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container-highest transition-all group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">terminal</span>
+<span class="font-body-md text-body-md">API Documentation</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">open_in_new</span>
+</button>
+</div>
+</div>
+<div class="bg-primary-container/10 p-lg rounded-xl border border-primary-container/30 flex items-start gap-md">
+<span class="material-symbols-outlined text-primary-container text-[32px]">shield_locked</span>
+<div>
+<h4 class="font-headline-md text-primary-container text-headline-md">Credential Vault</h4>
+<p class="text-sm text-on-surface-variant mt-1">Seluruh API Key dan Secret dienkripsi dengan standar militer dan disimpan dalam hardware security module (HSM) terisolasi.</p>
+<div class="mt-md flex items-center gap-xs">
+<div class="px-xs py-1 rounded bg-secondary-container/20 text-secondary text-[10px] font-bold">FIPS 140-2 LEVEL 3</div>
+<div class="px-xs py-1 rounded bg-primary-container/20 text-primary-container text-[10px] font-bold">ISO 27001</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-xs pb-safe h-16 bg-surface-container border-t border-outline-variant">
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-[10px]">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined">sync_alt</span>
+<span class="font-label-md text-[10px]">Auth</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-md text-[10px]">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-[10px]">Stok</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md text-[10px]">Coach</span>
+</button>
+</nav>
+<script>
+        // Simple Interaction logic
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Simulating Live Clock for Refreshers
+        setInterval(() => {
+            // This would normally pull real data, here we just show activity
+            const pulses = document.querySelectorAll('.status-pulse');
+            pulses.forEach(p => {
+                p.style.opacity = Math.random() > 0.5 ? '1' : '0.5';
+            });
+        }, 3000);
+    </script>
+</body></html>

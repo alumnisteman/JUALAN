@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResellerHub OS - Shopee Integration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .shopee-accent {
+            color: #ee4d2d;
+        }
+        .shopee-bg {
+            background-color: #ee4d2d;
+        }
+        .shopee-border {
+            border-color: #ee4d2d;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0d15;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a3c;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#2b3137",
+                        "surface-variant": "#2f353c",
+                        "surface-tint": "#c0c1ff",
+                        "on-primary": "#1000a9",
+                        "primary": "#c0c1ff",
+                        "surface": "#0e141a",
+                        "outline-variant": "#464554",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#080f14",
+                        "surface-container-highest": "#2f353c",
+                        "on-secondary-fixed": "#002113",
+                        "tertiary": "#ffb783",
+                        "secondary-container": "#00a572",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-secondary": "#003824",
+                        "tertiary-fixed": "#ffdcc5",
+                        "tertiary-container": "#d97721",
+                        "on-tertiary-fixed": "#301400",
+                        "on-surface": "#dde3eb",
+                        "primary-container": "#8083ff",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "surface-container-low": "#161c22",
+                        "secondary-fixed": "#6ffbbe",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#0e141a",
+                        "outline": "#908fa0",
+                        "surface-bright": "#333a40",
+                        "on-secondary-container": "#00311f",
+                        "surface-container-high": "#242b31",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-primary-fixed": "#07006c",
+                        "surface-container": "#1a2026",
+                        "on-surface-variant": "#c7c4d7",
+                        "inverse-surface": "#dde3eb",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#4f2500",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "on-error": "#690005",
+                        "inverse-primary": "#494bd6",
+                        "on-background": "#dde3eb",
+                        "on-tertiary-container": "#452000",
+                        "on-primary-container": "#0d0096",
+                        "secondary": "#4edea3",
+                        "primary-fixed": "#e1e0ff",
+                        "secondary-fixed-dim": "#4edea3",
+                        "background": "#0e141a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "sm": "12px",
+                        "margin": "24px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "mono-data": ["JetBrains Mono"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full h-16 flex items-center justify-between px-margin z-50 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<button class="p-xs hover:bg-surface-variant transition-colors rounded-lg">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ResellerHub OS</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined p-xs hover:bg-surface-variant transition-colors rounded-lg">notifications</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">SA</div>
+</div>
+</nav>
+<main class="pt-24 pb-32 px-margin max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Store Header (Left Column - Bento Style) -->
+<div class="md:col-span-12 lg:col-span-8 space-y-lg">
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg relative overflow-hidden">
+<!-- Subtle Shopee Gradient Background -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-[#ee4d2d] opacity-5 blur-[100px] pointer-events-none"></div>
+<div class="flex flex-col md:flex-row items-center gap-lg relative z-10">
+<div class="relative">
+<div class="w-24 h-24 rounded-full border-4 border-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up professional e-commerce store avatar for a gadget retailer named TechNest on Shopee. The profile picture features a modern, minimalist logo with clean lines and a vibrant orange and dark blue color scheme, reflecting professional and high-tech branding consistent with the industrial modern ResellerHub OS theme. The lighting is crisp and studio-quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi1pfXHzyK1hd-Kj7WI-rqnQTUNYeBmJAwrLUDgEaIF84gebsF80YaEIRMpNrJUSp4EIZfPqykXIpAIwAKH52NdO6Aqa_pkwUVm3KbhnxqLCOyGEEa3nya5AJSEgOtIfJVwncfOpFYle8b-LrymKKo4Gy5bZyiTf1LDjmCFxi6vyjE5ddizeJDq63Fz5kUs6j56qfmd6nONl6lo4E_BPkxudxjsyUa1fKYdao0kicP6FmvKdLOT9nEOhNexCsmd3C6xSyXlRMwTpI"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-white p-1 rounded-full shadow-lg">
+<img alt="Shopee Logo" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVG29gLXgbw8jcjGHkyDkfA1Q0YKpex_zfar0x_sTaMn3RJ6i8LdFjvBWkPNbZj6mJlMLpsQRePflJj2uDYKXCRPtZvvIx1E0U0NMGPW-EXtZ2CJ0-y9yrKv_qdnweop29GfaxG6fIZlaYE2Ry2P_N5ie1wLJPE74AvUY01k9fXoCU7BSciPAfNhPcEikA_dfPXXgKLN8bIFJRCdkysQJ1smNPxjjOxMibc3vy15lA1ztb-3jDmIOXFe7awSD2ilsw-jo2xQ219QE"/>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-col md:flex-row md:items-center gap-xs">
+<h2 class="font-headline-lg text-headline-lg">TechNest Official Store</h2>
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-full font-label-md text-[10px] w-fit mx-auto md:mx-0">TERHUBUNG</span>
+</div>
+<div class="mt-xs flex flex-wrap justify-center md:justify-start gap-md text-on-surface-variant font-body-md">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm shopee-accent" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9 (2.4k Penilaian)</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-primary">group</span>
+<span>15.2k Pengikut</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-primary">schedule</span>
+<span>Aktif 5 mnt yang lalu</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-sm w-full md:w-auto">
+<button class="bg-[#ee4d2d] hover:bg-[#d73d1f] text-white font-label-md py-md px-lg rounded-xl flex items-center justify-center gap-sm transition-all shadow-lg active:scale-95">
+<span class="material-symbols-outlined">sync</span>
+                            Sinkronisasi Sekarang
+                        </button>
+</div>
+</div>
+</div>
+<!-- Dashboard Grid Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Automation Settings -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg space-y-lg">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">settings_suggest</span>
+                            Otomatisasi
+                        </h3>
+</div>
+<div class="space-y-md">
+<!-- Toggle 1 -->
+<div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div>
+<p class="font-headline-md text-[16px] text-on-surface">Auto-Sync Stok</p>
+<p class="text-on-surface-variant text-xs">Update stok otomatis di Shopee</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#ee4d2d]"></div>
+</label>
+</div>
+<!-- Toggle 2 -->
+<div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div>
+<p class="font-headline-md text-[16px] text-on-surface">Auto-Sync Harga</p>
+<p class="text-on-surface-variant text-xs">Samakan harga dengan Master Data</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#ee4d2d]"></div>
+</label>
+</div>
+<!-- Toggle 3 -->
+<div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div>
+<p class="font-headline-md text-[16px] text-on-surface">Auto-Fetch Pesanan</p>
+<p class="text-on-surface-variant text-xs">Ambil pesanan baru setiap 5 menit</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#ee4d2d]"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- KPI Quick View -->
+<div class="grid grid-rows-2 gap-lg">
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-md uppercase">Pesanan Hari Ini</p>
+<h4 class="text-headline-xl font-headline-xl">142</h4>
+<span class="text-secondary text-xs flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12.5% vs Kemarin
+                            </span>
+</div>
+<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">shopping_bag</span>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-label-md uppercase">Produk Sinkron</p>
+<h4 class="text-headline-xl font-headline-xl">1.284</h4>
+<span class="text-on-surface-variant text-xs">Total 1.300 SKU</span>
+</div>
+<div class="w-12 h-12 bg-secondary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sync Logs Section -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg space-y-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md">Log Sinkronisasi Terakhir</h3>
+<button class="text-primary font-label-md hover:underline">Lihat Semua</button>
+</div>
+<div class="overflow-hidden border border-outline-variant rounded-lg">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-highest text-on-surface-variant font-label-md uppercase text-[10px]">
+<th class="p-md">Waktu</th>
+<th class="p-md">Jenis Aktivitas</th>
+<th class="p-md">Status</th>
+<th class="p-md">Detail</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-sm divide-y divide-outline-variant">
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-md text-on-surface-variant font-mono-data">24-05-2024 14:30</td>
+<td class="p-md">Sinkronisasi Stok</td>
+<td class="p-md">
+<span class="flex items-center gap-xs text-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Sukses
+                                    </span>
+</td>
+<td class="p-md text-on-surface-variant">420 item diperbarui</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-md text-on-surface-variant font-mono-data">24-05-2024 13:15</td>
+<td class="p-md">Ambil Pesanan Baru</td>
+<td class="p-md">
+<span class="flex items-center gap-xs text-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Sukses
+                                    </span>
+</td>
+<td class="p-md text-on-surface-variant">12 Pesanan baru ditemukan</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-md text-on-surface-variant font-mono-data">24-05-2024 12:00</td>
+<td class="p-md">Update Harga Massal</td>
+<td class="p-md">
+<span class="flex items-center gap-xs text-error">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span> Gagal
+                                    </span>
+</td>
+<td class="p-md text-error">Token API Kedaluwarsa</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-md text-on-surface-variant font-mono-data">24-05-2024 11:45</td>
+<td class="p-md">Sinkronisasi Stok</td>
+<td class="p-md">
+<span class="flex items-center gap-xs text-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Sukses
+                                    </span>
+</td>
+<td class="p-md text-on-surface-variant">52 item diperbarui</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Sidebar / Actions (Right Column) -->
+<div class="md:col-span-12 lg:col-span-4 space-y-lg">
+<!-- AI Insight Card (Glassmorphism) -->
+<div class="glass-panel rounded-xl p-lg border-l-2 border-primary">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<h4 class="font-headline-md text-[16px]">AI Intelligence Insight</h4>
+</div>
+<p class="text-on-surface-variant font-body-md italic mb-md">
+                    "Terdapat lonjakan pencarian pada kategori **'Smartphone Accessories'** di Shopee hari ini. Pertimbangkan untuk menyinkronkan stok Powerbank dan Kabel Data Anda sekarang."
+                </p>
+<div class="flex gap-sm">
+<button class="flex-1 bg-surface-container-highest hover:bg-surface-variant py-xs px-sm rounded-lg text-xs font-label-md transition-colors">Abaikan</button>
+<button class="flex-1 bg-primary text-on-primary py-xs px-sm rounded-lg text-xs font-label-md hover:opacity-90 transition-opacity">Eksekusi</button>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg">
+<h4 class="font-headline-md text-headline-md mb-md text-error flex items-center gap-sm">
+<span class="material-symbols-outlined text-error">warning</span>
+                    Area Berbahaya
+                </h4>
+<p class="text-on-surface-variant text-sm mb-lg">
+                    Memutuskan integrasi akan menghentikan seluruh sinkronisasi data otomatis antara ResellerHub OS dan Toko Shopee Anda.
+                </p>
+<button class="w-full py-md px-lg rounded-xl border border-error text-error font-label-md hover:bg-error/10 transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">link_off</span>
+                    Putuskan Koneksi Toko
+                </button>
+</div>
+<!-- Help Center Quick Link -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-tertiary-container/20 rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-tertiary text-3xl">help_center</span>
+</div>
+<h5 class="font-headline-md text-[16px] mb-xs">Butuh Bantuan?</h5>
+<p class="text-on-surface-variant text-xs mb-md">Pelajari panduan integrasi Shopee API v2.0 untuk memaksimalkan performa toko.</p>
+<button class="text-primary font-label-md flex items-center gap-base">
+                    Pusat Bantuan <span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile View) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-base bg-surface-container border-t border-outline-variant shadow-md">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-[10px]">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-transform active:scale-90">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-[10px]">Warehouse</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">package_2</span>
+<span class="font-label-md text-[10px]">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-md text-[10px]">AI Tools</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md text-[10px]">Coach</span>
+</button>
+</div>
+<script>
+        // Micro-interaction for toggle switches
+        document.querySelectorAll('input[type="checkbox"]').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const parent = this.closest('div.flex');
+                if (this.checked) {
+                    parent.classList.add('border-primary/30');
+                } else {
+                    parent.classList.remove('border-primary/30');
+                }
+            });
+        });
+
+        // Simulating a "Sync" action
+        const syncBtn = document.querySelector('button.shopee-bg');
+        if (syncBtn) {
+            syncBtn.addEventListener('click', function() {
+                const icon = this.querySelector('.material-symbols-outlined');
+                icon.classList.add('animate-spin');
+                this.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Mensinkronkan...`;
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Selesai!`;
+                    this.classList.remove('bg-[#ee4d2d]');
+                    this.classList.add('bg-secondary-container', 'text-on-secondary-container');
+                    
+                    setTimeout(() => {
+                        this.innerHTML = `<span class="material-symbols-outlined">sync</span> Sinkronisasi Sekarang`;
+                        this.classList.add('bg-[#ee4d2d]');
+                        this.classList.remove('bg-secondary-container', 'text-on-secondary-container');
+                        this.disabled = false;
+                    }, 2000);
+                }, 1500);
+            });
+        }
+    </script>
+</body></html>

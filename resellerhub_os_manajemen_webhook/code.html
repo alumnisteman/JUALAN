@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Webhook Management - ResellerHub OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#07006c",
+                    "surface-bright": "#333a40",
+                    "on-tertiary-container": "#452000",
+                    "tertiary-container": "#d97721",
+                    "secondary-container": "#00a572",
+                    "on-secondary-fixed-variant": "#005236",
+                    "on-secondary-container": "#00311f",
+                    "tertiary-fixed-dim": "#ffb783",
+                    "secondary": "#4edea3",
+                    "surface-variant": "#2f353c",
+                    "surface-container-lowest": "#080f14",
+                    "on-secondary-fixed": "#002113",
+                    "inverse-primary": "#494bd6",
+                    "outline-variant": "#464554",
+                    "on-surface-variant": "#c7c4d7",
+                    "inverse-on-surface": "#2b3137",
+                    "surface": "#0e141a",
+                    "surface-container-highest": "#2f353c",
+                    "on-tertiary-fixed-variant": "#703700",
+                    "primary-container": "#8083ff",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "background": "#0e141a",
+                    "on-secondary": "#003824",
+                    "on-primary": "#1000a9",
+                    "surface-container": "#1a2026",
+                    "on-tertiary": "#4f2500",
+                    "tertiary-fixed": "#ffdcc5",
+                    "secondary-fixed-dim": "#4edea3",
+                    "secondary-fixed": "#6ffbbe",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#242b31",
+                    "on-tertiary-fixed": "#301400",
+                    "on-background": "#dde3eb",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#e1e0ff",
+                    "on-surface": "#dde3eb",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#dde3eb",
+                    "outline": "#908fa0",
+                    "on-error": "#690005",
+                    "surface-container-low": "#161c22",
+                    "surface-tint": "#c0c1ff",
+                    "primary": "#c0c1ff",
+                    "on-primary-container": "#0d0096",
+                    "tertiary": "#ffb783",
+                    "surface-dim": "#0e141a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "gutter": "16px",
+                    "margin": "24px",
+                    "xs": "8px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "base": "4px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "label-md": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "mono-data": ["JetBrains Mono"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0d0d15;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2a2a3c;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24 md:pb-0 md:pl-80">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 md:left-80 right-0 h-16 flex items-center justify-between px-margin z-50 bg-surface border-b border-outline-variant transition-colors duration-200">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary md:hidden">menu</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Webhook Management</h1>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-2 rounded-full cursor-pointer transition-colors duration-200">notifications</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate IT administrator for a supply chain company. The person is looking directly at the camera with a confident expression. The lighting is sophisticated, with cool blue tones and sharp clarity, matching an industrial modern tech aesthetic. High resolution, minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVTvXgeGjOnEfTkx-z-RB684RO8r3R9BEQtKRgFzm2G4wVRK70QNa_VIQPOcwpuH90oSPJIf_AVuABnW_RwvAYfbbyBDEbyZYvF9gqZQsMSTGw1IA5_RprysuzoNW52S4H0CgjSRNmVLIyMn4LRIW2fMzaZ2L0-55BckLe52qj_6pMFcdrTVMNmxyN5_kD8gRYFSI5lv368Wh39WhO5WYYbyjCRpH1yKnC4dTe-pY5E8itGH5ysqZP5mD0ws6wu2Vn-HNQWHg9XWg"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation Drawer -->
+<aside class="fixed inset-y-0 left-0 z-[60] hidden md:flex flex-col p-md h-full w-80 bg-surface-container-low border-r border-outline-variant shadow-lg transition-all duration-300 ease-in-out">
+<div class="flex items-center gap-md mb-xl px-2">
+<span class="text-primary font-headline-lg text-headline-lg font-bold">ResellerHub OS</span>
+</div>
+<div class="flex items-center gap-md p-md mb-lg rounded-xl bg-surface-variant/30 border border-outline-variant/50">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold">SA</div>
+<div>
+<p class="font-body-md font-bold text-on-surface">Store Admin</p>
+<p class="text-xs text-on-surface-variant">Professional Plan</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 bg-secondary-container text-on-secondary-container font-bold border-l-4 border-primary rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Account Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">sync</span>
+<span>Inventory Sync</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span>Shipping Partners</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Tax Reports</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help Center</span>
+</a>
+</nav>
+<div class="pt-md border-t border-outline-variant mt-auto">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest px-2">System Version</p>
+<p class="text-xs text-on-surface-variant font-mono px-2">v2.4.0</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-margin pb-24 md:pb-12 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-lg mb-xl">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Webhooks Configuration</h2>
+<p class="text-on-surface-variant max-w-2xl">Integrasikan ResellerHub OS dengan sistem eksternal Anda. Terima notifikasi real-time untuk perubahan data penting melalui HTTP POST requests.</p>
+</div>
+<button class="bg-primary text-on-primary-container px-lg py-sm rounded-xl font-bold flex items-center gap-xs hover:opacity-90 transition-opacity shadow-lg shadow-primary/20" onclick="document.getElementById('modal-add-webhook').classList.remove('hidden')">
+<span class="material-symbols-outlined">add</span>
+                Tambah Webhook Baru
+            </button>
+</div>
+<!-- AI Insights Overlay (Glassmorphism) -->
+<div class="glass-panel p-lg rounded-xl mb-xl flex flex-col md:flex-row items-center gap-lg border-l-4 border-primary">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-primary mb-1">AI Health Check</h3>
+<p class="text-on-surface-variant text-body-md">Sistem mendeteksi tingkat kegagalan 12% pada endpoint <code class="bg-surface px-1 rounded text-primary">api.logistic-sync.io</code>. Disarankan untuk memeriksa limit rate pada server tujuan.</p>
+</div>
+<div class="flex gap-md">
+<button class="text-primary font-bold px-md py-2 hover:bg-primary/10 rounded-lg transition-colors">Lihat Detail</button>
+<button class="bg-surface-variant text-on-surface px-md py-2 rounded-lg hover:bg-surface-container-highest transition-colors">Abaikan</button>
+</div>
+</div>
+<!-- Webhook List Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-lg mb-xl">
+<!-- Webhook Card 1 -->
+<div class="bg-surface-container rounded-xl border border-outline-variant p-lg hover:border-primary/50 transition-colors">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-md">
+<div class="p-2 bg-secondary/10 rounded-lg">
+<span class="material-symbols-outlined text-secondary">cloud_done</span>
+</div>
+<div>
+<h4 class="font-headline-md text-on-surface">Production ERP Sync</h4>
+<p class="text-xs font-mono-data text-on-surface-variant">https://api.internal-erp.com/webhooks/reseller-hub</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider">Pesanan Baru</span>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider">Perubahan Stok</span>
+</div>
+<div class="flex items-center justify-between pt-lg border-t border-outline-variant">
+<div class="flex gap-xl">
+<div>
+<p class="text-[10px] uppercase text-on-surface-variant mb-1">Success Rate</p>
+<p class="font-mono-data text-secondary">99.8%</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-on-surface-variant mb-1">Last Sent</p>
+<p class="font-mono-data">2m ago</p>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors" title="Test Webhook">
+<span class="material-symbols-outlined">send</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors" title="Edit">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Delete">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Webhook Card 2 -->
+<div class="bg-surface-container rounded-xl border border-outline-variant p-lg hover:border-primary/50 transition-colors">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-md">
+<div class="p-2 bg-error/10 rounded-lg">
+<span class="material-symbols-outlined text-error">cloud_off</span>
+</div>
+<div>
+<h4 class="font-headline-md text-on-surface">Logistic Partner Test</h4>
+<p class="text-xs font-mono-data text-on-surface-variant">https://dev.logistic-partner.net/hooks</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider">Status Pengiriman</span>
+</div>
+<div class="flex items-center justify-between pt-lg border-t border-outline-variant">
+<div class="flex gap-xl">
+<div>
+<p class="text-[10px] uppercase text-on-surface-variant mb-1">Success Rate</p>
+<p class="font-mono-data text-error">45.2%</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-on-surface-variant mb-1">Last Sent</p>
+<p class="font-mono-data">3h ago</p>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">send</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Logs Section -->
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex items-center justify-between bg-surface-container-high">
+<h3 class="font-headline-md text-on-surface">Delivery Logs</h3>
+<div class="flex gap-md">
+<select class="bg-surface border-outline-variant rounded-lg text-xs py-1 px-md text-on-surface-variant">
+<option>Semua Status</option>
+<option>Berhasil (200)</option>
+<option>Gagal (4xx/5xx)</option>
+</select>
+<button class="p-2 hover:bg-surface-variant rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">refresh</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface/50">
+<th class="px-lg py-md text-[10px] uppercase font-bold text-on-surface-variant">Status</th>
+<th class="px-lg py-md text-[10px] uppercase font-bold text-on-surface-variant">Event</th>
+<th class="px-lg py-md text-[10px] uppercase font-bold text-on-surface-variant">Endpoint</th>
+<th class="px-lg py-md text-[10px] uppercase font-bold text-on-surface-variant">Response Time</th>
+<th class="px-lg py-md text-[10px] uppercase font-bold text-on-surface-variant">Timestamp</th>
+<th class="px-lg py-md text-[10px] uppercase font-bold text-on-surface-variant">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-lg py-md">
+<span class="bg-secondary/10 text-secondary px-2 py-1 rounded-full text-xs font-mono-data">200 OK</span>
+</td>
+<td class="px-lg py-md text-on-surface font-medium">order.created</td>
+<td class="px-lg py-md text-on-surface-variant font-mono-data text-xs">api.internal-erp.com...</td>
+<td class="px-lg py-md text-on-surface-variant font-mono-data">142ms</td>
+<td class="px-lg py-md text-on-surface-variant text-xs">2023-11-24 14:20:12</td>
+<td class="px-lg py-md">
+<button class="text-primary text-xs font-bold hover:underline">Details</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-lg py-md">
+<span class="bg-error/10 text-error px-2 py-1 rounded-full text-xs font-mono-data">500 ERR</span>
+</td>
+<td class="px-lg py-md text-on-surface font-medium">stock.updated</td>
+<td class="px-lg py-md text-on-surface-variant font-mono-data text-xs">dev.logistic-partner...</td>
+<td class="px-lg py-md text-on-surface-variant font-mono-data">3200ms</td>
+<td class="px-lg py-md text-on-surface-variant text-xs">2023-11-24 14:18:45</td>
+<td class="px-lg py-md">
+<button class="text-primary text-xs font-bold hover:underline">Retry</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-lg py-md">
+<span class="bg-secondary/10 text-secondary px-2 py-1 rounded-full text-xs font-mono-data">200 OK</span>
+</td>
+<td class="px-lg py-md text-on-surface font-medium">order.created</td>
+<td class="px-lg py-md text-on-surface-variant font-mono-data text-xs">api.internal-erp.com...</td>
+<td class="px-lg py-md text-on-surface-variant font-mono-data">89ms</td>
+<td class="px-lg py-md text-on-surface-variant text-xs">2023-11-24 14:15:33</td>
+<td class="px-lg py-md">
+<button class="text-primary text-xs font-bold hover:underline">Details</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-lg py-md">
+<span class="bg-error/10 text-error px-2 py-1 rounded-full text-xs font-mono-data">404 ERR</span>
+</td>
+<td class="px-lg py-md text-on-surface font-medium">shipping.status</td>
+<td class="px-lg py-md text-on-surface-variant font-mono-data text-xs">dev.logistic-partner...</td>
+<td class="px-lg py-md text-on-surface-variant font-mono-data">45ms</td>
+<td class="px-lg py-md text-on-surface-variant text-xs">2023-11-24 14:10:01</td>
+<td class="px-lg py-md">
+<button class="text-primary text-xs font-bold hover:underline">Retry</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-lg py-md bg-surface-container-high border-t border-outline-variant flex items-center justify-between">
+<p class="text-xs text-on-surface-variant">Showing 4 of 2,451 logs</p>
+<div class="flex gap-base">
+<button class="p-1 hover:bg-surface-variant rounded disabled:opacity-50" disabled=""><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-1 hover:bg-surface-variant rounded"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Nav Bar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex md:hidden justify-around items-center h-20 pb-safe px-base bg-surface-container rounded-t-xl border-t border-outline-variant shadow-md">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-md font-label-md">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="text-label-md font-label-md">AI Tools</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-md font-label-md">Settings</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-label-md font-label-md">Warehouse</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-label-md font-label-md">Coach</span>
+</div>
+</nav>
+<!-- Modal: Add Webhook -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden" id="modal-add-webhook">
+<div class="bg-surface-container-high w-full max-w-xl p-xl rounded-2xl border border-outline-variant shadow-2xl m-margin">
+<div class="flex items-center justify-between mb-xl">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Konfigurasi Webhook Baru</h3>
+<button class="text-on-surface-variant hover:text-on-surface" onclick="document.getElementById('modal-add-webhook').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form class="space-y-lg">
+<div>
+<label class="block text-label-md text-on-surface-variant mb-base">Endpoint URL</label>
+<input class="w-full bg-surface border border-outline-variant rounded-xl py-sm px-md text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="https://your-domain.com/webhook" type="url"/>
+</div>
+<div>
+<label class="block text-label-md text-on-surface-variant mb-base">Pilih Event</label>
+<div class="grid grid-cols-2 gap-sm">
+<label class="flex items-center gap-md p-md bg-surface border border-outline-variant rounded-xl cursor-pointer hover:border-primary transition-colors">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md">Pesanan Baru</span>
+</label>
+<label class="flex items-center gap-md p-md bg-surface border border-outline-variant rounded-xl cursor-pointer hover:border-primary transition-colors">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md">Perubahan Stok</span>
+</label>
+<label class="flex items-center gap-md p-md bg-surface border border-outline-variant rounded-xl cursor-pointer hover:border-primary transition-colors">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md">Status Kiriman</span>
+</label>
+<label class="flex items-center gap-md p-md bg-surface border border-outline-variant rounded-xl cursor-pointer hover:border-primary transition-colors">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md">Refund</span>
+</label>
+</div>
+</div>
+<div class="pt-lg flex gap-md">
+<button class="flex-1 bg-primary text-on-primary-container py-sm rounded-xl font-bold hover:opacity-90 transition-opacity" type="button">Simpan Webhook</button>
+<button class="px-lg border border-outline-variant text-on-surface rounded-xl hover:bg-surface-variant transition-colors" type="button">Test</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+        // Simple micro-interaction for test button
+        const testButtons = document.querySelectorAll('[title="Test Webhook"]');
+        testButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const originalIcon = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span>';
+                setTimeout(() => {
+                    btn.innerHTML = '<span class="material-symbols-outlined text-secondary">check_circle</span>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalIcon;
+                    }, 2000);
+                }, 1500);
+            });
+        });
+    </script>
+</body></html>

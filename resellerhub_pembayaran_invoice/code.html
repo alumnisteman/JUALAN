@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#908fa0",
+                    "surface-background": "#0F172A",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-secondary-fixed-variant": "#005048",
+                    "primary": "#c0c1ff",
+                    "surface-bright": "#393841",
+                    "surface-container-lowest": "#0d0d15",
+                    "on-secondary-container": "#003f38",
+                    "on-background": "#e4e1ed",
+                    "inverse-surface": "#e4e1ed",
+                    "on-surface-variant": "#c7c4d7",
+                    "error-container": "#93000a",
+                    "tertiary": "#ffb95f",
+                    "surface-tint": "#c0c1ff",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "secondary": "#4fdbc8",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "surface": "#13131b",
+                    "ai-glow-teal": "rgba(20, 184, 166, 0.3)",
+                    "surface-dim": "#13131b",
+                    "surface-container-high": "#292932",
+                    "inverse-primary": "#494bd6",
+                    "primary-container": "#8083ff",
+                    "error": "#ffb4ab",
+                    "on-tertiary-container": "#3e2400",
+                    "background": "#13131b",
+                    "on-primary": "#1000a9",
+                    "outline-dim": "rgba(51, 65, 85, 0.5)",
+                    "secondary-container": "#04b4a2",
+                    "on-secondary": "#003731",
+                    "inverse-on-surface": "#303038",
+                    "on-surface": "#e4e1ed",
+                    "surface-container-low": "#1b1b23",
+                    "surface-card": "rgba(30, 41, 59, 0.7)",
+                    "surface-container": "#1f1f27",
+                    "on-primary-container": "#0d0096",
+                    "primary-fixed": "#e1e0ff",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#00201c",
+                    "secondary-fixed": "#71f8e4",
+                    "tertiary-container": "#ca8100",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "surface-container-highest": "#34343d",
+                    "secondary-fixed-dim": "#4fdbc8",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-variant": "#34343d",
+                    "outline-variant": "#464554",
+                    "on-tertiary": "#472a00",
+                    "on-primary-fixed": "#07006c",
+                    "on-error-container": "#ffdad6",
+                    "on-surface-muted": "#c7c4d7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "lg": "40px",
+                    "xl": "64px",
+                    "md": "24px",
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "sm": "16px",
+                    "margin-desktop": "48px",
+                    "xs": "8px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0F172A;
+            color: #e4e1ed;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(70, 69, 84, 0.3);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px -5px rgba(20, 184, 166, 0.3);
+            border: 1px solid rgba(20, 184, 166, 0.4);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-24 md:pb-0">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-high/50 p-2 rounded-full transition-colors active:scale-95 duration-150">menu</button>
+<h1 class="text-headline-md font-headline-md font-bold text-primary">ResellerHub AI</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high/50 p-2 rounded-full transition-colors active:scale-95 duration-150">notifications</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">EP</div>
+</div>
+</header>
+<main class="pt-24 px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto pb-12">
+<!-- Welcome & Breadcrumb -->
+<div class="mb-8">
+<div class="flex items-center gap-2 text-label-md font-label-md text-on-surface-variant mb-2">
+<span>Dashboard</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary">Pembayaran &amp; Invoice</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg md:text-display-lg tracking-tight">Pusat Keuangan</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">Kelola metode pembayaran, tinjau riwayat tagihan, dan pantau status langganan AI Anda dalam satu dasbor terpadu.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Column: Balance & Subscription (Mobile Order 1) -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Saldo Card -->
+<div class="glass-card p-6 rounded-xl flex flex-col gap-4 relative overflow-hidden">
+
+<div class="flex justify-between items-start z-10">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Saldo Tersedia</span>
+<span class="font-headline-lg text-headline-lg text-primary mt-1">Rp 12.450.000</span>
+</div>
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+</div>
+<div class="flex gap-2 z-10">
+<button class="flex-1 bg-primary text-on-primary py-2.5 rounded-lg font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all">Top Up</button>
+<button class="flex-1 border border-outline-variant text-on-surface py-2.5 rounded-lg font-label-md text-label-md hover:bg-surface-container-high active:scale-95 transition-all">Tarik Dana</button>
+</div>
+</div>
+<!-- Active Plan Card -->
+<div class="glass-card ai-glow p-6 rounded-xl relative overflow-hidden">
+<div class="flex flex-col gap-4 z-10 relative">
+<div class="flex justify-between items-center">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Paket Aktif</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Hingga 12 Okt 2024</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Entrepreneur Pro</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Layanan AI Tier Lanjut</p>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4 rounded-full"></div>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Kredit AI: 750 / 1000</span>
+<span class="text-secondary">75% Terpakai</span>
+</div>
+<button class="w-full flex items-center justify-center gap-2 border border-secondary text-secondary py-3 rounded-lg font-label-md text-label-md hover:bg-secondary/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+                            Upgrade ke Enterprise
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Column: Invoices & Methods (Mobile Order 2) -->
+<div class="md:col-span-8 flex flex-col gap-gutter">
+<!-- Invoice History -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline-md text-headline-md">Riwayat Invoice</h3>
+<div class="flex gap-2">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-1">filter_list</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-1">search</button>
+</div>
+</div>
+<div class="overflow-x-auto no-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/30">
+<th class="p-4 font-label-md text-label-md text-on-surface-variant border-b border-outline-variant/10">ID Invoice</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant border-b border-outline-variant/10">Tanggal</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant border-b border-outline-variant/10">Status</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant border-b border-outline-variant/10">Total</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant border-b border-outline-variant/10">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="p-4 font-body-md text-body-md text-on-surface">#RH-89210</td>
+<td class="p-4 font-body-md text-body-md text-on-surface-variant">12 Sep 2024</td>
+<td class="p-4">
+<span class="flex items-center gap-1.5 text-secondary font-label-sm text-label-sm bg-secondary/10 w-fit px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                            Dibayar
+                                        </span>
+</td>
+<td class="p-4 font-body-md text-body-md text-on-surface font-semibold">Rp 850.000</td>
+<td class="p-4">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors hover:scale-110">download</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="p-4 font-body-md text-body-md text-on-surface">#RH-89195</td>
+<td class="p-4 font-body-md text-body-md text-on-surface-variant">01 Sep 2024</td>
+<td class="p-4">
+<span class="flex items-center gap-1.5 text-tertiary font-label-sm text-label-sm bg-tertiary/10 w-fit px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">pending</span>
+                                            Pending
+                                        </span>
+</td>
+<td class="p-4 font-body-md text-body-md text-on-surface font-semibold">Rp 425.000</td>
+<td class="p-4">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors hover:scale-110">payments</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="p-4 font-body-md text-body-md text-on-surface">#RH-89150</td>
+<td class="p-4 font-body-md text-body-md text-on-surface-variant">12 Agu 2024</td>
+<td class="p-4">
+<span class="flex items-center gap-1.5 text-error font-label-sm text-label-sm bg-error/10 w-fit px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                            Gagal
+                                        </span>
+</td>
+<td class="p-4 font-body-md text-body-md text-on-surface font-semibold">Rp 850.000</td>
+<td class="p-4">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors hover:scale-110">refresh</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-surface-container-low/50 border-t border-outline-variant/10 text-center">
+<button class="text-primary font-label-md text-label-md hover:underline">Lihat Semua Riwayat</button>
+</div>
+</div>
+<!-- Payment Methods -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+<div class="glass-card p-6 rounded-xl flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<h4 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Metode Tersimpan</h4>
+<span class="material-symbols-outlined text-on-surface-variant">credit_card</span>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-highest/30 p-3 rounded-lg border border-outline-variant/30">
+<div class="w-10 h-6 bg-blue-600 rounded flex items-center justify-center font-bold italic text-[10px] text-white">VISA</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">•••• 4242</span>
+<span class="text-label-sm text-label-sm text-on-surface-variant">Exp: 12/26</span>
+</div>
+<span class="ml-auto material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<button class="w-full flex items-center justify-center gap-2 text-primary font-label-md text-label-md py-2 border border-dashed border-primary/40 rounded-lg hover:bg-primary/5">
+<span class="material-symbols-outlined text-sm">add</span> Tambah Kartu
+                        </button>
+</div>
+<div class="glass-card p-6 rounded-xl flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">E-Wallet &amp; VA</h4>
+<div class="flex flex-wrap gap-3">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center hover:bg-surface-container-high cursor-pointer border border-outline-variant/20 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">account_balance</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center hover:bg-surface-container-high cursor-pointer border border-outline-variant/20 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">qr_code_2</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center hover:bg-surface-container-high cursor-pointer border border-outline-variant/20 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">wallet</span>
+</div>
+</div>
+<p class="text-label-sm text-label-sm text-on-surface-variant">Mendukung GoPay, OVO, Dana, dan BCA Virtual Account.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container dark:bg-surface-container/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-lg flex justify-around items-center h-20 px-2 pb-safe w-full">
+<div class="flex flex-col items-center justify-center text-on-surface-muted hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-muted hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-sm text-label-sm">Products</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-muted hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label-sm text-label-sm">AI Tools</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-muted hover:text-primary transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-sm text-label-sm">Social</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for balance hover
+        const balanceCard = document.querySelector('.glass-card');
+        if (balanceCard) {
+            balanceCard.addEventListener('mousemove', (e) => {
+                const rect = balanceCard.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                balanceCard.style.setProperty('--mouse-x', `${x}px`);
+                balanceCard.style.setProperty('--mouse-y', `${y}px`);
+            });
+        }
+
+        // Add visual feedback to buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const originalText = this.innerHTML;
+                if (this.innerText.includes('Unduh') || this.innerText.includes('PDF')) {
+                    this.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Mengunduh...';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body></html>

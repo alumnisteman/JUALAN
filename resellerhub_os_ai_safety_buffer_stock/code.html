@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Safety &amp; Buffer Stock | ResellerHub OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+        }
+        .ai-accent-border {
+            border-left: 2px solid #8083ff;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #161c22;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #464554;
+            border-radius: 10px;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 3s infinite ease-in-out;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#d97721",
+                    "on-tertiary-fixed": "#301400",
+                    "inverse-on-surface": "#2b3137",
+                    "surface": "#0e141a",
+                    "error-container": "#93000a",
+                    "error": "#ffb4ab",
+                    "on-error": "#690005",
+                    "on-secondary-container": "#00311f",
+                    "primary-container": "#8083ff",
+                    "surface-container": "#1a2026",
+                    "primary-fixed": "#e1e0ff",
+                    "outline": "#908fa0",
+                    "surface-dim": "#0e141a",
+                    "surface-container-lowest": "#080f14",
+                    "on-secondary": "#003824",
+                    "secondary": "#4edea3",
+                    "on-secondary-fixed-variant": "#005236",
+                    "surface-container-low": "#161c22",
+                    "surface-container-highest": "#2f353c",
+                    "on-surface-variant": "#c7c4d7",
+                    "on-primary": "#1000a9",
+                    "tertiary-fixed": "#ffdcc5",
+                    "surface-variant": "#2f353c",
+                    "secondary-container": "#00a572",
+                    "primary": "#c0c1ff",
+                    "on-tertiary-container": "#452000",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "surface-tint": "#c0c1ff",
+                    "on-secondary-fixed": "#002113",
+                    "inverse-primary": "#494bd6",
+                    "tertiary-fixed-dim": "#ffb783",
+                    "outline-variant": "#464554",
+                    "on-tertiary-fixed-variant": "#703700",
+                    "secondary-fixed": "#6ffbbe",
+                    "on-primary-fixed": "#07006c",
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-error-container": "#ffdad6",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "surface-bright": "#333a40",
+                    "tertiary": "#ffb783",
+                    "background": "#0e141a",
+                    "surface-container-high": "#242b31",
+                    "on-primary-container": "#0d0096",
+                    "on-tertiary": "#4f2500",
+                    "on-background": "#dde3eb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "gutter": "16px",
+                    "xs": "8px",
+                    "margin": "24px",
+                    "lg": "24px",
+                    "sm": "12px",
+                    "base": "4px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "mono-data": ["JetBrains Mono"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin h-16 bg-surface-container border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-headline-md" style="font-variation-settings: 'FILL' 1;">hub</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ResellerHub OS</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+</div>
+</header>
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-72 z-[40] hidden md:flex flex-col py-margin bg-surface-container-low border-r border-outline-variant pt-20">
+<nav class="flex flex-col gap-xs flex-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all mx-xs" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-bold rounded-full mx-xs" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-body-md">Safety &amp; Buffer</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all mx-xs" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md">Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all mx-xs" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-md">AI Tools</span>
+</a>
+</nav>
+<div class="mt-auto px-md py-md border-t border-outline-variant">
+<div class="flex items-center gap-sm p-sm bg-surface-container rounded-lg">
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+<span class="text-label-md uppercase tracking-widest text-secondary">AI Core Active</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-72 pt-20 pb-24 px-margin min-h-screen">
+<!-- Header Section -->
+<section class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<div class="flex items-center gap-xs mb-xs">
+<span class="text-label-md uppercase text-primary font-bold">Resilience Systems</span>
+<span class="text-outline">•</span>
+<span class="text-label-md uppercase text-on-surface-variant">Safety Mode v4.2</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface">AI Safety &amp; Buffer Stock</h2>
+<p class="text-body-lg text-on-surface-variant max-w-2xl mt-sm">Autonomous prevention of overselling and inventory race conditions through predictive buffer management.</p>
+</div>
+<div class="flex gap-md">
+<div class="flex flex-col items-end gap-xs">
+<span class="text-label-md text-outline uppercase">Global Safety Status</span>
+<div class="flex items-center gap-sm bg-surface-container-high px-md py-sm rounded-full border border-outline-variant cursor-pointer group hover:border-primary transition-colors" id="safety-toggle-container">
+<span class="font-label-md text-secondary" id="safety-label">SYSTEM SECURED</span>
+<div class="w-10 h-5 bg-secondary-container rounded-full relative transition-colors duration-300" id="safety-switch">
+<div class="absolute top-1 left-1 w-3 h-3 bg-white rounded-full transition-all duration-300 translate-x-5"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Health & Buffer Controls -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Inventory Health Visualization -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-low border border-outline-variant rounded-xl p-lg relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-lg">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Inventory Health Index</h3>
+<p class="text-body-md text-on-surface-variant">System stability based on current demand volatility.</p>
+</div>
+<div class="flex items-center gap-xs bg-secondary/10 text-secondary px-sm py-1 rounded-full border border-secondary/20">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span class="text-label-md uppercase font-bold">Stable</span>
+</div>
+</div>
+<div class="flex items-end gap-xl h-40">
+<!-- Visual Health Bar -->
+<div class="flex-1 flex gap-1 h-full items-end pb-xs">
+<div class="w-full bg-secondary h-[95%] rounded-t-xs opacity-40"></div>
+<div class="w-full bg-secondary h-[92%] rounded-t-xs opacity-60"></div>
+<div class="w-full bg-secondary h-[98%] rounded-t-xs opacity-80"></div>
+<div class="w-full bg-secondary h-[88%] rounded-t-xs opacity-40"></div>
+<div class="w-full bg-secondary h-[94%] rounded-t-xs opacity-60"></div>
+<div class="w-full bg-secondary h-[91%] rounded-t-xs opacity-90"></div>
+<div class="w-full bg-primary h-[85%] rounded-t-xs"></div>
+<div class="w-full bg-primary h-[70%] rounded-t-xs"></div>
+<div class="w-full bg-primary h-[75%] rounded-t-xs"></div>
+<div class="w-full bg-primary h-[82%] rounded-t-xs"></div>
+<div class="w-full bg-primary h-[80%] rounded-t-xs"></div>
+<div class="w-full bg-primary h-[78%] rounded-t-xs"></div>
+</div>
+<div class="flex flex-col justify-between h-full py-base">
+<div class="text-right">
+<span class="block font-headline-lg text-headline-lg text-primary">98.4%</span>
+<span class="text-label-md text-on-surface-variant uppercase">Accuracy</span>
+</div>
+<div class="text-right">
+<span class="block font-headline-md text-headline-md text-on-surface">0</span>
+<span class="text-label-md text-on-surface-variant uppercase">Oversells</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ambient Light Effect -->
+<div class="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full"></div>
+</div>
+<!-- Auto-Buffer Stock Card -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg ai-accent-border">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">layers</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Auto-Buffer</h3>
+</div>
+<p class="text-body-md text-on-surface-variant mb-lg">Dynamically reserve safety stock to protect against flash-sale spikes.</p>
+<div class="space-y-md">
+<div class="flex justify-between items-center text-label-md text-outline uppercase tracking-wider">
+<span>Minimum Reserve</span>
+<span class="text-on-surface font-mono-data">2 Units</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" max="20" min="0" type="range" value="2"/>
+<div class="p-sm bg-surface-container-low rounded-lg border border-outline-variant/30 mt-lg">
+<div class="flex items-center justify-between mb-xs">
+<span class="text-body-md font-bold">Predictive Mode</span>
+<div class="w-8 h-4 bg-primary-container rounded-full relative cursor-pointer">
+<div class="absolute top-0.5 left-0.5 w-3 h-3 bg-white rounded-full translate-x-4 transition-transform"></div>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant">AI will auto-adjust buffer based on historical flash sale velocity.</p>
+</div>
+</div>
+</div>
+<!-- Race Condition Shield -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-secondary">speed</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Lock Latency</h3>
+</div>
+<div class="flex items-center gap-xl mb-lg">
+<div>
+<span class="text-label-md text-outline uppercase block mb-xs">Protection</span>
+<span class="text-headline-md font-mono-data text-on-surface">12ms</span>
+</div>
+<div>
+<span class="text-label-md text-outline uppercase block mb-xs">Throughput</span>
+<span class="text-headline-md font-mono-data text-on-surface">4.8k ops/s</span>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-xs border-b border-outline-variant/30">
+<span class="text-body-md text-on-surface-variant">Race Condition Guard</span>
+<span class="text-label-md text-secondary uppercase font-bold">Active</span>
+</div>
+<div class="flex items-center justify-between p-xs border-b border-outline-variant/30">
+<span class="text-body-md text-on-surface-variant">Cross-Channel Sync</span>
+<span class="text-label-md text-secondary uppercase font-bold">Instant</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Real-time Security Log -->
+<div class="col-span-12 lg:col-span-4">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl flex flex-col h-full overflow-hidden">
+<div class="p-lg border-b border-outline-variant flex justify-between items-center">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Security Log</h3>
+<p class="text-label-md text-on-surface-variant uppercase">Real-time Activity</p>
+</div>
+<button class="text-primary hover:bg-primary/10 p-xs rounded-lg transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<div class="flex-1 custom-scrollbar overflow-y-auto p-md space-y-md">
+<!-- Log Entry -->
+<div class="flex gap-md group">
+<div class="flex flex-col items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-secondary mt-1.5 shadow-[0_0_8px_rgba(78,222,163,0.6)]"></div>
+<div class="w-px h-full bg-outline-variant"></div>
+</div>
+<div class="flex-1 pb-md">
+<div class="flex justify-between items-start mb-base">
+<span class="font-mono-data text-on-surface text-body-md">SYNC_SHIELD_V4</span>
+<span class="text-xs text-outline">Just now</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Race condition blocked for SKU: <span class="text-primary">RH-PRO-029</span>. Order #8821 prioritized.</p>
+</div>
+</div>
+<!-- Log Entry -->
+<div class="flex gap-md group">
+<div class="flex flex-col items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+<div class="w-px h-full bg-outline-variant"></div>
+</div>
+<div class="flex-1 pb-md">
+<div class="flex justify-between items-start mb-base">
+<span class="font-mono-data text-on-surface text-body-md">BUFFER_ADJUST</span>
+<span class="text-xs text-outline">2m ago</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Safety buffer increased for <span class="text-primary">Summer Collection</span> due to surge detection.</p>
+</div>
+</div>
+<!-- Log Entry -->
+<div class="flex gap-md group">
+<div class="flex flex-col items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-outline-variant mt-1.5"></div>
+<div class="w-px h-full bg-outline-variant"></div>
+</div>
+<div class="flex-1 pb-md">
+<div class="flex justify-between items-start mb-base">
+<span class="font-mono-data text-on-surface text-body-md">SYSTEM_INIT</span>
+<span class="text-xs text-outline">15m ago</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Layar AI Safety initialized. Syncing across 14 sales channels.</p>
+</div>
+</div>
+<!-- Log Entry -->
+<div class="flex gap-md group">
+<div class="flex flex-col items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-secondary mt-1.5"></div>
+<div class="w-px h-full bg-outline-variant"></div>
+</div>
+<div class="flex-1 pb-md">
+<div class="flex justify-between items-start mb-base">
+<span class="font-mono-data text-on-surface text-body-md">RECONCILE_SUCCESS</span>
+<span class="text-xs text-outline">42m ago</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Inventory levels reconciled with Shopee and Tokopedia API.</p>
+</div>
+</div>
+</div>
+<div class="p-lg bg-surface-container border-t border-outline-variant">
+<button class="w-full py-sm bg-primary text-on-primary font-bold rounded-lg hover:brightness-110 active:scale-[0.98] transition-all">
+                            Export Security Report
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Insights Overlay -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-panel p-lg rounded-xl ai-accent-border relative overflow-hidden group">
+<div class="flex items-center gap-sm mb-md relative z-10">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<h4 class="font-label-md uppercase text-primary font-bold">Predictive Alert</h4>
+</div>
+<p class="text-body-md text-on-surface relative z-10">Flash sale for "T-Shirt Oversize" likely in <span class="font-bold">4 hours</span>. Suggesting buffer increase to <span class="text-primary font-bold">5 units</span>.</p>
+<div class="mt-md flex gap-md relative z-10">
+<button class="text-label-md uppercase font-bold text-primary hover:underline transition-all">Apply Recommendation</button>
+<button class="text-label-md uppercase font-bold text-on-surface-variant hover:text-on-surface">Dismiss</button>
+</div>
+
+</div>
+<div class="glass-panel p-lg rounded-xl border-l-2 border-secondary relative overflow-hidden group">
+<div class="flex items-center gap-sm mb-md relative z-10">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<h4 class="font-label-md uppercase text-secondary font-bold">Oversell Shield</h4>
+</div>
+<p class="text-body-md text-on-surface relative z-10">Shield successfully blocked <span class="font-bold">12 duplicate requests</span> in the last hour. Saved potential losses of <span class="text-secondary font-bold">IDR 2.4M</span>.</p>
+
+</div>
+<div class="glass-panel p-lg rounded-xl border-l-2 border-tertiary relative overflow-hidden group">
+<div class="flex items-center gap-sm mb-md relative z-10">
+<span class="material-symbols-outlined text-tertiary">warning</span>
+<h4 class="font-label-md uppercase text-tertiary font-bold">Stock Fatigue</h4>
+</div>
+<p class="text-body-md text-on-surface relative z-10">Warehouse SKU: RH-W-102 showing high "Wait-to-Pick" latency. Optimization recommended to prevent backlog.</p>
+
+</div>
+</div>
+</main>
+<!-- Mobile Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-xs pb-safe h-16 bg-surface-container border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="text-label-md">Safety</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-label-md">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-label-md">Warehouse</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-label-md">Coach</span>
+</a>
+</nav>
+<script>
+        // Simple Interaction logic
+        const safetyToggle = document.getElementById('safety-toggle-container');
+        const safetyLabel = document.getElementById('safety-label');
+        const safetySwitch = document.getElementById('safety-switch');
+        const safetyThumb = safetySwitch.querySelector('div');
+
+        let isSafetyEnabled = true;
+
+        safetyToggle.addEventListener('click', () => {
+            isSafetyEnabled = !isSafetyEnabled;
+            if (isSafetyEnabled) {
+                safetyLabel.textContent = 'SYSTEM SECURED';
+                safetyLabel.className = 'font-label-md text-secondary';
+                safetySwitch.className = 'w-10 h-5 bg-secondary-container rounded-full relative transition-colors duration-300';
+                safetyThumb.className = 'absolute top-0.5 left-0.5 w-3 h-3 bg-white rounded-full translate-x-5 transition-all duration-300';
+            } else {
+                safetyLabel.textContent = 'SAFETY DISABLED';
+                safetyLabel.className = 'font-label-md text-error';
+                safetySwitch.className = 'w-10 h-5 bg-error-container rounded-full relative transition-colors duration-300';
+                safetyThumb.className = 'absolute top-0.5 left-0.5 w-3 h-3 bg-white rounded-full translate-x-0 transition-all duration-300';
+            }
+        });
+
+        // Dynamic log simulation
+        const logContainer = document.querySelector('.custom-scrollbar');
+        const logActivities = [
+            { id: 'SHIELD', desc: 'SKU: RH-W-102 request filtered.', type: 'secondary' },
+            { id: 'SYNC', desc: 'Tokopedia stock level validated.', type: 'primary' },
+            { id: 'ALERT', desc: 'Predictive buffer increased (+2).', type: 'tertiary' }
+        ];
+
+        setInterval(() => {
+            if (!isSafetyEnabled) return;
+            const activity = logActivities[Math.floor(Math.random() * logActivities.length)];
+            const entry = document.createElement('div');
+            entry.className = 'flex gap-md group opacity-0 translate-y-4 transition-all duration-500';
+            entry.innerHTML = `
+                <div class="flex flex-col items-center gap-xs">
+                    <div class="w-2 h-2 rounded-full bg-${activity.type} mt-1.5"></div>
+                    <div class="w-px h-full bg-outline-variant"></div>
+                </div>
+                <div class="flex-1 pb-md">
+                    <div class="flex justify-between items-start mb-base">
+                        <span class="font-mono-data text-on-surface text-body-md">${activity.id}_LOG</span>
+                        <span class="text-xs text-outline">Just now</span>
+                    </div>
+                    <p class="text-body-md text-on-surface-variant">${activity.desc}</p>
+                </div>
+            `;
+            logContainer.prepend(entry);
+            setTimeout(() => {
+                entry.classList.remove('opacity-0', 'translate-y-4');
+            }, 50);
+            
+            if (logContainer.children.length > 10) {
+                logContainer.lastElementChild.remove();
+            }
+        }, 8000);
+    </script>
+</body></html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResellerHub OS - User Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#00a572",
+                    "on-primary-container": "#0d0096",
+                    "outline": "#908fa0",
+                    "secondary-fixed": "#6ffbbe",
+                    "surface-variant": "#2f353c",
+                    "surface-tint": "#c0c1ff",
+                    "surface-container-lowest": "#080f14",
+                    "outline-variant": "#464554",
+                    "error": "#ffb4ab",
+                    "surface-container-low": "#161c22",
+                    "on-secondary-fixed": "#002113",
+                    "primary-container": "#8083ff",
+                    "on-surface-variant": "#c7c4d7",
+                    "tertiary": "#ffb783",
+                    "surface-container-highest": "#2f353c",
+                    "on-background": "#dde3eb",
+                    "on-tertiary-fixed": "#301400",
+                    "surface-bright": "#333a40",
+                    "inverse-on-surface": "#2b3137",
+                    "on-surface": "#dde3eb",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-secondary-container": "#00311f",
+                    "on-primary-fixed": "#07006c",
+                    "inverse-surface": "#dde3eb",
+                    "on-primary": "#1000a9",
+                    "primary-fixed": "#e1e0ff",
+                    "on-tertiary-fixed-variant": "#703700",
+                    "tertiary-fixed": "#ffdcc5",
+                    "on-tertiary": "#4f2500",
+                    "surface-container": "#1a2026",
+                    "surface": "#0e141a",
+                    "on-secondary": "#003824",
+                    "error-container": "#93000a",
+                    "secondary": "#4edea3",
+                    "tertiary-fixed-dim": "#ffb783",
+                    "surface-container-high": "#242b31",
+                    "on-secondary-fixed-variant": "#005236",
+                    "on-error": "#690005",
+                    "background": "#0e141a",
+                    "tertiary-container": "#d97721",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-container": "#452000",
+                    "inverse-primary": "#494bd6",
+                    "primary": "#c0c1ff",
+                    "surface-dim": "#0e141a",
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-primary-fixed-variant": "#2f2ebe"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "gutter": "16px",
+                    "base": "4px",
+                    "lg": "24px",
+                    "sm": "12px",
+                    "margin": "24px",
+                    "xl": "32px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "mono-data": ["JetBrains Mono"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ai-accent {
+            border-left: 2px solid #c0c1ff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0d0d15;
+            color: #dde3eb;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0e141a; }
+        ::-webkit-scrollbar-thumb { background: #2f353c; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #464554; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="bg-surface border-b border-surface-variant flex justify-between items-center px-margin py-xs w-full z-50 fixed top-0 h-16">
+<div class="flex items-center gap-sm cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">hub</span>
+<span class="font-headline-lg text-headline-lg font-bold text-primary">ResellerHub OS</span>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<nav class="flex items-center gap-md">
+<a class="font-label-md text-label-md text-primary hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Changelog</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">API Docs</a>
+</nav>
+<button class="bg-primary text-on-primary px-sm py-xs rounded-xl font-label-md text-label-md hover:bg-primary-container transition-all active:scale-95 flex items-center gap-base">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+                Contact Support
+            </button>
+</div>
+</header>
+<!-- Main Content Layout -->
+<div class="flex pt-16 min-h-screen">
+<!-- Sidebar Navigation Drawer (Desktop) -->
+<aside class="hidden lg:flex flex-col h-screen w-72 fixed left-0 bg-surface-container-low border-r border-surface-variant py-xl">
+<div class="px-margin mb-lg">
+<h2 class="font-label-md text-label-md text-outline uppercase tracking-widest">Mastering the OS</h2>
+</div>
+<nav class="flex flex-col gap-base">
+<a class="flex items-center gap-sm px-margin py-sm text-primary font-bold border-l-4 border-primary bg-primary-container/20 duration-200" href="#setup">
+<span class="material-symbols-outlined">warehouse</span>
+<span class="font-body-md text-body-md">1. Setup &amp; Integration</span>
+</a>
+<a class="flex items-center gap-sm px-margin py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest duration-200" href="#sourcing">
+<span class="material-symbols-outlined">search_insights</span>
+<span class="font-body-md text-body-md">2. Product Sourcing</span>
+</a>
+<a class="flex items-center gap-sm px-margin py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest duration-200" href="#content">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-body-md text-body-md">3. Content Creation</span>
+</a>
+<a class="flex items-center gap-sm px-margin py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest duration-200" href="#sales">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-body-md text-body-md">4. Sales &amp; Automation</span>
+</a>
+<a class="flex items-center gap-sm px-margin py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest duration-200" href="#monitoring">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-body-md text-body-md">5. Growth &amp; Finance</span>
+</a>
+</nav>
+<div class="mt-auto px-margin">
+<div class="glass-card rounded-xl p-sm flex flex-col gap-xs">
+<p class="font-label-md text-label-md text-primary">v4.2 Stable</p>
+<p class="font-body-md text-body-md text-on-surface-variant">AI Core engaged and ready.</p>
+</div>
+</div>
+</aside>
+<!-- Main Scrollable Canvas -->
+<main class="flex-1 lg:ml-72 p-margin max-w-6xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-xl relative rounded-xl overflow-hidden min-h-[400px] flex flex-col justify-center p-xl">
+
+<div class="relative z-10 max-w-2xl">
+<div class="bg-secondary-container/20 text-secondary border border-secondary/30 w-fit px-sm py-1 rounded-full font-label-md text-label-md mb-md">
+                        PANDUAN PENGGUNA v4.2
+                    </div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-sm">Mastering the AI Commerce OS</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-xl leading-relaxed">
+                        Selamat datang di era perdagangan otonom. Panduan ini dirancang untuk membantu Anda mengintegrasikan, mengotomatisasi, dan menskalakan bisnis reseller Anda menggunakan ResellerHub OS.
+                    </p>
+<div class="flex flex-wrap gap-md">
+<button class="bg-primary text-on-primary px-lg py-sm rounded-xl font-label-md text-label-md flex items-center gap-sm hover:shadow-lg hover:shadow-primary/20 transition-all">
+<span class="material-symbols-outlined">play_circle</span>
+                            Mulai Tutorial Video
+                        </button>
+<button class="border border-outline text-on-surface px-lg py-sm rounded-xl font-label-md text-label-md hover:bg-surface-container-high transition-all">
+                            Unduh PDF (IDN)
+                        </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Section 1: Setup & Integration -->
+<article class="md:col-span-8 bg-surface-container border border-surface-variant rounded-xl p-lg" id="setup">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">warehouse</span>
+</div>
+<h2 class="font-headline-md text-headline-md">1. Setup &amp; Integration</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">
+                        Langkah awal untuk membangun ekosistem bisnis Anda. Hubungkan gudang supplier dan sinkronkan inventaris secara real-time.
+                    </p>
+<div class="space-y-sm">
+<div class="flex gap-md p-sm rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="font-mono-data text-primary text-lg">01.</span>
+<div>
+<h4 class="font-body-md font-bold">Supplier Hub Binding</h4>
+<p class="font-body-md text-on-surface-variant">Navigasi ke Warehouse &gt; Suppliers. Masukkan API Key atau Hubungkan via Affiliate link untuk otentikasi stok.</p>
+</div>
+</div>
+<div class="flex gap-md p-sm rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="font-mono-data text-primary text-lg">02.</span>
+<div>
+<h4 class="font-body-md font-bold">Currency &amp; Region Config</h4>
+<p class="font-body-md text-on-surface-variant">Atur mata uang operasional dan zona waktu untuk sinkronisasi pesanan harian.</p>
+</div>
+</div>
+</div>
+<div class="mt-lg p-md ai-accent glass-card rounded-lg">
+<div class="flex items-center gap-base mb-xs">
+<span class="material-symbols-outlined text-primary text-sm">psychology</span>
+<span class="font-label-md text-label-md text-primary">Quick Start Tip</span>
+</div>
+<p class="font-body-md text-body-md italic text-on-surface-variant">"Gunakan 'Auto-Sync' pada interval 15 menit untuk memastikan tidak ada pesanan yang 'Out of Stock' di marketplace."</p>
+</div>
+</article>
+<!-- Visual Element: Sourcing KPI -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container border border-surface-variant rounded-xl p-md flex flex-col justify-center h-full">
+<span class="font-label-md text-label-md text-outline uppercase mb-sm">System Health</span>
+<div class="flex items-end gap-xs">
+<span class="font-headline-lg text-headline-lg text-secondary">99.8%</span>
+<span class="font-label-md text-label-md text-secondary mb-1">UP</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Data integrity verified across 12 nodes.</p>
+</div>
+<div class="bg-surface-container border border-surface-variant rounded-xl p-md h-full relative overflow-hidden group">
+<img class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" data-alt="A sleek minimalist 3D render of a futuristic warehouse terminal with glowing screens and holographic interfaces, dark blue and indigo lighting, industrial modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5KRhiY4fG6Etk8LZFIVbZXPQT8FPFFVOnCLBoIyG76Ijs8igQkEsEts8aRd3-NEoU0mSV5M21EIODKCCX-PArColbhU-sfLH7PHTw2_rNNzHDhEv5vovQ9G4L6m5B73s0VyZzg44Zxb1K1lJWXFnvfKx36WKcA1Ix-Ut0WsPaHux6LzZv7vJwsDr9LEcbpjRFICe5qbsGPn1oXD_jWFU5OMWllGK7wAP8esEWtfEcz16M4Nu4Ln9XeFqftSVW9UUMJxOWl3wkvbU"/>
+<div class="relative z-10 flex flex-col h-full justify-between">
+<span class="font-label-md text-label-md text-primary">Warehouse View</span>
+<span class="material-symbols-outlined text-4xl text-on-surface">hub</span>
+</div>
+</div>
+</div>
+<!-- Section 2: Product Sourcing -->
+<article class="md:col-span-6 bg-surface-container border border-surface-variant rounded-xl p-lg" id="sourcing">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">search_insights</span>
+</div>
+<h2 class="font-headline-md text-headline-md">2. Product Sourcing</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">
+                        Biarkan AI kami bekerja mencari produk 'Winning' berdasarkan data tren pasar global.
+                    </p>
+<ul class="space-y-sm">
+<li class="flex items-start gap-xs">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<span class="font-body-md">AI Product Hunter: Mencari item viral di TikTok/Instagram Shop secara otomatis.</span>
+</li>
+<li class="flex items-start gap-xs">
+<span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+<span class="font-body-md">Scoring Engine: Filter produk berdasarkan profit margin &amp; volume kompetisi.</span>
+</li>
+</ul>
+</article>
+<!-- Section 3: Content Creation -->
+<article class="md:col-span-6 bg-surface-container border border-surface-variant rounded-xl p-lg" id="content">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<h2 class="font-headline-md text-headline-md">3. Content Factory</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">
+                        Gunakan AI Content Factory untuk membuat deskripsi produk dan materi iklan dalam hitungan detik.
+                    </p>
+<div class="grid grid-cols-2 gap-sm">
+<div class="p-sm bg-surface-container-high rounded-lg border border-outline/10">
+<span class="material-symbols-outlined text-secondary block mb-xs">translate</span>
+<p class="font-label-md text-label-md font-bold">Auto-Localization</p>
+</div>
+<div class="p-sm bg-surface-container-high rounded-lg border border-outline/10">
+<span class="material-symbols-outlined text-secondary block mb-xs">movie</span>
+<p class="font-label-md text-label-md font-bold">Video Generator</p>
+</div>
+</div>
+</article>
+<!-- Tutorial Video Placeholder -->
+<section class="md:col-span-12 relative h-[450px] rounded-xl overflow-hidden glass-card group">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A cinematic overhead shot of a high-tech reseller workspace, multiple monitors displaying complex sales charts and AI interfaces, indigo ambient lighting, professional dark office setup." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBonb3aIS5LCmmPofOgnWoLSK_JyBdY__Z0ped9l1Xi_xkjGnyyJxc1xuz7OrlxXad2wagawF6XFCp7Al3xePB83dMfw8N2Q37RcNb1k6G41jU6NFPPoQa1Wh37YCRbE5OvlqYEmJaR_h8RHCDevbzxoX56ukLb8EssbdrbftiU-Lmp-brXhO3LFKq-dZS0L6AM1zAAYmGXwyitz-NJa0363XqqZKqoZk2LPTm9qB9Lm9dVQDzGXTFltS3JHFGDibv57ypumGMc4Oc"/>
+<div class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center transition-all group-hover:bg-black/40">
+<button class="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-on-primary hover:scale-110 transition-transform mb-md">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1">play_arrow</span>
+</button>
+<h3 class="font-headline-md text-headline-md text-on-surface">Tutorial: Mastering the Workflow</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">12:45 • Bahasa Indonesia • Ultra HD</p>
+</div>
+</section>
+<!-- Section 4: Sales & Automation -->
+<article class="md:col-span-7 bg-surface-container border border-surface-variant rounded-xl p-lg" id="sales">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<h2 class="font-headline-md text-headline-md">4. Sales &amp; Automation</h2>
+</div>
+<div class="space-y-lg">
+<div class="flex gap-md">
+<div class="w-1 bg-primary rounded-full"></div>
+<div>
+<h4 class="font-body-md font-bold mb-xs">Marketplace Engine</h4>
+<p class="font-body-md text-on-surface-variant">Satu klik untuk sinkronisasi ke Tokopedia, Shopee, dan TikTok Shop. AI akan menyesuaikan stok di semua channel secara simultan.</p>
+</div>
+</div>
+<div class="flex gap-md">
+<div class="w-1 bg-secondary rounded-full"></div>
+<div>
+<h4 class="font-body-md font-bold mb-xs">Autonomous Mode (AI Agent)</h4>
+<p class="font-body-md text-on-surface-variant">Aktifkan mode otonom untuk membiarkan AI menangani chat pelanggan dan proses 'Booking' ke supplier secara otomatis.</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Section 5: Monitoring & Growth -->
+<article class="md:col-span-5 bg-surface-container-high border border-primary/20 rounded-xl p-lg relative overflow-hidden" id="monitoring">
+<div class="relative z-10">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">monitoring</span>
+</div>
+<h2 class="font-headline-md text-headline-md">5. Growth &amp; Finance</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">
+                            Monitor laba bersih secara real-time. Tidak ada lagi pusing menghitung fee marketplace.
+                        </p>
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between items-center border-b border-surface-variant py-base">
+<span class="font-body-md text-on-surface-variant">AI Coach Insight</span>
+<span class="font-mono-data text-secondary">Active</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-variant py-base">
+<span class="font-body-md text-on-surface-variant">Net Profit Calc</span>
+<span class="font-mono-data text-on-surface">Auto</span>
+</div>
+</div>
+<button class="w-full bg-surface-container-highest border border-outline/20 text-on-surface py-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined">analytics</span>
+                            Open Finance Center
+                        </button>
+</div>
+<div class="absolute -right-12 -bottom-12 opacity-5 scale-150 rotate-12">
+<span class="material-symbols-outlined text-[200px]">finance</span>
+</div>
+</article>
+</div>
+<!-- Footer Help Section -->
+<footer class="mt-xl pt-xl border-t border-surface-variant text-center pb-32">
+<p class="font-headline-md text-headline-md text-on-surface mb-sm">Masih butuh bantuan?</p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Tim support kami tersedia 24/7 untuk membantu setup teknis Anda.</p>
+<div class="flex flex-col sm:flex-row gap-md justify-center">
+<button class="bg-primary text-on-primary px-xl py-md rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-sm hover:shadow-xl hover:shadow-primary/30 transition-all">
+<span class="material-symbols-outlined">chat</span>
+                        Live Chat Sekarang
+                    </button>
+<button class="bg-surface-container-high text-on-surface px-xl py-md rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-sm hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined">article</span>
+                        Pusat Bantuan Lengkap
+                    </button>
+</div>
+</footer>
+</main>
+</div>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-gutter bg-surface-container border-t border-surface-variant">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">dashboard</span>
+<span class="font-label-md text-[10px]">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md text-[10px]">AI Tools</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-md text-[10px]">Orders</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-md text-[10px]">Coach</span>
+</div>
+</nav>
+<!-- Interactive Layer for Micro-interactions -->
+<script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Update active state in sidebar (visual only)
+                if(window.innerWidth >= 1024) {
+                    document.querySelectorAll('aside nav a').forEach(a => {
+                        a.classList.remove('text-primary', 'font-bold', 'border-l-4', 'border-primary', 'bg-primary-container/20');
+                        a.classList.add('text-on-surface-variant');
+                    });
+                    this.classList.add('text-primary', 'font-bold', 'border-l-4', 'border-primary', 'bg-primary-container/20');
+                    this.classList.remove('text-on-surface-variant');
+                }
+            });
+        });
+
+        // Intersection Observer to update sidebar on scroll
+        const sections = document.querySelectorAll('article[id]');
+        const navLinks = document.querySelectorAll('aside nav a');
+
+        const observerOptions = {
+            root: null,
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('text-primary', 'font-bold', 'border-l-4', 'border-primary', 'bg-primary-container/20');
+                            link.classList.remove('text-on-surface-variant');
+                        } else {
+                            link.classList.remove('text-primary', 'font-bold', 'border-l-4', 'border-primary', 'bg-primary-container/20');
+                            link.classList.add('text-on-surface-variant');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body></html>

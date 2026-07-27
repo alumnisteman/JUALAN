@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Syncing - ResellerHub OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+        }
+        @keyframes progress-shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-shimmer {
+            animation: progress-shimmer 2s infinite linear;
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#452000",
+                      "on-surface": "#dde3eb",
+                      "outline": "#908fa0",
+                      "tertiary": "#ffb783",
+                      "surface-tint": "#c0c1ff",
+                      "outline-variant": "#464554",
+                      "surface-dim": "#0e141a",
+                      "on-secondary-fixed-variant": "#005236",
+                      "on-surface-variant": "#c7c4d7",
+                      "surface-variant": "#2f353c",
+                      "secondary": "#4edea3",
+                      "on-primary-container": "#0d0096",
+                      "on-tertiary-fixed-variant": "#703700",
+                      "on-secondary": "#003824",
+                      "secondary-fixed": "#6ffbbe",
+                      "surface-bright": "#333a40",
+                      "on-primary-fixed": "#07006c",
+                      "on-primary": "#1000a9",
+                      "primary-fixed-dim": "#c0c1ff",
+                      "primary": "#c0c1ff",
+                      "surface-container": "#1a2026",
+                      "surface": "#0e141a",
+                      "secondary-container": "#00a572",
+                      "surface-container-lowest": "#080f14",
+                      "primary-fixed": "#e1e0ff",
+                      "primary-container": "#8083ff",
+                      "on-tertiary-fixed": "#301400",
+                      "surface-container-low": "#161c22",
+                      "error-container": "#93000a",
+                      "inverse-on-surface": "#2b3137",
+                      "background": "#0e141a",
+                      "on-error": "#690005",
+                      "inverse-surface": "#dde3eb",
+                      "on-error-container": "#ffdad6",
+                      "on-background": "#dde3eb",
+                      "tertiary-fixed": "#ffdcc5",
+                      "on-secondary-container": "#00311f",
+                      "surface-container-highest": "#2f353c",
+                      "surface-container-high": "#242b31",
+                      "secondary-fixed-dim": "#4edea3",
+                      "on-secondary-fixed": "#002113",
+                      "on-primary-fixed-variant": "#2f2ebe",
+                      "on-tertiary": "#4f2500",
+                      "tertiary-fixed-dim": "#ffb783",
+                      "error": "#ffb4ab",
+                      "inverse-primary": "#494bd6",
+                      "tertiary-container": "#d97721"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "margin": "24px",
+                      "xs": "8px",
+                      "md": "16px",
+                      "sm": "12px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "mono-data": ["JetBrains Mono"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "label-md": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col overflow-hidden">
+<!-- Top App Bar (Suppress Navigation Shell logic: This is a task-focused screen) -->
+<header class="w-full top-0 border-b border-outline-variant flex justify-between items-center px-margin h-16 w-full bg-surface">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">ResellerHub OS</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="flex-grow relative flex items-center justify-center px-margin">
+<!-- Animated Background Detail -->
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+
+</div>
+<div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-12 gap-lg relative z-10">
+<!-- Left Column: Primary Progress -->
+<div class="md:col-span-7 flex flex-col gap-lg">
+<div class="bg-surface-container-low p-xl rounded-xl border border-outline-variant relative overflow-hidden">
+<div class="flex flex-col gap-md mb-lg">
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest">Inisialisasi Data</span>
+<h1 class="font-headline-xl text-headline-xl text-on-surface">Sinkronisasi Sedang Berlangsung</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">Harap jangan tutup tab ini saat sistem kami menghubungkan inventaris global Anda.</p>
+</div>
+<!-- Progress Visualization -->
+<div class="space-y-sm">
+<div class="flex justify-between items-end mb-base">
+<span class="font-mono-data text-mono-data text-secondary">64% Terkomplet</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant">2,481 / 3,876 Produk</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden relative">
+<div class="h-full bg-secondary w-[64%] rounded-full transition-all duration-700 ease-out relative">
+<div class="absolute inset-0 bg-white/20 animate-shimmer"></div>
+</div>
+</div>
+</div>
+<!-- Step Tracker -->
+<div class="mt-xl space-y-md">
+<!-- Step 1: Done -->
+<div class="flex items-center gap-md p-sm bg-surface-container-highest/30 rounded-lg border border-transparent">
+<div class="w-8 h-8 rounded-full bg-secondary/10 border border-secondary flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="check">check</span>
+</div>
+<div class="flex-grow">
+<span class="font-body-md text-body-md text-on-surface">Memverifikasi Token API</span>
+</div>
+<span class="font-label-md text-label-md text-secondary">SELESAI</span>
+</div>
+<!-- Step 2: In Progress -->
+<div class="flex items-center gap-md p-sm bg-surface-container-highest/50 rounded-lg border border-outline-variant">
+<div class="w-8 h-8 rounded-full border border-primary flex items-center justify-center text-primary relative">
+<span class="material-symbols-outlined text-[18px] animate-spin" data-icon="sync">sync</span>
+</div>
+<div class="flex-grow">
+<span class="font-body-md text-body-md text-on-primary-fixed">Mengambil Daftar Produk</span>
+</div>
+<span class="font-label-md text-label-md text-primary animate-pulse">BERJALAN</span>
+</div>
+<!-- Step 3: Waiting -->
+<div class="flex items-center gap-md p-sm opacity-50">
+<div class="w-8 h-8 rounded-full border border-outline flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+</div>
+<div class="flex-grow">
+<span class="font-body-md text-body-md text-on-surface-variant">Sinkronisasi Riwayat Pesanan</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">MENUNGGU</span>
+</div>
+</div>
+<div class="mt-xl flex flex-col sm:flex-row gap-md">
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md flex items-center justify-center gap-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="hourglass_empty">hourglass_empty</span>
+                            Tunggu sebentar...
+                        </button>
+<button class="border border-outline-variant text-on-surface-variant px-lg py-sm rounded-lg font-label-md hover:bg-surface-variant transition-colors active:scale-95">
+                            Jalankan di Background
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Column: AI Insights & System Status -->
+<div class="md:col-span-5 flex flex-col gap-lg">
+<!-- AI Insight Card (Glassmorphism) -->
+<div class="glass-panel p-lg rounded-xl border-l-[3px] border-l-primary flex flex-col gap-md relative overflow-hidden">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest">AI Intelligence Insight</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                        Kami sedang mengoptimalkan pemetaan SKU Anda untuk akurasi stok maksimal. Sistem AI mendeteksi 14 potensi duplikasi yang sedang divalidasi secara otomatis.
+                    </p>
+<div class="pt-sm border-t border-white/5 mt-xs">
+<div class="flex items-center gap-xs">
+<div class="h-1 w-12 bg-primary rounded-full"></div>
+<div class="h-1 w-4 bg-primary/30 rounded-full"></div>
+<div class="h-1 w-2 bg-primary/10 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Circular Progress Mini Widget -->
+<div class="bg-surface-container p-lg rounded-xl border border-outline-variant flex items-center gap-lg">
+<div class="relative w-20 h-20 flex-shrink-0">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-variant" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-secondary" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-dasharray="226" stroke-dashoffset="81" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-mono-data text-mono-data text-secondary">64%</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Kesehatan Data</span>
+<span class="font-headline-md text-headline-md text-on-surface">Optimal</span>
+<span class="font-label-md text-label-md text-secondary mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            +12% vs last sync
+                        </span>
+</div>
+</div>
+<!-- Abstract Visual Anchor -->
+<div class="flex-grow rounded-xl border border-outline-variant bg-surface-container-low flex items-center justify-center p-xl relative overflow-hidden group">
+<div class="absolute inset-0 opacity-10">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] border border-primary/20 rounded-full animate-spin-slow"></div>
+</div>
+<div class="relative z-10 text-center">
+<span class="material-symbols-outlined text-primary/40 text-6xl block mb-md" data-icon="cloud_sync">cloud_sync</span>
+<p class="font-label-md text-label-md text-on-surface-variant italic">Enkripsi End-to-End Aktif</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Stats / Meta -->
+<footer class="h-12 border-t border-outline-variant bg-surface px-margin flex items-center justify-between">
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface-variant">Sistem Stabil</span>
+</div>
+<div class="hidden sm:flex items-center gap-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">Latency:</span>
+<span class="font-mono-data text-mono-data text-primary">24ms</span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">v2.4.0-Enterprise</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the progress bar
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressFill = document.querySelector('.bg-secondary.w-\\[64\\%\\]');
+            if (progressFill) {
+                // Simulate some jitter/realism in the progress
+                setInterval(() => {
+                    const randomExtra = Math.random() * 0.2;
+                    progressFill.style.width = `calc(64% + ${randomExtra}%)`;
+                }, 1000);
+            }
+        });
+    </script>
+</body></html>

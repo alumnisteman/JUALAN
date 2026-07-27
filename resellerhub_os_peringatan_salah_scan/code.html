@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wrong Item Scanned | ResellerHub OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-overlay {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .error-glow {
+            box-shadow: 0 0 20px rgba(147, 0, 10, 0.3);
+        }
+        @keyframes pulse-red {
+            0%, 100% { border-color: rgba(147, 0, 10, 0.6); }
+            50% { border-color: rgba(255, 180, 171, 0.8); }
+        }
+        .animate-pulse-red {
+            animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary selection:text-on-primary overflow-hidden">
+<!-- TopAppBar from JSON -->
+<header class="bg-surface dark:bg-surface text-primary dark:text-primary docked full-width top-0 border-b border-surface-variant dark:border-surface-variant flat no shadows flex justify-between items-center px-margin py-xs w-full z-50">
+<div class="flex items-center gap-sm cursor-pointer active:scale-95 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">ResellerHub OS</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Station 04</span>
+<span class="font-mono-data text-mono-data text-secondary">PICKER_ID: 9921</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+</div>
+</header>
+<main class="flex h-[calc(100vh-128px)] md:h-[calc(100vh-64px)] w-full overflow-hidden">
+<!-- NavigationDrawer from JSON (Desktop Only Sidebar) -->
+<aside class="hidden md:flex bg-surface-container-low dark:bg-surface-container-low h-full w-72 left-0 border-r border-surface-variant dark:border-surface-variant shadow-md flex-col py-xl">
+<div class="px-margin mb-lg">
+<h2 class="font-headline-md text-headline-md text-primary">Admin Console</h2>
+</div>
+<nav class="flex flex-col gap-base">
+<a class="flex items-center gap-md px-margin py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="warehouse">warehouse</span>
+<span class="font-body-md text-body-md">Warehouse</span>
+</a>
+<a class="flex items-center gap-md px-margin py-sm text-primary font-bold border-l-4 border-primary bg-primary-container/20 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="conveyor_belt">conveyor_belt</span>
+<span class="font-body-md text-body-md">Picking &amp; Packing</span>
+</a>
+<a class="flex items-center gap-md px-margin py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-body-md text-body-md">Affiliate Center</span>
+</a>
+<a class="flex items-center gap-md px-margin py-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md text-body-md">Finance</span>
+</a>
+<div class="mt-auto px-margin border-t border-outline-variant pt-lg">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="wifi">wifi</span>
+<span class="text-[10px] font-mono-data">VPN ENCRYPTED CONNECTION</span>
+</div>
+</div>
+</nav>
+</aside>
+<!-- Content Canvas -->
+<div class="flex-1 overflow-y-auto p-gutter relative">
+<!-- Order Header Information -->
+<div class="flex justify-between items-start mb-lg">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Order #RH-88291-JKT</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Customer: Amanda Rizky • Priority: <span class="text-tertiary">Express</span></p>
+</div>
+<div class="bg-surface-container-high px-md py-xs rounded-xl border border-outline-variant">
+<span class="font-mono-data text-mono-data text-on-surface-variant">WAVE STATUS: </span>
+<span class="font-mono-data text-mono-data text-secondary">ACTIVE</span>
+</div>
+</div>
+<!-- Packing Process Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Items list (The intended scan) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-sm">
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden">
+<div class="bg-surface-container-highest px-md py-sm border-b border-outline-variant flex justify-between">
+<span class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant">Expected Item</span>
+<span class="font-label-md text-label-md text-primary">QTY: 1/2</span>
+</div>
+<div class="p-md flex items-center gap-lg">
+<div class="w-24 h-24 bg-surface-dim rounded-lg border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover opacity-80" data-alt="High-resolution product photography of a premium sleek black wireless headphone set. The lighting is dramatic and industrial, highlighting the matte finish and metallic accents. The background is a dark deep navy, matching a high-tech supply chain dashboard aesthetic. 8k resolution, crisp details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAHzQGR8f7NCcV1L4K3Gz7xCw74KDmvh2ve6hS9kvhWYvsf8d4-qBDvs8UlU_KVYbDyQ5EOY_0-FmPiFv_eFZgIOBJS2keHZqWoatevTDz9auz38sz9oCdOJFpZq8NoW3sa8tUwH7mXJ9Q4zH6aylE0Vh-JVzaZKyANTN87EFK4opkpVNTK6AMvjMfK-qmB7ovtkk1mMxC26xgxSHPvmVXjwfOkcFZ4IOJs_fSOTcfrFVwDb_PqN7rvqWXpDaGqZ8Bewq8iu7U8Ts"/>
+</div>
+<div class="flex-1">
+<div class="font-headline-md text-headline-md">ResellerPro Wireless ANC Hub</div>
+<div class="font-mono-data text-mono-data text-on-surface-variant mt-1">SKU: RPH-WH-001-BLK</div>
+<div class="flex gap-xs mt-sm">
+<span class="px-xs py-[2px] bg-secondary/10 text-secondary border border-secondary/20 text-[10px] font-bold rounded">FRAGILE</span>
+<span class="px-xs py-[2px] bg-tertiary/10 text-tertiary border border-tertiary/20 text-[10px] font-bold rounded">HIGH VALUE</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="w-12 h-12 rounded-full border-4 border-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-surface-variant" data-icon="pending">pending</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant mt-xs">Awaiting Scan</span>
+</div>
+</div>
+</div>
+<!-- Previous successful item -->
+<div class="bg-surface-container/50 rounded-xl border border-outline-variant opacity-60 p-md flex items-center gap-lg">
+<div class="w-16 h-16 bg-surface-dim rounded border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small, premium tech accessory box for a USB-C charging hub. The design is minimalist white and grey. Industrial dark setting with professional studio lighting. High contrast with deep shadow areas to match the dashboard's industrial modern persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkdKF28lqcQkuFgEVSvYCPwjWfs-gNvMT6Ym3s7mQHnYcY_oG-zBevzY5mOMuckKjD6_CW5_GcKXzMkSAexH8wRaOMowfQaeKQfnHScpx1l82v4t4zFnyqqrA9S04Ur91_BA90dQvORXbw8mNjNq7xQNc8CLKrlBvEmLpyLR9fblCvqqTI5KdKmYJhJRpdn8oOcLuvO_O5g7lbBKh6KAAUoWg9358hdN7QoGRdtt5cwkBLFW0UwV0hVi6Wc0KioU2ccfzcjF1ETUw"/>
+</div>
+<div class="flex-1">
+<div class="font-body-lg text-body-lg">Universal Hub Adapter X5</div>
+<div class="font-mono-data text-mono-data text-on-surface-variant">SKU: RPH-ACC-USBX5</div>
+</div>
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md">VERIFIED</span>
+</div>
+</div>
+</div>
+<!-- AI Statistics & History Sidebar -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Glassmorphism AI Insight -->
+<div class="glass-overlay rounded-xl p-md border-l-4 border-primary">
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-primary text-md" data-icon="psychology">psychology</span>
+<span class="font-label-md text-label-md text-primary uppercase">System Intelligence</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">Wave optimization suggests prioritizing <span class="text-secondary">Bin B-12</span> for your next route to reduce travel time by 14%.</p>
+</div>
+<div class="bg-surface-container rounded-xl border border-outline-variant p-md">
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md">Scan History</h4>
+<div class="space-y-sm">
+<div class="flex justify-between text-mono-data text-on-surface-variant">
+<span>14:02:11</span>
+<span class="text-secondary">SCANNED: RPH-ACC-USBX5</span>
+</div>
+<div class="flex justify-between text-mono-data text-on-surface-variant">
+<span>14:01:45</span>
+<span class="text-secondary">ORDER INITIATED</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ERROR OVERLAY: Wrong Item Scanned -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-margin">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+<!-- Error Modal -->
+<div class="relative w-full max-w-2xl bg-surface rounded-xl border-2 border-error error-glow overflow-hidden animate-pulse-red">
+<!-- Critical Error Banner -->
+<div class="bg-error-container text-on-error-container p-lg flex items-center gap-lg">
+<div class="bg-on-error-container/20 p-md rounded-full">
+<span class="material-symbols-outlined text-4xl" data-icon="error" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div>
+<h2 class="font-headline-xl text-headline-xl">Produk Tidak Sesuai!</h2>
+<p class="font-body-lg text-body-lg opacity-90">The scanned item does not match the order requirement.</p>
+</div>
+</div>
+<!-- Details Section -->
+<div class="p-lg space-y-lg">
+<div class="flex flex-col md:flex-row gap-lg">
+<!-- Wrong Item (Highlighted Red) -->
+<div class="flex-1 bg-error-container/5 rounded-lg border border-error/30 p-md">
+<span class="font-label-md text-label-md text-error uppercase block mb-xs">Scanned Item (Incorrect)</span>
+<div class="flex items-center gap-md">
+<div class="w-16 h-16 bg-error-container/20 rounded border border-error/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="cancel">cancel</span>
+</div>
+<div>
+<div class="font-body-lg text-body-lg text-error font-bold">Standard Wired Mouse Pro</div>
+<div class="font-mono-data text-mono-data text-error/80">SKU: RPH-ACC-MSW-02</div>
+</div>
+</div>
+</div>
+<!-- Arrow Icon -->
+<div class="flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-3xl" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<!-- Expected Item (Neutral Contrast) -->
+<div class="flex-1 bg-surface-container-highest rounded-lg border border-outline-variant p-md">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase block mb-xs">Expected Item</span>
+<div class="flex items-center gap-md">
+<div class="w-16 h-16 bg-surface-dim rounded border border-outline-variant overflow-hidden opacity-50">
+<img class="w-full h-full object-cover" data-alt="A high-quality black headphone on a clean grey background, studio lighting. The lighting is soft and professional. Industrial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Q1ZlQldNB4li9rqW3iO8jj5qgwEB6CLXC54BqkzvUSzfY2y5XUkgERP2WP802XayKXSOZ_-mnFo-kp32_zbX5SWFLLB-QWhD9qORRXbOwKBQDdr92nlmXonp2ZG40lqTybDMVvJVO4Kry2Rnv4dGBLYu-od7WZa2vxh1WO7saOV6EfS5v4X_5PsJL_hNqc5TV5HbbdZtNHEg6eR58cvWSyk0oXYDkQGvy-x3EgxJVOCRrYvnm2tanMiCvexs8yxdJhYUbc78IrI"/>
+</div>
+<div>
+<div class="font-body-lg text-body-lg">ResellerPro Wireless...</div>
+<div class="font-mono-data text-mono-data text-on-surface-variant">SKU: RPH-WH-001-BLK</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Instruction Bar -->
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+<p class="font-body-md text-body-md">Operator Instruction: <span class="font-bold">Place the incorrect item back in bin B-04 and re-scan the correct SKU.</span></p>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row gap-md pt-md">
+<button class="flex-1 bg-primary text-on-primary font-bold py-md rounded-lg flex items-center justify-center gap-sm hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+                                Re-scan Correct Item
+                            </button>
+<button class="flex-1 bg-surface-container-highest text-on-surface border border-outline-variant font-bold py-md rounded-lg flex items-center justify-center gap-sm hover:bg-error-container/20 hover:text-error hover:border-error transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="flag">flag</span>
+                                Flag Discrepancy
+                            </button>
+</div>
+</div>
+<!-- Progress Indication -->
+<div class="h-1 bg-surface-container-highest w-full">
+<div class="h-full bg-error w-1/3"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar from JSON (Mobile Only) -->
+<nav class="md:hidden bg-surface-container dark:bg-surface-container text-secondary dark:text-secondary docked full-width bottom-0 border-t border-surface-variant dark:border-surface-variant flat no shadows fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-gutter">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-label-md text-label-md">AI Tools</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary" href="#">
+<span class="material-symbols-outlined" data-icon="conveyor_belt">conveyor_belt</span>
+<span class="font-label-md text-label-md">Suppliers</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-md text-label-md">Coach</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const originalText = this.innerHTML;
+                if (this.innerText.includes('Re-scan')) {
+                    this.innerHTML = `<span class="material-symbols-outlined animate-spin" data-icon="sync">sync</span> Initializing Scanner...`;
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1200);
+                }
+            });
+        });
+
+        // Atmospheric parallax on the modal backdrop
+        document.addEventListener('mousemove', (e) => {
+            const backdrop = document.querySelector('.bg-black/80');
+            if(backdrop) {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                backdrop.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+    </script>
+</body></html>

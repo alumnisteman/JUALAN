@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResellerHub OS - Pusat Kendala Integrasi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#690005",
+                    "secondary-container": "#00a572",
+                    "on-secondary-fixed-variant": "#005236",
+                    "secondary": "#4edea3",
+                    "secondary-fixed": "#6ffbbe",
+                    "on-tertiary-fixed-variant": "#703700",
+                    "on-primary-fixed": "#07006c",
+                    "surface-container-lowest": "#080f14",
+                    "error-container": "#93000a",
+                    "surface-container-low": "#161c22",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-primary-container": "#0d0096",
+                    "secondary-fixed-dim": "#4edea3",
+                    "surface-dim": "#0e141a",
+                    "surface-container-highest": "#2f353c",
+                    "primary": "#c0c1ff",
+                    "inverse-primary": "#494bd6",
+                    "tertiary-fixed-dim": "#ffb783",
+                    "on-background": "#dde3eb",
+                    "on-primary": "#1000a9",
+                    "primary-fixed": "#e1e0ff",
+                    "outline": "#908fa0",
+                    "surface-container-high": "#242b31",
+                    "on-secondary-container": "#00311f",
+                    "on-error-container": "#ffdad6",
+                    "surface-container": "#1a2026",
+                    "error": "#ffb4ab",
+                    "background": "#0e141a",
+                    "tertiary-fixed": "#ffdcc5",
+                    "on-tertiary-container": "#452000",
+                    "surface": "#0e141a",
+                    "on-secondary": "#003824",
+                    "surface-variant": "#2f353c",
+                    "on-tertiary-fixed": "#301400",
+                    "tertiary": "#ffb783",
+                    "surface-tint": "#c0c1ff",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "inverse-surface": "#dde3eb",
+                    "inverse-on-surface": "#2b3137",
+                    "on-tertiary": "#4f2500",
+                    "on-secondary-fixed": "#002113",
+                    "tertiary-container": "#d97721",
+                    "surface-bright": "#333a40",
+                    "on-surface-variant": "#c7c4d7",
+                    "on-surface": "#dde3eb",
+                    "outline-variant": "#464554",
+                    "primary-container": "#8083ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "margin": "24px",
+                    "xs": "8px",
+                    "sm": "12px",
+                    "gutter": "16px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "mono-data": ["JetBrains Mono"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: #0d0d15; color: #dde3eb; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-ai {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        .sidebar-active-line {
+            border-left: 4px solid #c0c1ff;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased scrollbar-hide">
+<!-- Top AppBar Shell -->
+<header class="fixed top-0 w-full bg-surface h-16 z-50 flex items-center justify-between px-margin border-b border-outline-variant transition-colors duration-200">
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary p-xs hover:bg-surface-variant rounded-full">menu</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ResellerHub OS</h1>
+</div>
+<div class="flex-1 max-w-xl mx-xl hidden md:flex items-center bg-surface-container rounded-full px-md py-xs border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-xs">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full text-on-surface" placeholder="Cari toko atau kode error..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant p-xs hover:bg-surface-variant rounded-full">notifications</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">SA</div>
+</div>
+</header>
+<!-- Side Navigation Shell (Desktop) -->
+<aside class="fixed inset-y-0 left-0 z-[60] hidden md:flex flex-col w-80 bg-surface-container-low border-r border-outline-variant p-md mt-16 shadow-lg">
+<div class="flex items-center gap-md mb-xl p-sm">
+<div class="w-12 h-12 rounded-xl bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-size: 32px;">storefront</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-primary font-bold">Store Admin</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Professional Plan</p>
+</div>
+</div>
+<nav class="space-y-xs flex-1">
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg bg-secondary-container text-on-secondary-container font-bold border-l-4 border-primary" href="#">
+<span class="material-symbols-outlined">sync_problem</span>
+<span class="font-body-md text-body-md">Pusat Kendala</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Inventory Sync</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-md text-body-md">Shipping Partners</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-md text-body-md">Tax Reports</span>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t border-outline-variant">
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md text-body-md">Help Center</span>
+</a>
+<p class="text-[10px] text-outline mt-sm px-md uppercase tracking-widest">v2.4.0</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-80 pt-20 pb-24 px-margin min-h-screen">
+<!-- Header Section -->
+<section class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-background">Pusat Kendala Integrasi</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg mt-xs">Monitor dan selesaikan isu sinkronisasi API Marketplace secara real-time.</p>
+</div>
+<div class="flex gap-sm">
+<button class="flex items-center gap-xs bg-surface-container-high px-md py-sm rounded-xl border border-outline-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-body-md">refresh</span>
+<span class="font-label-md text-label-md">Refresh Status</span>
+</button>
+</div>
+</section>
+<!-- Status Overview Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-xl">
+<!-- Total Active Errors -->
+<div class="bg-surface-container-low border border-outline-variant p-lg rounded-xl relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider mb-xs">Total Error Aktif</p>
+<h3 class="font-headline-xl text-headline-xl text-error">12</h3>
+</div>
+<span class="material-symbols-outlined text-error bg-error-container/20 p-sm rounded-full">report</span>
+</div>
+<div class="mt-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-error text-body-md">trending_up</span>
+<span class="text-error font-mono-data text-mono-data">+3 sejak 1 jam lalu</span>
+</div>
+</div>
+<!-- Disconnected -->
+<div class="bg-surface-container-low border border-outline-variant p-lg rounded-xl">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider mb-xs">Koneksi Terputus</p>
+<h3 class="font-headline-xl text-headline-xl text-on-background">4</h3>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant bg-surface-variant p-sm rounded-full">link_off</span>
+</div>
+<div class="mt-md flex items-center gap-xs">
+<span class="text-on-surface-variant font-body-md text-body-md">Membutuhkan perbaikan manual</span>
+</div>
+</div>
+<!-- Expired Permissions -->
+<div class="bg-surface-container-low border border-outline-variant p-lg rounded-xl">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider mb-xs">Izin Kadaluwarsa</p>
+<h3 class="font-headline-xl text-headline-xl text-tertiary">8</h3>
+</div>
+<span class="material-symbols-outlined text-tertiary bg-tertiary-container/20 p-sm rounded-full">history_toggle_off</span>
+</div>
+<div class="mt-md flex items-center gap-xs text-tertiary">
+<span class="material-symbols-outlined text-body-md">warning</span>
+<span class="font-body-md text-body-md">Segera lakukan re-otentikasi</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Left Column: Error List -->
+<div class="lg:col-span-7 space-y-md">
+<div class="flex items-center justify-between px-xs">
+<h4 class="font-headline-md text-headline-md text-on-background">Daftar Kendala Aktif</h4>
+<button class="text-primary font-label-md text-label-md flex items-center gap-xs">
+                        Lihat Semua <span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Error Item 1 (Selected/Focused) -->
+<div class="bg-surface-container-high border-l-4 border-primary border-t border-r border-b border-outline-variant p-md rounded-xl shadow-lg transform transition-transform scale-[1.01]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-white flex items-center justify-center p-xs shadow-inner overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Official orange Shopee marketplace logo on a clean white circular background, minimalist brand mark style, sharp edges, high resolution logo for mobile application dashboard integration UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1vNR-yOpks5E6ZoauWrGXCSJjT0Wvh_1MOOFb3ZBP60T1SzBIiqu2gkd1DXiVcWfdY9d_0zfdR98qMBZ4aG9WErPXI0gPkZI8jdghVwejH8xqNSmv1Uk7FoALxvyIe6wlXS681YS18vcVkeLKUxu3BpqyI6pYbX4iXVhNlVPZPFpYoqYsBWQQqYHDf9BXjcG4kKKiar6FeukbVbLK6pgWCHG6_XKHFoLC8Kut1YeTjUBqaFxX7x6NMpgpnoeg5-r6mAzQxUoTXe4"/>
+</div>
+<div>
+<h5 class="font-headline-md text-headline-md text-on-background">Token Shopee Expired</h5>
+<p class="text-on-surface-variant font-body-md text-body-md">Store: <span class="text-primary">Batik Jaya Abadi</span></p>
+</div>
+</div>
+<div class="text-right">
+<span class="px-sm py-1 rounded-full bg-error-container text-on-error-container font-label-md text-label-md">CRITICAL</span>
+<p class="text-outline font-mono-data text-mono-data mt-xs">24m ago</p>
+</div>
+</div>
+<div class="mt-md flex justify-end gap-sm">
+<button class="px-md py-xs font-label-md text-label-md text-primary border border-primary rounded-lg hover:bg-primary/10 transition-colors">Diagnostic</button>
+</div>
+</div>
+<!-- Error Item 2 -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-[#E7F6EF] flex items-center justify-center p-xs overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Official green Tokopedia marketplace logo, featuring a minimalist owl character in a circular green frame, vibrant colors, clean vector style for enterprise dashboard display." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu0rOvvr811_BWb2G7e4EpW2ddN28L1Spex9wER7N7E3g6nK5XnWcGV5zqypJ_FLTcvG_f14Uz_3jCq5RCRtexUuHpsOTYxcIsbOHdlLmTP6g329WcFlKBO3Z65M-TdvaoFllhuiuddNwfPacR6uvUzSm3v85zUviZ4ZwByvpGe2CgW6d2F9EoFjUHn6932k5z6DvfhZaHJMNDEAVddfPuLgEelSCNNNBBr2ePANO09JiRZbF80G_UllavRpYEjuao32gprb5Tp7Q"/>
+</div>
+<div>
+<h5 class="font-headline-md text-headline-md text-on-background">Rate Limit Exceeded</h5>
+<p class="text-on-surface-variant font-body-md text-body-md">Store: <span class="text-primary">Toko Sepatu Murah</span></p>
+</div>
+</div>
+<div class="text-right">
+<span class="px-sm py-1 rounded-full bg-tertiary-container text-on-tertiary-container font-label-md text-label-md">WARNING</span>
+<p class="text-outline font-mono-data text-mono-data mt-xs">1h ago</p>
+</div>
+</div>
+<div class="mt-md flex justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-md py-xs font-label-md text-label-md text-primary border border-primary rounded-lg hover:bg-primary/10 transition-colors">Diagnostic</button>
+</div>
+</div>
+<!-- Error Item 3 -->
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-xl hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-white flex items-center justify-center p-xs overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="Official TikTok Shop logo with its signature musical note graphic in black and red, set against a clean white background, high-end professional app icon style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLdjlUtlmED3zzgwc2rDunl6XAuMNfBKMK3SbnG5qiFzaJcL9oWwkxLTK5RWmvPfYgjmDjZHZTzPpThhTqu3P8jtgKPByVMaQGCGeHBLOc27JgPxg-sBlOVqQdIggqTIAcysTeKUlU9x605sQwLVEdTUqswIovIoi9nzOGq7S4WQ3FKaNmiH8Nb52NJsNkgePO1mfpGOtJ09565JcRb9KpL38thyZppUBH0bQ3T2WU_-sg2RRyq4trS4SDFZ5v-NGx4PNz8HQ0DlY"/>
+</div>
+<div>
+<h5 class="font-headline-md text-headline-md text-on-background">Invalid Signature</h5>
+<p class="text-on-surface-variant font-body-md text-body-md">Store: <span class="text-primary">Glow Up Cosmetics</span></p>
+</div>
+</div>
+<div class="text-right">
+<span class="px-sm py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-label-md">LOW IMPACT</span>
+<p class="text-outline font-mono-data text-mono-data mt-xs">3h ago</p>
+</div>
+</div>
+<div class="mt-md flex justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-md py-xs font-label-md text-label-md text-primary border border-primary rounded-lg hover:bg-primary/10 transition-colors">Diagnostic</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Detailed Error Card & AI Insight -->
+<div class="lg:col-span-5 space-y-xl">
+<!-- AI Insight Overlay (Glassmorphism) -->
+<div class="glass-ai p-lg rounded-2xl relative overflow-hidden border-l-[3px] border-primary">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<p class="font-label-md text-label-md uppercase text-primary tracking-widest">AI Intelligence Diagnostic</p>
+</div>
+<div class="space-y-md">
+<div>
+<p class="text-outline font-mono-data text-[11px] mb-xs">KODE ERROR</p>
+<code class="text-primary font-mono-data text-mono-data bg-primary/10 px-sm py-xs rounded">API-401-SHP</code>
+</div>
+<div>
+<p class="text-on-background font-headline-md text-headline-md mb-xs">Akar Permasalahan</p>
+<p class="text-on-surface-variant font-body-md text-body-md leading-relaxed">
+                                Masa berlaku token akses toko Anda telah habis (expired) setelah 365 hari. Ini adalah protokol keamanan standar dari Shopee Open Platform.
+                            </p>
+</div>
+<div class="bg-primary/5 p-md rounded-xl border border-primary/20">
+<p class="text-on-background font-body-md font-bold mb-xs">Tindakan Rekomendasi:</p>
+<p class="text-on-surface-variant font-body-md text-body-md">Hubungkan ulang akun untuk memperbarui token. Proses ini membutuhkan login ke Seller Center Shopee.</p>
+</div>
+<div class="flex flex-col gap-sm pt-md">
+<button class="w-full bg-primary text-on-primary font-headline-md py-md rounded-xl flex items-center justify-center gap-sm hover:brightness-110 transition-all">
+<span class="material-symbols-outlined">key</span>
+                                Otorisasi Ulang Sekarang
+                            </button>
+<button class="w-full bg-transparent border border-outline-variant text-on-surface-variant font-body-md py-md rounded-xl hover:bg-surface-variant transition-all">
+                                Hubungi Support Marketplace
+                            </button>
+</div>
+</div>
+<!-- Decorative blur element -->
+<div class="absolute -bottom-12 -right-12 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
+</div>
+<!-- History Log Section -->
+<div class="bg-surface-container-low border border-outline-variant p-lg rounded-xl">
+<div class="flex items-center justify-between mb-lg">
+<h4 class="font-headline-md text-headline-md text-on-background">Resolved Issues</h4>
+<span class="material-symbols-outlined text-on-surface-variant">history</span>
+</div>
+<div class="space-y-lg border-l border-outline-variant ml-2 pl-6">
+<!-- History Item 1 -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-2.5 h-2.5 rounded-full bg-secondary ring-4 ring-background"></div>
+<div class="flex justify-between items-start">
+<div>
+<p class="font-body-md font-bold text-on-background">Inventory Sync Failure</p>
+<p class="text-on-surface-variant font-body-md text-body-md">Tokopedia - Hijab Style ID</p>
+</div>
+<p class="text-outline font-mono-data text-[11px]">Today, 09:12</p>
+</div>
+<p class="text-secondary font-label-md text-label-md mt-1">Resolved via Auto-Retry</p>
+</div>
+<!-- History Item 2 -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-2.5 h-2.5 rounded-full bg-secondary ring-4 ring-background"></div>
+<div class="flex justify-between items-start">
+<div>
+<p class="font-body-md font-bold text-on-background">Order Webhook Mismatch</p>
+<p class="text-on-surface-variant font-body-md text-body-md">Lazada - Official Store</p>
+</div>
+<p class="text-outline font-mono-data text-[11px]">Yesterday, 22:45</p>
+</div>
+<p class="text-secondary font-label-md text-label-md mt-1">Resolved via Re-Sync</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 bg-surface-container border-t border-outline-variant pb-safe px-base shadow-md">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-transform active:scale-90">
+<span class="material-symbols-outlined">sync_problem</span>
+<span class="font-label-md text-label-md">Pusat</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">package_2</span>
+<span class="font-label-md text-label-md">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Warehouse</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform active:scale-90">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md text-label-md">Coach</span>
+</button>
+</nav>
+<!-- Floating Action Button Contextual -->
+<button class="fixed bottom-24 right-margin md:bottom-12 md:right-12 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-xl flex items-center justify-center z-40 transition-transform active:scale-90 group">
+<span class="material-symbols-outlined group-hover:rotate-45 transition-transform">add</span>
+<div class="absolute right-full mr-sm bg-surface-container px-md py-xs rounded-lg border border-outline-variant opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+<p class="font-label-md text-label-md text-on-background">Hubungkan Store Baru</p>
+</div>
+</button>
+<script>
+        // Micro-interaction for search bar focus
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchContainer = searchInput?.parentElement;
+        
+        searchInput?.addEventListener('focus', () => {
+            searchContainer.classList.add('ring-1', 'ring-primary', 'border-primary');
+        });
+        
+        searchInput?.addEventListener('blur', () => {
+            searchContainer.classList.remove('ring-1', 'ring-primary', 'border-primary');
+        });
+
+        // Simulating diagnostic loading
+        document.querySelectorAll('button').forEach(btn => {
+            if(btn.innerText.includes('Diagnostic')) {
+                btn.addEventListener('click', function() {
+                    const originalText = this.innerText;
+                    this.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span>';
+                    this.disabled = true;
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                    }, 1500);
+                });
+            }
+        });
+    </script>
+</body></html>

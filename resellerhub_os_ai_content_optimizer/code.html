@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResellerHub OS - AI Product Enhancer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-card {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ai-accent-border {
+            border-left: 2px solid #8083ff;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #161c22;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #464554;
+            border-radius: 10px;
+        }
+        @keyframes pulse-indigo {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-ai-pulse {
+            animation: pulse-indigo 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#d97721",
+                        "on-tertiary-fixed": "#301400",
+                        "inverse-on-surface": "#2b3137",
+                        "surface": "#0e141a",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-surface": "#dde3eb",
+                        "inverse-surface": "#dde3eb",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#00311f",
+                        "primary-container": "#8083ff",
+                        "surface-container": "#1a2026",
+                        "primary-fixed": "#e1e0ff",
+                        "outline": "#908fa0",
+                        "surface-dim": "#0e141a",
+                        "surface-container-lowest": "#080f14",
+                        "on-secondary": "#003824",
+                        "secondary": "#4edea3",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface-container-low": "#161c22",
+                        "surface-container-highest": "#2f353c",
+                        "on-surface-variant": "#c7c4d7",
+                        "on-primary": "#1000a9",
+                        "tertiary-fixed": "#ffdcc5",
+                        "surface-variant": "#2f353c",
+                        "secondary-container": "#00a572",
+                        "primary": "#c0c1ff",
+                        "on-tertiary-container": "#452000",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "surface-tint": "#c0c1ff",
+                        "on-secondary-fixed": "#002113",
+                        "inverse-primary": "#494bd6",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "outline-variant": "#464554",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-primary-fixed": "#07006c",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-bright": "#333a40",
+                        "tertiary": "#ffb783",
+                        "background": "#0e141a",
+                        "surface-container-high": "#242b31",
+                        "on-primary-container": "#0d0096",
+                        "on-tertiary": "#4f2500",
+                        "on-background": "#dde3eb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "gutter": "16px",
+                        "xs": "8px",
+                        "margin": "24px",
+                        "lg": "24px",
+                        "sm": "12px",
+                        "base": "4px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["JetBrains Mono"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-20 md:pb-0 md:pl-72">
+<!-- Top Navigation -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin h-16 bg-surface-container border-b border-outline-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary font-bold">hub</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ResellerHub OS</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-xs hover:bg-surface-container-high transition-colors rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">
+                EA
+            </div>
+</div>
+</header>
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-72 z-[60] flex flex-col py-margin bg-surface-container-low border-r border-outline-variant rounded-r-xl">
+<div class="px-md mb-xl mt-16">
+<div class="flex items-center gap-md p-sm">
+<div class="h-12 w-12 rounded-xl bg-surface-container-highest flex items-center justify-center border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional business avatar of an enterprise administrator in a sleek corporate setting, using a sophisticated dark blue and indigo color scheme that matches the industrial modern UI design. The lighting is crisp and cinematic, emphasizing authority and technological expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM7OPvyMD0Bz9XMGnq59aQ5pHS-Eql73yFI5XF9aBhXu3X-Eogf8gj9XU3JiWvPmzDEd-duZoeQS8NhD368UtPmxEXASfHC8ED9TNoeeFBCr5it_1EUJQsbYGb59Vz08ttSSdc_dp24O4WO69bak3eiS48e8u23AVesP4-D_3CamMzkNZctH9oYjxpOJ83PmcPy4BsTifMsBdLus5mwCptoi4cYlbbhCtjKHJxRBKJR94YP_OVswyxCRQeveiS3m5cfVRz4_iNJGI"/>
+</div>
+<div>
+<p class="font-headline-md text-label-md font-bold text-primary">Enterprise Admin</p>
+<p class="text-xs text-on-surface-variant">ResellerHub Pro</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all duration-300 mx-xs rounded-full" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-full mx-xs shadow-lg" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-md text-body-md font-bold">AI Tools</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all duration-300 mx-xs rounded-full" href="#">
+<span class="material-symbols-outlined">sync_alt</span>
+<span class="font-body-md text-body-md">Integrations</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all duration-300 mx-xs rounded-full" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md">Financials</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest transition-all duration-300 mx-xs rounded-full" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="px-md mt-auto">
+<p class="text-[10px] text-outline tracking-widest uppercase">Version 2.4.0</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="mt-16 p-md md:p-lg space-y-lg">
+<!-- Header Section -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">AI Product Enhancer</h2>
+<p class="text-on-surface-variant">Optimize imagery and copywriting for global marketplaces.</p>
+</div>
+<button class="bg-primary text-on-primary font-bold px-lg py-sm rounded-xl flex items-center gap-sm shadow-xl active:scale-95 transition-all">
+<span class="material-symbols-outlined">rocket_launch</span>
+                Apply to All Marketplace
+            </button>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Column Left: Image Enhancer Preview (Bento Large) -->
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden p-md">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined">image_search</span> Visual Intelligence
+                        </h3>
+<div class="flex gap-xs">
+<span class="bg-secondary-container/20 text-secondary text-[10px] px-xs py-0.5 rounded border border-secondary/30 font-bold uppercase tracking-tighter">AI Enhanced</span>
+</div>
+</div>
+<!-- Compare View Area -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm relative min-h-[400px]">
+<!-- Before View -->
+<div class="relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-lowest flex flex-col">
+<div class="absolute top-sm left-sm z-10 bg-black/60 px-sm py-1 rounded-full text-xs font-bold text-white border border-white/10">Before</div>
+<img class="w-full h-full object-cover grayscale-[0.2]" data-alt="A realistic raw product photograph of a ceramic mug on a cluttered, dimly lit wooden desk with messy papers and gadgets in the background. The lighting is warm and domestic, with natural shadows and a shallow depth of field. The overall aesthetic is unedited and industrial, typical of an initial product shoot before professional processing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJyizC6Yt1ckU1kdlDt9AEByw_C3kZtOJgT4AdoS53fF5BO4s0fN30hLmO-nOpRwPBrujP6dhL6IJ1LDZWIGbCydwWHiK5QZTcO9dXV9OTQXm88bZBqb7XKswRNLO9q2jPdP3y1CKjFRuEoY1eudkPX8godlo9tuNMR2S3GETInWXq0WZbtzdw63-FSgFmdFoeix5SvMU_Oo6kHfLyu9FktruuuKL-vQgsGxFjWYzEo2-mfgfnECOy3alOPpr86plYAvPEGC89OE0"/>
+</div>
+<!-- After View -->
+<div class="relative rounded-lg overflow-hidden border border-primary/30 bg-surface-container flex flex-col group shadow-2xl">
+<div class="absolute top-sm left-sm z-10 bg-primary/90 px-sm py-1 rounded-full text-xs font-bold text-on-primary border border-white/10">After</div>
+<div class="absolute top-sm right-sm z-20">
+<div class="bg-surface-container-lowest/80 backdrop-blur-md px-sm py-xs rounded border border-outline-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-[10px] font-bold text-on-surface uppercase">Premium Product</span>
+</div>
+</div>
+<!-- Simulated Enhanced Visual (Inspired by https://lh3.googleusercontent.com/aida-public/AB6AXuAOlAvaJJKYGaHEfE92afbdZe2RqSIYvNH0mvncF3uvmr1oNucUiuwKbvqaPQm84W3DsZm0tpKRf8H_-qZpgUKIi79_Q4rsWdLI_UvqnN35MtqV45H-9x-wwGwc082isVDAzw_tgJDzgIN_d461MBHJXVAyVHEL2szQX0MWgnOc2_gsn-Mn0q0edY1RM1FNHZahy7gBI-3ZGr7ebpG5e55QtLXn0bE1ZAAQ8DQYvZFnKXeYkmkGa1PEvYSOPuSbC7TCbvbPllg_-2k) -->
+<div class="w-full h-full flex items-center justify-center p-xl relative bg-white">
+<div class="absolute inset-0 border-[12px] border-surface-container-low"></div>
+<img class="w-2/3 h-auto object-contain drop-shadow-2xl" data-alt="A professionally enhanced product photo of a high-quality ceramic mug isolated on a crisp, pure white background. The mug features soft, even studio lighting with no harsh shadows and perfect color correction. It is encased in a minimalist dark grey decorative digital frame with a metallic finish, emphasizing its premium status for an e-commerce marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBII3JZx1XdaopuazdJ4C5A3C8BstZ6qmLhoLjQHkl1HZ1Fa8h00u1aWvc4VuBdqvCJXVaYw4Zq93dqRNa2oFX_oEypxPGZv7PYqogTw_K3z_ra1ONnOmdDM3AX_pzohmmlD4tQhuRskTfFTgsHlnvtNRsVYMievTFqoYcnWbeQOT94Fvk0LhYKmS68TnX-6CThTzh9zen9EUzU-zwzJVrvXTVIAK_Bg3OrW--0zmgU53rA0wZhO_9mJ8wZkgKhYwNw3U0fFE8NMpg"/>
+</div>
+</div>
+<!-- Process Indicators (Floating Glass Layer) -->
+<div class="absolute bottom-md left-1/2 -translate-x-1/2 w-[90%] glass-card p-md rounded-xl shadow-2xl space-y-sm">
+<div class="flex justify-between items-center">
+<p class="text-xs font-bold text-primary">AUTOMATIC ENHANCE</p>
+<p class="text-[10px] font-mono-data text-secondary">COMPLETE</p>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-full"></div>
+</div>
+<div class="grid grid-cols-3 gap-md pt-sm">
+<div class="space-y-1">
+<p class="text-[10px] text-on-surface-variant truncate">Removing Background</p>
+<div class="h-1 bg-secondary w-full rounded-full"></div>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] text-on-surface-variant truncate">Correcting Light</p>
+<div class="h-1 bg-secondary w-[85%] rounded-full relative">
+<div class="absolute inset-0 bg-secondary/30 animate-pulse"></div>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] text-on-surface-variant truncate">Adding Frame</p>
+<div class="h-1 bg-secondary w-full rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Attribute Validation Checklist (Bottom Bento) -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md">
+<h3 class="font-headline-md text-label-md text-primary mb-md flex items-center gap-xs uppercase tracking-widest">
+                        Marketplace Compliance
+                    </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-md">
+<div class="flex items-center gap-sm p-sm bg-surface-container rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="text-xs font-bold">Shopee 1:1</p>
+<p class="text-[10px] text-on-surface-variant">Ratio Validated</p>
+</div>
+</div>
+<div class="flex items-center gap-sm p-sm bg-surface-container rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="text-xs font-bold">TikTok 3:4</p>
+<p class="text-[10px] text-on-surface-variant">Ratio Validated</p>
+</div>
+</div>
+<div class="flex items-center gap-sm p-sm bg-surface-container rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="text-xs font-bold">White Balance</p>
+<p class="text-[10px] text-on-surface-variant">Pass (Auto)</p>
+</div>
+</div>
+<div class="flex items-center gap-sm p-sm bg-surface-container rounded-lg border border-outline-variant ring-1 ring-tertiary/40">
+<span class="material-symbols-outlined text-tertiary">error</span>
+<div>
+<p class="text-xs font-bold">Lazada Alt Text</p>
+<p class="text-[10px] text-tertiary">Missing Meta</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column Right: AI Copywriting (Bento Sidebar) -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex flex-col h-full ai-accent-border">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined">auto_fix_high</span> AI Copywriting
+                        </h3>
+<button class="text-xs text-secondary font-bold hover:underline">Regenerate</button>
+</div>
+<div class="space-y-md custom-scrollbar overflow-y-auto max-h-[650px] pr-xs">
+<!-- Product Title -->
+<div class="space-y-xs">
+<label class="text-[10px] font-bold text-outline uppercase tracking-widest">Optimized Title</label>
+<div class="p-sm bg-surface-container rounded-lg border border-outline-variant relative group">
+<p class="text-sm font-bold text-on-surface">Premium Minimalist Nordic Ceramic Coffee Mug - Handcrafted Artisan Finish (350ml)</p>
+<button class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Product Description -->
+<div class="space-y-xs">
+<label class="text-[10px] font-bold text-outline uppercase tracking-widest">AI Description</label>
+<div class="p-sm bg-surface-container rounded-lg border border-outline-variant relative group">
+<p class="text-xs text-on-surface-variant leading-relaxed">
+                                    Elevate your morning ritual with our Premium Nordic Ceramic Mug. Designed with an ergonomic handle and a unique reactive glaze, each piece is a one-of-a-kind addition to your workspace or home. Optimized for heat retention and style.
+                                </p>
+<button class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">content_copy</span>
+</button>
+<div class="mt-sm flex flex-wrap gap-xs">
+<span class="px-xs py-0.5 bg-surface-container-highest text-[10px] rounded text-on-surface border border-outline-variant">Handmade</span>
+<span class="px-xs py-0.5 bg-surface-container-highest text-[10px] rounded text-on-surface border border-outline-variant">Eco-Friendly</span>
+<span class="px-xs py-0.5 bg-surface-container-highest text-[10px] rounded text-on-surface border border-outline-variant">Nordic Design</span>
+</div>
+</div>
+</div>
+<!-- AI Hashtags -->
+<div class="space-y-xs">
+<label class="text-[10px] font-bold text-outline uppercase tracking-widest">Smart Hashtags</label>
+<div class="flex flex-wrap gap-xs">
+<span class="text-xs font-mono-data text-primary">#NordicVibes</span>
+<span class="text-xs font-mono-data text-primary">#CoffeeLovers</span>
+<span class="text-xs font-mono-data text-primary">#ArtisanMug</span>
+<span class="text-xs font-mono-data text-primary">#HomeOffice</span>
+<span class="text-xs font-mono-data text-primary">#CeramicArt</span>
+<span class="text-xs font-mono-data text-primary">#MinimalistHome</span>
+</div>
+</div>
+<!-- AI Logic Insight -->
+<div class="glass-card p-sm rounded-lg border-l-4 border-secondary/50">
+<div class="flex items-center gap-xs mb-1">
+<span class="material-symbols-outlined text-secondary text-sm">insights</span>
+<p class="text-[10px] font-bold text-on-surface uppercase">Marketplace Insight</p>
+</div>
+<p class="text-[10px] text-on-surface-variant leading-tight">
+                                This copy is optimized for high-volume keywords on <span class="text-secondary font-bold">Shopee</span> and <span class="text-secondary font-bold">TikTok Shop</span>. Projected SEO score: <span class="text-secondary font-bold">94/100</span>.
+                            </p>
+</div>
+</div>
+<div class="mt-auto pt-md">
+<button class="w-full bg-surface-container-highest border border-outline-variant text-on-surface font-bold py-sm rounded-lg hover:bg-primary/10 transition-colors active:scale-95">
+                            Edit Content Manually
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-xs pb-safe h-16 bg-surface-container border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-container active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px]">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="text-[10px]">AI Tools</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-container active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-[10px]">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-container active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px]">Warehouse</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-container active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-[10px]">Coach</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and subtle state management
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+    </script>
+</body></html>

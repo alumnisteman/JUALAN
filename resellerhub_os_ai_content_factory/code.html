@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Content Factory - ResellerHub AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ai-accent-border {
+            border-left: 2px solid #8083ff;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0d15;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a3c;
+            border-radius: 10px;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#8083ff",
+                        "on-tertiary-container": "#452000",
+                        "background": "#0e141a",
+                        "error-container": "#93000a",
+                        "secondary": "#4edea3",
+                        "surface-container-highest": "#2f353c",
+                        "primary-fixed": "#e1e0ff",
+                        "outline": "#908fa0",
+                        "inverse-on-surface": "#2b3137",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-variant": "#2f353c",
+                        "on-tertiary-fixed": "#301400",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "surface-tint": "#c0c1ff",
+                        "surface-container-high": "#242b31",
+                        "on-secondary-container": "#00311f",
+                        "primary": "#c0c1ff",
+                        "secondary-fixed-dim": "#4edea3",
+                        "tertiary": "#ffb783",
+                        "surface-container-low": "#161c22",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#dde3eb",
+                        "surface-container-lowest": "#080f14",
+                        "surface-container": "#1a2026",
+                        "secondary-container": "#00a572",
+                        "inverse-primary": "#494bd6",
+                        "on-secondary-fixed": "#002113",
+                        "surface-dim": "#0e141a",
+                        "surface": "#0e141a",
+                        "on-primary-fixed": "#07006c",
+                        "tertiary-container": "#d97721",
+                        "outline-variant": "#464554",
+                        "surface-bright": "#333a40",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-surface": "#dde3eb",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#c7c4d7",
+                        "on-primary-container": "#0d0096",
+                        "on-tertiary": "#4f2500",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-primary": "#1000a9",
+                        "on-background": "#dde3eb",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "tertiary-fixed": "#ffdcc5",
+                        "on-secondary": "#003824"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "margin": "24px",
+                        "sm": "12px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "mono-data": ["JetBrains Mono"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "mono-data": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary/30 min-h-screen pb-24 md:pb-0">
+<!-- Top Navigation Bar -->
+<header class="bg-surface-container-low dark:bg-surface-container-low border-b border-outline-variant/30 shadow-sm sticky top-0 z-50 flex justify-between items-center w-full px-margin h-16">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">hub</span>
+<h1 class="font-headline-md text-primary font-bold tracking-tight">ResellerHub AI</h1>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<nav class="flex gap-md">
+<a class="text-on-surface-variant hover:bg-surface-container-high px-3 py-2 transition-colors font-label-md text-label-md" href="#">Home</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high px-3 py-2 transition-colors font-label-md text-label-md" href="#">Products</a>
+<a class="text-primary hover:bg-surface-container-high px-3 py-2 transition-colors font-label-md text-label-md" href="#">AI Tools</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high px-3 py-2 transition-colors font-label-md text-label-md" href="#">Social</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high p-2 rounded-full transition-colors">notifications</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">JD</div>
+</div>
+</div>
+<button class="md:hidden material-symbols-outlined text-on-surface-variant">menu</button>
+</header>
+<main class="max-w-7xl mx-auto px-margin py-lg space-y-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<div class="flex items-center gap-2 text-primary mb-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-md tracking-widest uppercase">Autonomous Production</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl">AI Content Factory</h2>
+</div>
+<button class="bg-primary-container text-on-primary-container px-lg py-3 rounded-xl font-label-md text-label-md flex items-center gap-2 hover:scale-95 transition-all shadow-lg active:scale-90">
+<span class="material-symbols-outlined">add_circle</span>
+                Generate New Batch
+            </button>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Video Production Pipeline (AI Insight Card Style) -->
+<section class="col-span-12 lg:col-span-8 space-y-gutter">
+<div class="glass-panel p-lg rounded-xl ai-accent-border relative overflow-hidden">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">movie_edit</span>
+                            Video Production Pipeline
+                        </h3>
+<span class="font-mono-data text-mono-data text-secondary bg-secondary/10 px-2 py-1 rounded">ACTIVE: Render Engine v4.2</span>
+</div>
+<!-- Progress Timeline -->
+<div class="relative py-xl">
+<div class="absolute top-1/2 left-0 w-full h-0.5 bg-outline-variant/30 -translate-y-1/2"></div>
+<div class="absolute top-1/2 left-0 w-3/4 h-0.5 bg-primary -translate-y-1/2 transition-all duration-1000"></div>
+<div class="relative flex justify-between">
+<!-- Step 1: Script -->
+<div class="flex flex-col items-center gap-2 z-10">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">description</span>
+</div>
+<span class="font-label-md text-label-md text-primary">Script</span>
+</div>
+<!-- Step 2: Voice -->
+<div class="flex flex-col items-center gap-2 z-10">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+<span class="font-label-md text-label-md text-primary">Voice</span>
+</div>
+<!-- Step 3: Avatar -->
+<div class="flex flex-col items-center gap-2 z-10">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">face</span>
+</div>
+<span class="font-label-md text-label-md text-primary">Avatar</span>
+</div>
+<!-- Step 4: Visuals -->
+<div class="flex flex-col items-center gap-2 z-10">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-lg border-4 border-background animate-pulse-soft">
+<span class="material-symbols-outlined text-xl">layers</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Visuals</span>
+</div>
+<!-- Step 5: Final -->
+<div class="flex flex-col items-center gap-2 z-10 opacity-40">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center shadow-lg border-2 border-outline-variant">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Final Video</span>
+</div>
+</div>
+</div>
+<div class="mt-lg p-md bg-surface-container-lowest rounded-lg border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="font-body-md text-on-surface-variant">Synthesizing visual overlays for <span class="text-primary font-bold">NeuralBand S3</span> (00:14 / 00:30)</span>
+</div>
+<span class="font-mono-data text-primary">75% Complete</span>
+</div>
+</div>
+<!-- Preview Area -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-surface-container p-md rounded-xl border border-outline-variant/30 flex flex-col">
+<div class="flex items-center justify-between mb-sm">
+<span class="font-label-md text-label-md text-primary bg-primary/10 px-2 py-0.5 rounded">LIVE PREVIEW</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface">fullscreen</span>
+</div>
+<div class="aspect-square bg-black rounded-lg overflow-hidden relative group">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A high-end product cinematography shot of the NeuralBand smart wearable device. The watch has a sleek minimalist indigo casing and a glowing holographic interface. It is set against a dark, tech-focused environment with dramatic blue and purple rim lighting. The style is ultra-modern and industrial with shallow depth of field, emphasizing the premium textures of the material." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC87jVZ0xnKsuo74AMHI9p0-xfknm8FAlzg0ELSB8Wo4utBBMw0pU35Kmd8jgSciqQj-cfzKocG0IaybQyPvCspr3weQIUofSoJgVhbkVeGMHQ6aL6JR1JJXUsSNe7BK7jO0XsPs_GY33giAQ2LruYh--RpT9JlHMvrrCqYYmbcB95jEgnM8VlzmmAAN7ldRTCed7gxgpO6CBG9RtYFqfw0QarpOUuHSsvNIupv8x5G-DzkpqFBE0Ujzj8Dfcu-JXzc4t9ApoDNwts"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 hover:bg-white/40 transition-all active:scale-90">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
+<div class="h-1 bg-outline-variant/50 w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/3"></div>
+</div>
+</div>
+</div>
+<div class="mt-md space-y-1">
+<p class="font-label-md text-label-md text-on-surface">Campaign: NeuralBand Product Launch</p>
+<p class="font-body-md text-on-surface-variant text-xs italic">"Experience the future of biometric tracking with AI-driven insights..."</p>
+</div>
+</div>
+<!-- Batch Generation Formats -->
+<div class="bg-surface-container p-md rounded-xl border border-outline-variant/30">
+<div class="flex items-center justify-between mb-md">
+<h4 class="font-label-md text-label-md text-on-surface">Batch Formats</h4>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">settings</span>
+</div>
+<div class="grid grid-cols-2 gap-sm h-full">
+<div class="border border-outline-variant/30 rounded-lg p-3 bg-surface-container-low flex flex-col items-center justify-center gap-2 hover:border-primary/50 transition-colors cursor-pointer">
+<div class="w-8 h-12 border-2 border-on-surface-variant rounded-sm flex items-center justify-center text-[10px] text-on-surface-variant font-bold">9:16</div>
+<span class="font-label-md text-[10px] text-on-surface-variant">TikTok / Reel</span>
+</div>
+<div class="border border-primary rounded-lg p-3 bg-primary/5 flex flex-col items-center justify-center gap-2 cursor-default">
+<div class="w-10 h-10 border-2 border-primary rounded-sm flex items-center justify-center text-[10px] text-primary font-bold">1:1</div>
+<span class="font-label-md text-[10px] text-primary">FB / Insta Post</span>
+</div>
+<div class="border border-outline-variant/30 rounded-lg p-3 bg-surface-container-low flex flex-col items-center justify-center gap-2 hover:border-primary/50 transition-colors cursor-pointer">
+<div class="w-12 h-8 border-2 border-on-surface-variant rounded-sm flex items-center justify-center text-[10px] text-on-surface-variant font-bold">16:9</div>
+<span class="font-label-md text-[10px] text-on-surface-variant">YouTube Ad</span>
+</div>
+<div class="border border-outline-variant/30 rounded-lg p-3 bg-surface-container-low flex flex-col items-center justify-center gap-2 hover:border-primary/50 transition-colors cursor-pointer">
+<div class="w-6 h-10 border-2 border-on-surface-variant rounded-sm flex items-center justify-center text-[10px] text-on-surface-variant font-bold">9:16</div>
+<span class="font-label-md text-[10px] text-on-surface-variant">WA Status</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Asset Library (Right Sidebar style) -->
+<aside class="col-span-12 lg:col-span-4 space-y-gutter">
+<div class="bg-surface-container p-lg rounded-xl border border-outline-variant/30 h-full">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-md text-headline-md">Asset Library</h3>
+<button class="text-primary font-label-md text-label-md hover:underline">View All</button>
+</div>
+<div class="space-y-md">
+<!-- Asset Item 1 -->
+<div class="group relative bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/20 hover:border-primary transition-all">
+<div class="h-32 w-full relative">
+<img class="w-full h-full object-cover" data-alt="A vibrant marketing banner for the NeuralBand smart watch. The image shows the device worn by a professional athlete in a futuristic, neon-lit gym setting. The lighting is dominated by deep indigo and secondary emerald greens. The composition follows the rule of thirds, with space on the left for promotional typography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArIk56pNlfraL3A-UZg1cquAkkPmAahCC7TLNN8aF-Rl7FxOQLmXUzuhQz8msEKak8yHD9-1E8jMB3QiSIjXPMqjoV-8F_XOLdrfCWmndjXXgwtKrFeHXvPqduskzOO7a2jCOW0_LRCnmHOSj2zN3jOuV2AFT8xWI5dDlENtXtSNLDKpJjm73LGpXfszGY6jCp_r__LUNu9PUO696849tQZ5pfh-FHH-8BGDlEhtBi9NhMNlW9ntLEPr4Ab-mWInO4XJAnNVLPtfc"/>
+<div class="absolute top-2 right-2 flex gap-1">
+<span class="bg-secondary text-on-secondary text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        AUTO-PUBLISHED
+                                    </span>
+</div>
+</div>
+<div class="p-3">
+<div class="flex justify-between items-start mb-1">
+<h5 class="font-label-md text-label-md text-on-surface">Hero Social Banner</h5>
+<span class="font-mono-data text-[10px] text-on-surface-variant">PNG • 1080x1080</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">share</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">download</span>
+</div>
+</div>
+</div>
+<!-- Asset Item 2 -->
+<div class="group relative bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/20 hover:border-primary transition-all">
+<div class="h-32 w-full relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="A minimalist tech poster featuring an exploded view of the NeuralBand's internal components. The aesthetic is industrial modern with a clean grid background, surgical lighting, and silver highlights. The color palette is strictly monochrome with indigo primary accents for the core chip." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_xCxMz_dLV9fm8P5ev6tnLlDOMIh2oyfF-BVBBdlVQ3iYcmPuu4EbmlrD8v-5Gmh_S42xIDr6PeQjTJfHOEWECcRlCke8mNm-suPuEXJa2cy4uHE9r2ByKQuTLxHh0g-WObeLnPNRy6-AjUihNkMJhwQDBH9WDLT8Iajq8YNgW4uItizbzgEvmGrOHkddRwlgE6UhXg_rrlrz1F6fFkonZQvOFuNkTjsHL0NoiyUr-dMZbJtKJu1BPz90g6drwKBX6Mc13KNBq8c"/>
+<div class="absolute top-2 right-2 flex gap-1">
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">
+                                        DRAFT
+                                    </span>
+</div>
+</div>
+<div class="p-3">
+<div class="flex justify-between items-start mb-1">
+<h5 class="font-label-md text-label-md text-on-surface">Technical Poster A1</h5>
+<span class="font-mono-data text-[10px] text-on-surface-variant">PDF • Vector</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">edit</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">publish</span>
+</div>
+</div>
+</div>
+<!-- Asset Item 3 (Carousel) -->
+<div class="group relative bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/20 hover:border-primary transition-all">
+<div class="h-32 w-full flex bg-black">
+<div class="w-1/3 h-full border-r border-white/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="The first frame of a marketing carousel featuring a close-up of a high-tech smart wearable device screen. The lighting is dramatic, high-contrast indigo and silver. The image is clean, sharp, and corporate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCHGGSQKoQw9peDXr-AOcFAZ3ojyWwmYo-ulx2yBYqVtZxblww1VqekTaBYFCK4YWTeyRRcaDBj7bj8yQ2wtMk5SYPCJEiYXQjEx1cKs2zUTgpcHSmPZTl4jfY9Rzgp17jnckex0Yd-S7X-hnIuDAR-E07ysJL8qUWMHqcUCmPO6y6bEFHTUjV4lAF-tDG5SknyjjvU6QsFhWHeFlSxjeVESKVyOxMMGGqX3JFyke0mv9iNsN6WYWkKsvHgmFCbMnveuXA5h4EU7Y"/>
+</div>
+<div class="w-1/3 h-full border-r border-white/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="The second frame of a marketing carousel showing the smart watch strap detail with premium textures. Industrial modern photography with indigo and charcoal tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvvKytnehULID4F7QByYHQB_qG0NJlCSotnJa8LGTvLvT7ueA0dXfpdf12o_uGqNyyb-p2Z7HeQZJBAqSekQxQbs_6TuJMEQIyR4sL9gNkJUkDH9-rTu60ZozBbJJglrbQU_ndkbKkdRlbUIkyl9ukZFSJ2yCElFeg9vvKjhgTNT7iRDL2uuQLI_SesA_FGyeIkHVwEDEkFAKdmYv1iHwAwPfTxDVam3jOF6EfjuD8nxjtKcmUHPeaOICwPNuJaJYfFVL3ImeqUNU"/>
+</div>
+<div class="w-1/3 h-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="The third frame of a marketing carousel showing the watch integrated with a mobile app interface. Clean, technical, and high-fidelity aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsvoWOz5StV9cmK7c2AyC5facA_IwTy9LlP4fH1WuY4366hlMaNiHJO0zXoS-5uBp6aLXe3JK9nkHXzm57OYhgTrqwfIafr5neDhSMZIAnLPb35h_DTH666QcccyA0m-HbTv9JRC2sTQqrF-xmDOC4EwjnXL6W4EoRoKcKu9A2FKzFTzBYr7lqeFOI_t3IWS0NXE8igthqAmcRqPkZ72p5iwd3NK57S2sMZvWC1n4B0PbUAR4xvH6oFDJmiHnfKweXIrZx88DiNvU"/>
+</div>
+<div class="absolute top-2 right-2 flex gap-1">
+<span class="bg-secondary text-on-secondary text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        AUTO-PUBLISHED
+                                    </span>
+</div>
+</div>
+<div class="p-3">
+<div class="flex justify-between items-start mb-1">
+<h5 class="font-label-md text-label-md text-on-surface">Insta Carousel (5 Slides)</h5>
+<span class="font-mono-data text-[10px] text-on-surface-variant">JPG • 1080x1350</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">analytics</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">download</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container dark:bg-surface-container backdrop-blur-md border-t border-outline-variant/20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] flex justify-around items-center h-20 px-2 pb-safe">
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-sm text-label-sm">Products</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-sm text-label-sm">AI Tools</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">share</span>
+<span class="font-label-sm text-label-sm">Social</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<!-- Floating Action Background Glow -->
+<div class="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+<div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-secondary/5 blur-[100px] rounded-full pointer-events-none -z-10"></div>
+<script>
+        // Micro-interaction for the generate button
+        document.querySelector('button.bg-primary-container').addEventListener('click', function() {
+            const btn = this;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">autorenew</span> Initializing...';
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">add_circle</span> Generate New Batch';
+            }, 2000);
+        });
+
+        // Pipeline Hover effects
+        const steps = document.querySelectorAll('.pipeline-step');
+        steps.forEach(step => {
+            step.addEventListener('mouseenter', () => {
+                step.classList.add('scale-110');
+            });
+            step.addEventListener('mouseleave', () => {
+                step.classList.remove('scale-110');
+            });
+        });
+    </script>
+</body></html>

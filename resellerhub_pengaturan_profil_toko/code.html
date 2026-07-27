@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Store Profile Settings | ResellerHub AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e4e1ed",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed": "#71f8e4",
+                        "on-surface": "#e4e1ed",
+                        "surface-tint": "#c0c1ff",
+                        "surface-container-low": "#1b1b23",
+                        "surface-container-high": "#292932",
+                        "surface-container": "#1f1f27",
+                        "ai-glow-teal": "rgba(20, 184, 166, 0.3)",
+                        "on-primary": "#1000a9",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "inverse-surface": "#e4e1ed",
+                        "inverse-on-surface": "#303038",
+                        "secondary": "#4fdbc8",
+                        "tertiary-fixed": "#ffddb8",
+                        "primary-container": "#8083ff",
+                        "on-surface-muted": "#c7c4d7",
+                        "secondary-container": "#04b4a2",
+                        "on-secondary-fixed-variant": "#005048",
+                        "surface-dim": "#13131b",
+                        "on-primary-container": "#0d0096",
+                        "primary-fixed": "#e1e0ff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-tertiary": "#472a00",
+                        "on-error": "#690005",
+                        "surface-variant": "#34343d",
+                        "on-tertiary-container": "#3e2400",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "inverse-primary": "#494bd6",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary-container": "#003f38",
+                        "surface-container-highest": "#34343d",
+                        "outline-dim": "rgba(51, 65, 85, 0.5)",
+                        "tertiary": "#ffb95f",
+                        "error": "#ffb4ab",
+                        "error-container": "#93000a",
+                        "outline-variant": "#464554",
+                        "outline": "#908fa0",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "on-surface-variant": "#c7c4d7",
+                        "on-primary-fixed": "#07006c",
+                        "surface-card": "rgba(30, 41, 59, 0.7)",
+                        "tertiary-container": "#ca8100",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-secondary-fixed": "#00201c",
+                        "surface-background": "#0F172A",
+                        "on-secondary": "#003731",
+                        "surface-container-lowest": "#0d0d15",
+                        "surface-bright": "#393841",
+                        "background": "#13131b",
+                        "surface": "#13131b",
+                        "primary": "#c0c1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "4px",
+                        "margin-desktop": "48px",
+                        "xs": "8px",
+                        "sm": "16px",
+                        "margin-mobile": "16px",
+                        "xl": "64px",
+                        "md": "24px",
+                        "lg": "40px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0F172A;
+            color: #e4e1ed;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(192, 193, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.1);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .input-dark {
+            background: #0d0d15;
+            border: 1px solid #464554;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-dark:focus {
+            border-color: #c0c1ff;
+            box-shadow: 0 0 0 2px rgba(192, 193, 255, 0.2);
+            outline: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="dark selection:bg-primary/30">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full max-w-[1280px] mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface cursor-pointer p-2 hover:bg-surface-container-high/50 rounded-full transition-colors">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">ResellerHub AI</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-high/50 rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<div class="hidden md:flex items-center gap-3 ml-4 pl-4 border-l border-outline-variant/30">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution close-up portrait of a modern tech entrepreneur with a friendly expression. The lighting is dramatic and cinematic with deep indigo and teal tones. The background is a blurred office environment with neon accents. The overall aesthetic is sleek and corporate-modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXlO8c87xqy-P4Ug8Y9k25D68wfixEHuFrJex0HzA7s_MSJTvpWB-6wIj60p6-L9VapFjmXme-WB4M4gMAZQbjsIW61QtGMm1acSDcIinTQ3ohN6g-WU5I1If9W7R2H8DaBkl5eMdgjMw6xWVR9RPK-dnnZ0shXcZromNSm0OXLzP7YBFLs_gLj7Ody-U2K5xb2dm6ehnBrjoC43NqR5vkqBdSvJrmsJ0OS43Iwn79vBwZgULBzuYNoq0QXePNkd7HE_d8rVbGAs0"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Entrepreneur Pro</span>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto min-h-screen">
+<!-- Header Section -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-background mb-2">Store Profile Settings</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Configure your brand identity, manage warehouse locations, and sync your marketplace accounts across the ecosystem.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 rounded-xl bg-surface-container-highest text-on-surface font-label-md text-label-md hover:bg-surface-bright transition-colors active:scale-95 duration-150">Discard</button>
+<button class="px-6 py-2 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 active:scale-95 duration-150">Save Changes</button>
+</div>
+</div>
+<!-- Bento Layout Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Column 1: Identity & Marketplaces -->
+<div class="md:col-span-7 flex flex-col gap-gutter">
+<!-- Section 1: Brand Identity -->
+<section class="glass-card rounded-xl p-md">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">store</span>
+<h2 class="font-headline-md text-headline-md text-on-background">Identitas Brand</h2>
+</div>
+<div class="flex flex-col md:flex-row gap-8">
+<div class="flex flex-col items-center gap-4">
+<div class="relative w-32 h-32 rounded-xl overflow-hidden bg-surface-container-lowest border border-outline-variant/30 group">
+<img class="w-full h-full object-cover" data-alt="A minimalist and sleek brand logo for a tech-focused e-commerce store. The design features an abstract geometric symbol representing growth and connectivity in vibrant indigo and teal gradients. The background is a clean, dark slate color with a subtle grainy texture for a premium feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnl8ai_PhbjbKpZbHCZxa9p7Ng3y-9BJYtZai7VYUwyE_Bco3idjTQLl2SfaRcvv8egqd7VxOIiwHqECYR_ZnNdOZ4AZWYMjilxBBoKkxpVLGNUSUKjJ1e-771tWa0k-dq6jHtjd6cIFkaTAcG98HLh9ZTmUs0kDDisMPjrDF2ZkD_MiOq4QuDW2NIsnWhHgQZdsuPBt4x_3jGFTAVFwwFudaFXdIsbve2gniPgGxIVvuyUcwaKmBmeYDyErtZEXYAxxRTKr_GF4s"/>
+<div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-white">photo_camera</span>
+</div>
+</div>
+<button class="font-label-sm text-label-sm text-primary hover:underline">Change Logo</button>
+</div>
+<div class="flex-1 space-y-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Nama Toko</label>
+<input class="w-full px-4 py-3 rounded-lg input-dark text-on-surface font-body-md text-body-md" placeholder="Enter store name" type="text" value="Urban Tech Gear"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Deskripsi Singkat</label>
+<textarea class="w-full px-4 py-3 rounded-lg input-dark text-on-surface font-body-md text-body-md resize-none" placeholder="Provide a brief description of your store's mission and offerings." rows="3">Penyedia perlengkapan teknologi modern untuk mobilitas tinggi. Kurasi produk AI-integrated berkualitas tinggi.</textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Marketplace Links -->
+<section class="glass-card rounded-xl p-md">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">hub</span>
+<h2 class="font-headline-md text-headline-md text-on-background">Marketplace Links</h2>
+</div>
+<button class="flex items-center gap-1 font-label-md text-label-md text-primary bg-primary/10 px-3 py-1.5 rounded-lg hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                            Connect New
+                        </button>
+</div>
+<div class="space-y-3">
+<!-- Shopee -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 hover:border-outline-variant/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-[#ee4d2d] flex items-center justify-center text-white font-bold text-lg">S</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Shopee Mall</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">urbantech_official</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-2 py-1 rounded-full bg-secondary-container/20 text-secondary-container text-[10px] font-bold uppercase tracking-wider">Active</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">settings</button>
+</div>
+</div>
+<!-- Tokopedia -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 hover:border-outline-variant/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-[#42b549] flex items-center justify-center text-white font-bold text-lg">T</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Tokopedia</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">UrbanTech Gear Store</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-2 py-1 rounded-full bg-secondary-container/20 text-secondary-container text-[10px] font-bold uppercase tracking-wider">Active</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">settings</button>
+</div>
+</div>
+<!-- Lazada -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 hover:border-outline-variant/50 transition-colors opacity-60 grayscale">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-[#00008b] flex items-center justify-center text-white font-bold text-lg">L</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Lazada</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Not Connected</p>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary hover:underline">Setup</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Column 2: Operations & Locations -->
+<div class="md:col-span-5 flex flex-col gap-gutter">
+<!-- Section 3: Warehouse / Store Location -->
+<section class="glass-card rounded-xl p-md overflow-hidden relative">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<h2 class="font-headline-md text-headline-md text-on-background">Alamat Gudang</h2>
+</div>
+</div>
+<div class="space-y-4">
+<div class="relative w-full h-40 rounded-xl overflow-hidden border border-outline-variant/30 mb-4">
+<img class="w-full h-full object-cover" data-alt="A clean, professional digital map interface showing a stylized location marker in a modern urban district of Jakarta. The map uses a dark mode palette with indigo roads and teal water bodies. Minimalist labels and icons indicate nearby shipping hubs and logistics centers. The aesthetic is technical and high-end." data-location="Jakarta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTtNoN9kaRb3jt67jLHyvyyN_uXFwDz9kRXV7mT3LsTRU00lsA9ABhZk5qUjVX5_Kc1bPjxqREVxB83RjBlmFHrZYcSlxLk1Z-oncFB0D5MxRr4hYamvRga3mqPD2G6C5PD6w6Kvtsa-mSSO-q501L7ogfD--nAZGWR0ZqW4QLcG0iDxK_MGOiqR593enF3bXf4Fy7NxotydMcdelq7Byy7_wJI3aLPS0bb0Mgy9JJu4TflFrEmIYALTEmY3lSSN6i3clM45J1Z_I"/>
+<div class="absolute bottom-2 right-2 bg-surface-dim/80 backdrop-blur-md px-3 py-1 rounded-lg border border-outline-variant/30 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Jakarta Hub A1</span>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Main Warehouse Address</label>
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex justify-between items-start">
+<div>
+<p class="font-body-md text-body-md text-on-surface">Jl. Raya Industri No. 12, Kavling 5-6</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Jakarta Pusat, DKI Jakarta, 10110</p>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</button>
+</div>
+</div>
+<button class="w-full py-3 rounded-lg border border-dashed border-outline-variant hover:border-primary/50 hover:bg-primary/5 transition-all text-on-surface-variant font-label-md text-label-md flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add_location</span>
+                            Add Secondary Location
+                        </button>
+</div>
+</section>
+<!-- Section 4: Operational Preferences -->
+<section class="glass-card rounded-xl p-md">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<h2 class="font-headline-md text-headline-md text-on-background">Preferensi Operasional</h2>
+</div>
+<div class="space-y-6">
+<!-- Business Hours -->
+<div>
+<div class="flex items-center justify-between mb-3">
+<label class="font-label-md text-label-md text-on-surface">Jam Buka</label>
+<span class="font-label-sm text-label-sm text-secondary-container">Open Today</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 text-center">
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Mon - Fri</span>
+<span class="font-body-md text-body-md text-on-surface">09:00 - 18:00</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 text-center">
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Sat - Sun</span>
+<span class="font-body-md text-body-md text-on-surface">10:00 - 15:00</span>
+</div>
+</div>
+</div>
+<!-- Auto-Reply -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 group hover:border-primary/30 transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">chat_bubble</span>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Pesan Otomatis AI</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Enabled • Smart Reply</p>
+</div>
+</div>
+<div class="w-12 h-6 rounded-full bg-secondary-container/20 border border-secondary-container/50 relative cursor-pointer">
+<div class="absolute right-1 top-1 w-4 h-4 rounded-full bg-secondary-container shadow-sm"></div>
+</div>
+</div>
+<!-- Return Policy -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 group hover:border-primary/30 transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">assignment_return</span>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Kebijakan Retur</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">7 Days Money Back</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- AI Insight Callout -->
+<div class="p-md rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 ai-glow relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary-container text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-md text-secondary-container font-bold tracking-wide uppercase">AI Recommendation</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                            Berdasarkan tren pembeli Anda, mengaktifkan <span class="text-secondary font-bold">Lazada</span> dapat meningkatkan potensi jangkauan pasar hingga 24% untuk kategori Teknologi.
+                        </p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">psychology</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container dark:bg-surface-container/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-lg h-20 px-2 pb-safe flex justify-around items-center">
+<a class="flex flex-col items-center justify-center text-on-surface-muted hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-muted hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-sm text-label-sm mt-1">Products</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-muted hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label-sm text-label-sm mt-1">AI Tools</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for inputs
+        document.querySelectorAll('.input-dark').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('label')?.classList.add('text-primary');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('label')?.classList.remove('text-primary');
+            });
+        });
+
+        // Simple Toggle interaction logic
+        const toggleElements = document.querySelectorAll('.w-12.h-6');
+        toggleElements.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const knob = toggle.querySelector('.w-4.h-4');
+                const isEnabled = knob.style.right === '1px';
+                if (isEnabled) {
+                    knob.style.right = 'auto';
+                    knob.style.left = '4px';
+                    toggle.classList.replace('bg-secondary-container/20', 'bg-surface-variant');
+                    toggle.classList.replace('border-secondary-container/50', 'border-outline-variant');
+                } else {
+                    knob.style.left = 'auto';
+                    knob.style.right = '4px';
+                    toggle.classList.replace('bg-surface-variant', 'bg-secondary-container/20');
+                    toggle.classList.replace('border-outline-variant', 'border-secondary-container/50');
+                }
+            });
+        });
+    </script>
+</body></html>
