@@ -7,7 +7,7 @@
 SERVER_USER="root"
 SERVER_IP="192.168.1.18"
 SERVER_PASSWORD="1"
-REMOTE_DIR="/opt/resellerhub"
+REMOTE_DIR="/var/www/resellerhub"
 APP_NAME="resellerhub-ai"
 
 # Colors for output

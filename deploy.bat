@@ -5,7 +5,7 @@ REM Deploy to remote server using Docker with Nginx and Meilisearch
 set SERVER_USER=root
 set SERVER_IP=192.168.1.18
 set SERVER_PASSWORD=1
-set REMOTE_DIR=/opt/resellerhub
+set REMOTE_DIR=/var/www/resellerhub
 
 echo Starting deployment to %SERVER_IP%...
 
