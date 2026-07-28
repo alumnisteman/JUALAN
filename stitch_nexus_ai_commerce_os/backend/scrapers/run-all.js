@@ -7,6 +7,8 @@ require('dotenv').config();
 const tokopedia = require('./tokopedia');
 const shopee = require('./shopee');
 const { scrapeAllLazada, scrapeAllBlibli } = require('./lazada-blibli');
+const { scrapeAllZalora } = require('./zalora');
+const { scrapeAllTikTok } = require('./tiktok');
 const { initMarketplaceTable, saveProducts, indexToMeilisearch } = require('./db');
 
 async function runAllScrapers() {
@@ -22,7 +24,7 @@ async function runAllScrapers() {
 
   // ─── TOKOPEDIA ───────────────────────────────────────────
   try {
-    console.log('\n[1/4] Scraping Tokopedia...');
+    console.log('\n[1/6] Scraping Tokopedia...');
     const products = await tokopedia.scrapeAllCategories();
     const saved = await saveProducts(products);
     stats.tokopedia = { scraped: products.length, saved };
@@ -35,7 +37,7 @@ async function runAllScrapers() {
 
   // ─── SHOPEE ──────────────────────────────────────────────
   try {
-    console.log('\n[2/4] Scraping Shopee...');
+    console.log('\n[2/6] Scraping Shopee...');
     const products = await shopee.scrapeAllCategories();
     const saved = await saveProducts(products);
     stats.shopee = { scraped: products.length, saved };
@@ -48,7 +50,7 @@ async function runAllScrapers() {
 
   // ─── LAZADA ──────────────────────────────────────────────
   try {
-    console.log('\n[3/4] Scraping Lazada...');
+    console.log('\n[3/6] Scraping Lazada...');
     const products = await scrapeAllLazada();
     const saved = await saveProducts(products);
     stats.lazada = { scraped: products.length, saved };
@@ -61,7 +63,7 @@ async function runAllScrapers() {
 
   // ─── BLIBLI ──────────────────────────────────────────────
   try {
-    console.log('\n[4/4] Scraping Blibli...');
+    console.log('\n[4/6] Scraping Blibli...');
     const products = await scrapeAllBlibli();
     const saved = await saveProducts(products);
     stats.blibli = { scraped: products.length, saved };
@@ -70,6 +72,32 @@ async function runAllScrapers() {
   } catch (err) {
     stats.blibli = { error: err.message };
     console.error('[Blibli] ✗ Error:', err.message);
+  }
+
+  // ─── ZALORA ──────────────────────────────────────────────
+  try {
+    console.log('\n[5/6] Scraping Zalora...');
+    const products = await scrapeAllZalora();
+    const saved = await saveProducts(products);
+    stats.zalora = { scraped: products.length, saved };
+    allProducts.push(...products);
+    console.log(`[Zalora] ✓ Scraped: ${products.length}, Saved: ${saved}`);
+  } catch (err) {
+    stats.zalora = { error: err.message };
+    console.error('[Zalora] ✗ Error:', err.message);
+  }
+
+  // ─── TIKTOK SHOP ─────────────────────────────────────────
+  try {
+    console.log('\n[6/6] Scraping TikTok Shop...');
+    const products = await scrapeAllTikTok();
+    const saved = await saveProducts(products);
+    stats.tiktok = { scraped: products.length, saved };
+    allProducts.push(...products);
+    console.log(`[TikTok] ✓ Scraped: ${products.length}, Saved: ${saved}`);
+  } catch (err) {
+    stats.tiktok = { error: err.message };
+    console.error('[TikTok] ✗ Error:', err.message);
   }
 
   // ─── INDEX KE MEILISEARCH ────────────────────────────────

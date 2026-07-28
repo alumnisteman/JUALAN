@@ -270,6 +270,8 @@ app.post('/api/marketplace/scrape', async (req, res) => {
     const tokopedia = require('./scrapers/tokopedia');
     const shopee = require('./scrapers/shopee');
     const { scrapeAllLazada, scrapeAllBlibli } = require('./scrapers/lazada-blibli');
+    const { scrapeAllZalora } = require('./scrapers/zalora');
+    const { scrapeAllTikTok } = require('./scrapers/tiktok');
 
     (async () => {
       console.log('[Manual Scrape] Dimulai...');
@@ -277,14 +279,16 @@ app.post('/api/marketplace/scrape', async (req, res) => {
 
       const allProducts = [];
 
-      const [tp, sp, lz, bb] = await Promise.allSettled([
+      const [tp, sp, lz, bb, zl, tt] = await Promise.allSettled([
         tokopedia.scrapeAllCategories(),
         shopee.scrapeAllCategories(),
         scrapeAllLazada(),
-        scrapeAllBlibli()
+        scrapeAllBlibli(),
+        scrapeAllZalora(),
+        scrapeAllTikTok()
       ]);
 
-      for (const r of [tp, sp, lz, bb]) {
+      for (const r of [tp, sp, lz, bb, zl, tt]) {
         if (r.status === 'fulfilled') {
           const saved = await saveProducts(r.value);
           allProducts.push(...r.value);
@@ -399,6 +403,9 @@ function setupCronJobs() {
       const { initMarketplaceTable, saveProducts, indexToMeilisearch } = require('./scrapers/db');
       const tokopedia = require('./scrapers/tokopedia');
       const shopee = require('./scrapers/shopee');
+      const { scrapeAllLazada, scrapeAllBlibli } = require('./scrapers/lazada-blibli');
+      const { scrapeAllZalora } = require('./scrapers/zalora');
+      const { scrapeAllTikTok } = require('./scrapers/tiktok');
 
       await initMarketplaceTable();
       const allProducts = [];
@@ -410,6 +417,22 @@ function setupCronJobs() {
       const sp = await shopee.scrapeAllCategories();
       await saveProducts(sp);
       allProducts.push(...sp);
+
+      const lz = await scrapeAllLazada();
+      await saveProducts(lz);
+      allProducts.push(...lz);
+
+      const bb = await scrapeAllBlibli();
+      await saveProducts(bb);
+      allProducts.push(...bb);
+
+      const zl = await scrapeAllZalora();
+      await saveProducts(zl);
+      allProducts.push(...zl);
+
+      const tt = await scrapeAllTikTok();
+      await saveProducts(tt);
+      allProducts.push(...tt);
 
       await indexToMeilisearch(allProducts);
       console.log(`[CRON] Auto scrape selesai: ${allProducts.length} produk`);
@@ -450,6 +473,8 @@ app.listen(PORT, async () => {
       const tokopedia = require('./scrapers/tokopedia');
       const shopee = require('./scrapers/shopee');
       const { scrapeAllLazada, scrapeAllBlibli } = require('./scrapers/lazada-blibli');
+      const { scrapeAllZalora } = require('./scrapers/zalora');
+      const { scrapeAllTikTok } = require('./scrapers/tiktok');
 
       await initMarketplaceTable();
       const allProducts = [];
@@ -458,7 +483,9 @@ app.listen(PORT, async () => {
         tokopedia.scrapeAllCategories(),
         shopee.scrapeAllCategories(),
         scrapeAllLazada(),
-        scrapeAllBlibli()
+        scrapeAllBlibli(),
+        scrapeAllZalora(),
+        scrapeAllTikTok()
       ]);
 
       for (const r of results) {
