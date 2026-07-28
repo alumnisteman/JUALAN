@@ -393,29 +393,23 @@
             observer.observe(card);
         });
 
-        // Marketplace cards click handler
+        // Marketplace cards click handler - navigate to marketplace detail
         const marketplaceCards = document.querySelectorAll('.group.hover\\:border-primary');
         marketplaceCards.forEach(card => {
             card.addEventListener('click', function() {
-                const platform = this.querySelector('.font-label-caps').textContent;
-                alert(`Membuka detail pesanan ${platform}...`);
+                const platform = this.querySelector('.font-label-caps')?.textContent?.trim() || '';
+                window.location.href = `../integrasi_marketplace_api/code.html?marketplace=${platform.toLowerCase()}`;
             });
         });
 
-        // Restock suggestion items click handler
-        const restockItems = document.querySelectorAll('.cursor-pointer');
-        restockItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const productName = this.querySelector('h4').textContent;
-                alert(`Membuka form restok untuk: ${productName}`);
-            });
-        });
+        // Restock suggestion items - handled by api-connector.js onclick (opens product_url)
+        // Do NOT add alert() handlers here as they override the real onclick behavior
 
-        // Lihat Semua button
+        // Lihat Semua button - navigate to full order list
         const viewAllBtn = document.querySelector('button.text-primary');
         if (viewAllBtn && viewAllBtn.textContent.includes('Lihat Semua')) {
             viewAllBtn.addEventListener('click', () => {
-                alert('Membuka daftar lengkap pesanan tertunda...');
+                window.location.href = '../integrasi_marketplace_api/code.html';
             });
         }
 
@@ -423,7 +417,7 @@
         const settingsBtn = document.querySelector('button.material-symbols-outlined');
         if (settingsBtn) {
             settingsBtn.addEventListener('click', () => {
-                alert('Pengaturan Manajemen Pesanan');
+                window.location.href = '../index.html#settings';
             });
         }
     </script>

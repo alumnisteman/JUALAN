@@ -219,7 +219,7 @@ async function populateOrderManagement() {
     const stock = Math.floor(Math.random() * 20) + 1; // Simulated stock
     const restock = Math.floor(Math.random() * 80) + 20;
     restockContainer.innerHTML += `
-      <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors cursor-pointer">
+      <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors cursor-pointer" onclick="window.open('${p.product_url || '#'}', '_blank')">
         <div class="flex items-center gap-4">
           <div class="w-12 h-12 bg-surface rounded border border-outline-variant flex items-center justify-center overflow-hidden">
             <img class="w-full h-full object-cover" src="${p.image_url || ''}" alt="${p.name}" onerror="this.style.display='none'"/>
