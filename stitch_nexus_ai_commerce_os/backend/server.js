@@ -649,6 +649,57 @@ app.get('/api/tiktok/status', async (req, res) => {
 });
 
 
+// ─────────────────────────────────────────────────────────────────
+// CREDENTIALS & KEYS API
+// ─────────────────────────────────────────────────────────────────
+app.get('/api/credentials/keys', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM api_keys ORDER BY platform ASC');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/credentials/keys', async (req, res) => {
+  try {
+    const { platform, api_key, permissions, quota } = req.body;
+    if (!platform || !api_key) {
+      return res.status(400).json({ error: 'Platform and API Key are required' });
+    }
+    const perms = Array.isArray(permissions) ? JSON.stringify(permissions) : JSON.stringify(['READ']);
+    const q = quota || 'No Limit';
+    
+    const result = await pool.query(`
+      INSERT INTO api_keys (platform, api_key, permissions, quota)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (platform) DO UPDATE SET
+        api_key = EXCLUDED.api_key,
+        permissions = EXCLUDED.permissions,
+        quota = EXCLUDED.quota
+      RETURNING *
+    `, [platform, api_key, perms, q]);
+    
+    res.status(201).json({ success: true, key: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/credentials/logs', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT * FROM scrape_logs 
+      ORDER BY started_at DESC 
+      LIMIT 20
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 app.get('/api/orders', async (req, res) => {
   try {
     const cacheKey = 'orders:all';
@@ -745,6 +796,44 @@ async function initializeDatabase() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // API Keys table for credential management
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS api_keys (
+        id SERIAL PRIMARY KEY,
+        platform VARCHAR(100) UNIQUE NOT NULL,
+        api_key VARCHAR(255) NOT NULL,
+        permissions JSONB NOT NULL,
+        quota VARCHAR(100) DEFAULT 'No Limit',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Seed initial keys if empty
+    const keysCount = await pool.query('SELECT COUNT(*) FROM api_keys');
+    if (parseInt(keysCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO api_keys (platform, api_key, permissions, quota) VALUES
+        ('Tokopedia Prod', 'tk_live_f39281a82da39A2', '["PRODUK", "PESANAN", "CHAT"]', '850 / 1000 daily'),
+        ('Shopee Main', 'shp_key_10df8a287bfF412', '["PRODUK", "PESANAN"]', '1.2k / 5k daily'),
+        ('Meta Graph', 'EAAG_token_90f230da10Z9', '["ADS_MNG", "CATALOG"]', 'No Limit'),
+        ('TikTok Shop', 'awttslvj9382dr8j', '["PRODUK", "PESANAN"]', '250 / 300 daily')
+      `);
+    }
+
+    // Seed initial logs if empty
+    const logsCount = await pool.query('SELECT COUNT(*) FROM scrape_logs');
+    if (parseInt(logsCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO scrape_logs (marketplace, category, items_scraped, items_saved, status, started_at, finished_at) VALUES
+        ('shopee', 'Flash Sale', 50, 48, 'SUCCESS', NOW() - INTERVAL '15 minutes', NOW() - INTERVAL '14 minutes'),
+        ('tokopedia', 'elektronik', 30, 30, 'SUCCESS', NOW() - INTERVAL '12 minutes', NOW() - INTERVAL '11 minutes'),
+        ('lazada', 'handphone', 25, 20, 'SUCCESS', NOW() - INTERVAL '10 minutes', NOW() - INTERVAL '9 minutes'),
+        ('tiktok', 'skincare', 40, 40, 'SUCCESS', NOW() - INTERVAL '8 minutes', NOW() - INTERVAL '7 minutes'),
+        ('zalora', 'sepatu pria', 15, 12, 'SUCCESS', NOW() - INTERVAL '5 minutes', NOW() - INTERVAL '4 minutes')
+      `);
+    }
+
     console.log('[DB] Core tables initialized');
 
     // Init marketplace table

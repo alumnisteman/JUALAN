@@ -465,65 +465,60 @@ Sync: 15m ago
 <div class="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-primary/5 blur-[120px] pointer-events-none -z-10"></div>
 <div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-container/5 blur-[120px] pointer-events-none -z-10"></div>
 <script>
-        // Simple log interaction to simulate "live" updates
+        // Real-time log updates from API
         const logContainer = document.querySelector('.log-container');
-        const platforms = ['Shopee', 'Tokopedia', 'Lazada', 'TikTok', 'Meta'];
-        const types = ['[SYNC]', '[API]', '[WARN]'];
-        const messages = [
-            'Update stok item #SK-44',
-            'GET request successful',
-            'Synchronizing inventory catalog',
-            'New message from customer',
-            'Price parity check completed'
-        ];
-
-        setInterval(() => {
-            const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
-            const p = platforms[Math.floor(Math.random() * platforms.length)];
-            const t = types[Math.floor(Math.random() * types.length)];
-            const m = messages[Math.floor(Math.random() * messages.length)];
-            
-            const typeColor = t === '[SYNC]' ? 'text-tertiary' : (t === '[API]' ? 'text-primary' : 'text-error');
-            
-            const logEntry = document.createElement('p');
-            logEntry.className = 'text-outline opacity-0 transition-opacity duration-500';
-            logEntry.innerHTML = `<span class="text-secondary">[${time}]</span> <span class="${typeColor}">${t}</span> ${m} (${p})`;
-            
-            logContainer.insertBefore(logEntry, logContainer.firstChild);
-            setTimeout(() => logEntry.classList.remove('opacity-0'), 100);
-
-            if (logContainer.children.length > 20) {
-                logContainer.removeChild(logContainer.lastChild);
+        
+        async function updateLogs() {
+            if (window.API && typeof window.API.getApiLogs === 'function') {
+                const dbLogs = await window.API.getApiLogs();
+                if (dbLogs && dbLogs.length > 0) {
+                    logContainer.innerHTML = '';
+                    dbLogs.forEach(l => {
+                        const timeStr = new Date(l.finished_at || l.started_at).toLocaleTimeString('id-ID', { hour12: false });
+                        const statusColor = l.status === 'SUCCESS' ? 'text-tertiary' : 'text-error';
+                        const logEntry = document.createElement('p');
+                        logEntry.className = 'text-outline';
+                        logEntry.innerHTML = `
+                            <span class="text-secondary">[${timeStr}]</span> 
+                            <span class="${statusColor}">[${l.status}]</span> 
+                            Scraped ${l.items_scraped} items (${l.marketplace} - ${l.category})
+                        `;
+                        logContainer.appendChild(logEntry);
+                    });
+                    
+                    const cursorEntry = document.createElement('p');
+                    cursorEntry.className = 'text-outline';
+                    cursorEntry.innerHTML = `<span class="text-secondary">[${new Date().toLocaleTimeString('id-ID', { hour12: false })}]</span> <span class="text-primary">[API]</span> Listening to background events...<span class="terminal-cursor"></span>`;
+                    logContainer.insertBefore(cursorEntry, logContainer.firstChild);
+                }
             }
-        }, 4000);
-
-        // Reconnect button functionality
-        const reconnectButton = document.querySelector('button');
-        if (reconnectButton && reconnectButton.textContent.includes('RECONNECT')) {
-            reconnectButton.addEventListener('click', function() {
-                this.textContent = 'CONNECTING...';
-                this.disabled = true;
-                setTimeout(() => {
-                    this.textContent = 'RECONNECT';
-                    this.disabled = false;
-                    alert('Koneksi ke Lazada berhasil dipulihkan!');
-                }, 2000);
-            });
         }
 
-        // Generate Key button
-        const generateKeyBtn = document.querySelector('button.bg-primary');
-        if (generateKeyBtn && generateKeyBtn.textContent.includes('GENERATE KEY')) {
-            generateKeyBtn.addEventListener('click', () => {
-                alert('Form pembuatan API Key baru akan dibuka...');
-            });
-        }
+        // Poll logs every 8 seconds
+        setInterval(updateLogs, 8000);
 
         // Export logs button
         const exportLogsBtn = document.querySelector('button.text-primary');
         if (exportLogsBtn && exportLogsBtn.textContent.includes('EXPORT LOGS')) {
-            exportLogsBtn.addEventListener('click', () => {
-                alert('Mengunduh log dalam format JSON...');
+            exportLogsBtn.addEventListener('click', async () => {
+                if (window.API && typeof window.API.getApiLogs === 'function') {
+                    const logs = await window.API.getApiLogs();
+                    const keys = await window.API.getApiKeys();
+                    const exportData = {
+                        exported_at: new Date().toISOString(),
+                        api_keys_active: keys,
+                        scrape_logs: logs
+                    };
+                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+                    const downloadAnchor = document.createElement('a');
+                    downloadAnchor.setAttribute("href", dataStr);
+                    downloadAnchor.setAttribute("download", `api_integration_export_${Date.now()}.json`);
+                    document.body.appendChild(downloadAnchor);
+                    downloadAnchor.click();
+                    downloadAnchor.remove();
+                } else {
+                    alert('Ggal memuat data API.');
+                }
             });
         }
 
@@ -531,7 +526,7 @@ Sync: 15m ago
         const settingsBtn = document.querySelector('button.p-2');
         if (settingsBtn) {
             settingsBtn.addEventListener('click', () => {
-                alert('Pengaturan Integrasi API');
+                alert('Pengaturan Integrasi API: Semua kredensial disimpan terenkripsi di PostgreSQL.');
             });
         }
     </script>

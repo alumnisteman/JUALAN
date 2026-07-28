@@ -78,6 +78,30 @@ const API = {
     return await this.fetch(`/api/marketplace/price-compare?q=${encodeURIComponent(q)}`);
   },
 
+  // ─── API Credentials Management ───────────────────────────────
+  async getApiKeys() {
+    return await this.fetch('/api/credentials/keys');
+  },
+
+  async addApiKey(data) {
+    try {
+      const res = await fetch(`${this.BASE_URL}/api/credentials/keys`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('[API] addApiKey error:', err.message);
+      return null;
+    }
+  },
+
+  async getApiLogs() {
+    return await this.fetch('/api/credentials/logs');
+  },
+
   // ─── Helper: Format Rupiah ──────────────────────────────────────
   formatRupiah(num) {
     if (!num && num !== 0) return 'Rp 0';
@@ -507,14 +531,120 @@ async function populateUniversalModules() {
   if (page.includes('integrasi_marketplace_api')) {
     const stats = await API.getStats();
     if (stats && stats.length > 0) {
-      // Update marketplace status cards dengan data real
+      // 1. Update status cards dengan data real
       const statusCards = document.querySelectorAll('.glass-card');
-      stats.forEach((s, i) => {
-        if (statusCards[i]) {
-          const nameEl = statusCards[i].querySelector('h4, .font-bold');
-          const countEl = statusCards[i].querySelector('.font-data-mono');
-          if (nameEl) nameEl.textContent = s.marketplace;
-          if (countEl) countEl.textContent = `${parseInt(s.total_products).toLocaleString('id-ID')} produk`;
+      statusCards.forEach(card => {
+        const titleEl = card.querySelector('h3');
+        if (!titleEl) return;
+        const name = titleEl.textContent.trim().toLowerCase();
+        
+        // Find matching marketplace stat
+        const match = stats.find(s => s.marketplace.toLowerCase() === name || 
+                                      (name.includes('tiktok') && s.marketplace.toLowerCase() === 'tiktok'));
+        if (match) {
+          let listDiv = card.querySelector('.space-y-1');
+          if (listDiv) {
+            let prodRow = card.querySelector('.real-prod-count');
+            if (!prodRow) {
+              prodRow = document.createElement('p');
+              prodRow.className = 'font-data-mono text-xs text-on-surface-variant flex justify-between real-prod-count';
+              listDiv.insertBefore(prodRow, listDiv.lastElementChild);
+            }
+            prodRow.innerHTML = `<span>Produk:</span> <span class="text-secondary">${parseInt(match.total_products).toLocaleString('id-ID')} unit</span>`;
+            
+            const syncEl = listDiv.lastElementChild;
+            if (syncEl && syncEl.classList.contains('text-[10px]')) {
+              syncEl.textContent = `Sync: ${API.timeAgo(match.last_scraped)}`;
+            }
+          }
+        }
+      });
+    }
+
+    // 2. Render real API keys dari database
+    const renderApiKeys = async () => {
+      const keys = await API.getApiKeys();
+      const tbody = document.querySelector('table tbody');
+      if (tbody && keys) {
+        tbody.innerHTML = '';
+        keys.forEach(k => {
+          let perms = [];
+          try {
+            perms = typeof k.permissions === 'string' ? JSON.parse(k.permissions) : k.permissions;
+          } catch(e) {
+            perms = ['READ'];
+          }
+          
+          const permBadges = perms.map(p => 
+            `<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px] mr-1">${p}</span>`
+          ).join('');
+          
+          const maskedKey = k.api_key.length > 8 
+            ? `${k.api_key.substring(0, 8)}••••••••` 
+            : '••••••••';
+            
+          tbody.innerHTML += `
+            <tr class="hover:bg-surface-container-high transition-colors">
+              <td class="p-4 font-bold text-on-surface">${k.platform}</td>
+              <td class="p-4 text-outline">${maskedKey}</td>
+              <td class="p-4"><div class="flex">${permBadges}</div></td>
+              <td class="p-4 text-tertiary">${k.quota}</td>
+              <td class="p-4">
+                <button class="text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">more_vert</span></button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+    };
+    await renderApiKeys();
+
+    // 3. Render real-time logs dari database
+    const logContainer = document.querySelector('.log-container');
+    if (logContainer) {
+      const dbLogs = await API.getApiLogs();
+      if (dbLogs && dbLogs.length > 0) {
+        logContainer.innerHTML = '';
+        dbLogs.forEach(l => {
+          const timeStr = new Date(l.finished_at || l.started_at).toLocaleTimeString('id-ID', { hour12: false });
+          const statusColor = l.status === 'SUCCESS' ? 'text-tertiary' : 'text-error';
+          const logEntry = document.createElement('p');
+          logEntry.className = 'text-outline';
+          logEntry.innerHTML = `
+            <span class="text-secondary">[${timeStr}]</span> 
+            <span class="${statusColor}">[${l.status}]</span> 
+            Scraped ${l.items_scraped} items (${l.marketplace} - ${l.category})
+          `;
+          logContainer.appendChild(logEntry);
+        });
+        
+        const cursorEntry = document.createElement('p');
+        cursorEntry.className = 'text-outline';
+        cursorEntry.innerHTML = `<span class="text-secondary">[${new Date().toLocaleTimeString('id-ID', { hour12: false })}]</span> <span class="text-primary">[API]</span> Listening to background events...<span class="terminal-cursor"></span>`;
+        logContainer.insertBefore(cursorEntry, logContainer.firstChild);
+      }
+    }
+
+    // 4. Sambungkan tombol GENERATE KEY
+    const generateKeyBtn = document.querySelector('button.bg-primary');
+    if (generateKeyBtn) {
+      const newBtn = generateKeyBtn.cloneNode(true);
+      generateKeyBtn.parentNode.replaceChild(newBtn, generateKeyBtn);
+      newBtn.addEventListener('click', async () => {
+        const platform = prompt('Masukkan Nama Platform (misal: Shopee Backup, Tokopedia Beta):');
+        if (!platform) return;
+        const apiKey = prompt('Masukkan API Key:');
+        if (!apiKey) return;
+        const scopesInput = prompt('Masukkan Izin/Permissions (pisahkan dengan koma, misal: PRODUK, PESANAN):');
+        const permissions = scopesInput ? scopesInput.split(',').map(s => s.trim().toUpperCase()) : ['READ'];
+        const quota = prompt('Masukkan Kuota/Limit (misal: 1000 daily):') || 'No Limit';
+        
+        const result = await API.addApiKey({ platform, api_key: apiKey, permissions, quota });
+        if (result && result.success) {
+          alert('API Key berhasil disimpan ke database!');
+          await renderApiKeys();
+        } else {
+          alert('Gagal menyimpan API Key');
         }
       });
     }
