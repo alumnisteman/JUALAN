@@ -29,8 +29,7 @@ function getAxiosClient() {
       config.params = {
         api_key: apiKey,
         url: fullUrl,
-        keep_headers: 'true', // Teruskan Header (seperti referer, dll) ke target
-        premium: 'true'       // Opsional: Gunakan IP residential premium
+        keep_headers: 'true' // Teruskan Header (seperti referer, dll) ke target
       };
       
       return config;
