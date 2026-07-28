@@ -15,6 +15,7 @@ const axios = require('axios');
 const TIKTOK_CLIENT_KEY = process.env.TIKTOK_CLIENT_KEY || '';
 const TIKTOK_CLIENT_SECRET = process.env.TIKTOK_CLIENT_SECRET || '';
 const TIKTOK_API_BASE = 'https://open-api.tiktokglobalshop.com';
+const TIKTOK_AUTH_BASE = 'https://auth.tiktok-shops.com';
 
 /**
  * Generate HMAC-SHA256 signature sesuai TikTok Shop Open API spec.
@@ -47,7 +48,7 @@ async function getAccessToken() {
   }
 
   try {
-    const response = await axios.get(`${TIKTOK_API_BASE}/api/v2/token/get`, {
+    const response = await axios.get(`${TIKTOK_AUTH_BASE}/api/v2/token/get`, {
       params: {
         app_key: TIKTOK_CLIENT_KEY,
         app_secret: TIKTOK_CLIENT_SECRET,
@@ -246,22 +247,39 @@ async function scrapeAllTikTok() {
     'aksesoris hp', 'makanan ringan', 'parfum'
   ];
 
-  const useAPI = TIKTOK_CLIENT_KEY && TIKTOK_CLIENT_SECRET;
-  if (useAPI) {
-    console.log('[TikTok] ✅ Using Official TikTok Shop Open API (Client Key detected)');
+  const hasCredentials = TIKTOK_CLIENT_KEY && TIKTOK_CLIENT_SECRET;
+  let token = null;
+  if (hasCredentials) {
+    try {
+      token = await getAccessToken();
+    } catch (e) {
+      console.warn('[TikTok] Failed to fetch access token, will use fallback scraper');
+    }
+  }
+
+  if (token) {
+    console.log('[TikTok] ✅ Using Official TikTok Shop Open API (Active Token)');
   } else {
-    console.log('[TikTok] ⚠️ No API credentials, falling back to HTML scraping');
+    console.log('[TikTok] ⚠️ No active API token, falling back to HTML scraping');
   }
 
   const results = [];
   for (const cat of categories) {
     console.log(`[TikTok] Scraping: ${cat}`);
-    const products = useAPI
-      ? await searchProductsAPI(cat)
-      : await scrapeTikTokShop(cat);
+    let products = [];
+    if (token) {
+      products = await searchProductsAPI(cat);
+      // Fallback if API fails or returns 0 products
+      if (!products || products.length === 0) {
+        console.log(`[TikTok API] 0 products found for "${cat}", trying HTML scraping fallback...`);
+        products = await scrapeTikTokShop(cat);
+      }
+    } else {
+      products = await scrapeTikTokShop(cat);
+    }
     results.push(...products);
     // Delay: API lebih cepat tapi tetap hormati rate limit
-    await new Promise(r => setTimeout(r, useAPI ? 1000 : 2000));
+    await new Promise(r => setTimeout(r, token ? 1000 : 2000));
   }
 
   console.log(`[TikTok] Total: ${results.length} produk ditemukan`);
