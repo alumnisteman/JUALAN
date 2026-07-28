@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  # Frontend - Nginx serving static files
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-commerce-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - meilisearch
+      - backend
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # Backend API (Node.js/Express)
+  backend:
+    image: node:18-alpine
+    container_name: ai-commerce-backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/ai_commerce
+      - MEILISEARCH_URL=http://meilisearch:7700
+      - MEILISEARCH_MASTER_KEY=masterKey123SecureKeyForProd2026
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - database
+      - meilisearch
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+    command: sh -c "npm install && npm start"
+
+  # PostgreSQL Database
+  database:
+    image: postgres:15-alpine
+    container_name: ai-commerce-database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ai_commerce
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # Meilisearch - Search Engine
+  meilisearch:
+    image: getmeili/meilisearch:v1.5
+    container_name: ai-commerce-meilisearch
+    environment:
+      - MEILI_MASTER_KEY=masterKey123SecureKeyForProd2026
+      - MEILI_ENV=production
+    volumes:
+      - meilisearch_data:/meili_data
+    ports:
+      - "7700:7700"
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # Redis - Cache & Queue
+  redis:
+    image: redis:7-alpine
+    container_name: ai-commerce-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # pgAdmin - Database Management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: ai-commerce-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@ai-commerce.com
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - database
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+networks:
+  ai-commerce-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  meilisearch_data:
+    driver: local
+  redis_data:
+    driver: local

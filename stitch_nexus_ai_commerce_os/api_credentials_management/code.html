@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Manajemen API Credentials | AI Commerce OS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@400;600;700&family=JetBrains+Mono:wght@500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid #27272A;
+        }
+        .glass-card {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(173, 198, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .status-active {
+            color: #4ade80;
+        }
+        .status-pending {
+            color: #fbbf24;
+        }
+        .status-inactive {
+            color: #f87171;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-outline-variant">
+        <div class="flex items-center justify-between px-4 py-3">
+            <div class="flex items-center gap-3">
+                <button class="md:hidden material-symbols-outlined text-on-surface-variant">menu</button>
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+                        <span class="material-symbols-outlined text-on-primary text-2xl">vpn_key</span>
+                    </div>
+                    <span class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">Manajemen API Credentials</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="p-2 rounded-lg hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+                </button>
+                <button class="p-2 rounded-lg hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant">settings</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-12 gap-4">
+            <!-- Header Section -->
+            <div class="col-span-12 mb-6">
+                <h1 class="font-headline-lg text-headline-lg font-bold text-on-surface mb-2">Manajemen API Credentials</h1>
+                <p class="text-body-md text-on-surface-variant">Kelola kredensial API untuk semua marketplace terintegrasi</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="col-span-12 md:col-span-4 glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="font-label-caps text-label-caps text-on-surface-variant">TOTAL MARKETPLACE</span>
+                    <span class="material-symbols-outlined text-primary">store</span>
+                </div>
+                <div class="text-3xl font-bold text-on-surface mb-2">5</div>
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-on-surface-variant">4 Terhubung, 1 Pending</span>
+                </div>
+            </div>
+
+            <div class="col-span-12 md:col-span-4 glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="font-label-caps text-label-caps text-on-surface-variant">CREDENTIALS AKTIF</span>
+                    <span class="material-symbols-outlined text-tertiary">verified</span>
+                </div>
+                <div class="text-3xl font-bold text-on-surface mb-2">4</div>
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-on-surface-variant">Semua berfungsi normal</span>
+                </div>
+            </div>
+
+            <div class="col-span-12 md:col-span-4 glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="font-label-caps text-label-caps text-on-surface-variant">RATE LIMIT USAGE</span>
+                    <span class="material-symbols-outlined text-secondary">speed</span>
+                </div>
+                <div class="text-3xl font-bold text-on-surface mb-2">78%</div>
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-on-surface-variant">Rata-rata penggunaan API</span>
+                </div>
+            </div>
+
+            <!-- API Credentials Table -->
+            <div class="col-span-12 glass-panel rounded-xl overflow-hidden">
+                <div class="p-6 border-b border-outline-variant flex items-center justify-between">
+                    <h3 class="font-headline-md text-headline-md text-on-surface">Kredensial API Marketplace</h3>
+                    <button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                        <span class="material-symbols-outlined text-sm align-middle mr-1">add</span>
+                        Tambah Marketplace
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-surface-container-high/50 border-b border-outline-variant">
+                            <tr>
+                                <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">Marketplace</th>
+                                <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">Portal Developer</th>
+                                <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">Jenis Akun</th>
+                                <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">Status</th>
+                                <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">Rate Limit</th>
+                                <th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant/30" id="credentials-table">
+                            <tr class="hover:bg-surface-container-high/30 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                                            <span class="text-orange-500 font-bold">S</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-on-surface">Shopee</div>
+                                            <div class="text-sm text-on-surface-variant">SHOP-12345678</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="https://open.shopee.com" target="_blank" class="text-primary hover:underline">open.shopee.com</a>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-on-surface-variant">Third-Party Partner / ERP Developer</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-active font-medium">● Terhubung</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
+                                            <div class="h-full bg-primary w-[85%]"></div>
+                                        </div>
+                                        <span class="text-sm font-medium">850/1000</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded-lg text-sm font-medium transition-colors mr-2">Kelola</button>
+                                    <button class="bg-surface-container-high/50 hover:bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-lg text-sm font-medium transition-colors">Refresh</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-high/30 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
+                                            <span class="text-green-500 font-bold">T</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-on-surface">Tokopedia</div>
+                                            <div class="text-sm text-on-surface-variant">SHOP-87654321</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="https://developer.tokopedia.com" target="_blank" class="text-primary hover:underline">developer.tokopedia.com</a>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-on-surface-variant">Official Partner / Open API Seller</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-active font-medium">● Terhubung</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
+                                            <div class="h-full bg-primary w-[84%]"></div>
+                                        </div>
+                                        <span class="text-sm font-medium">420/500</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded-lg text-sm font-medium transition-colors mr-2">Kelola</button>
+                                    <button class="bg-surface-container-high/50 hover:bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-lg text-sm font-medium transition-colors">Refresh</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-high/30 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                                            <span class="text-blue-500 font-bold">L</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-on-surface">Lazada</div>
+                                            <div class="text-sm text-on-surface-variant">SHOP-11223344</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="https://open.lazada.com" target="_blank" class="text-primary hover:underline">open.lazada.com</a>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-on-surface-variant">API Partner</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-active font-medium">● Terhubung</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
+                                            <div class="h-full bg-primary w-[90%]"></div>
+                                        </div>
+                                        <span class="text-sm font-medium">1800/2000</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded-lg text-sm font-medium transition-colors mr-2">Kelola</button>
+                                    <button class="bg-surface-container-high/50 hover:bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-lg text-sm font-medium transition-colors">Refresh</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-high/30 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center">
+                                            <span class="text-pink-500 font-bold">TT</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-on-surface">TikTok Shop</div>
+                                            <div class="text-sm text-on-surface-variant">SHOP-55555555</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="https://partner.tiktokshop.com" target="_blank" class="text-primary hover:underline">partner.tiktokshop.com</a>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-on-surface-variant">Service Partner / ISV Developer</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-active font-medium">● Terhubung</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
+                                            <div class="h-full bg-primary w-[83%]"></div>
+                                        </div>
+                                        <span class="text-sm font-medium">250/300</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded-lg text-sm font-medium transition-colors mr-2">Kelola</button>
+                                    <button class="bg-surface-container-high/50 hover:bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-lg text-sm font-medium transition-colors">Refresh</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-high/30 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                                            <span class="text-red-500 font-bold">B</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-on-surface">Bukalapak</div>
+                                            <div class="text-sm text-on-surface-variant">-</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="https://developer.bukalapak.com" target="_blank" class="text-primary hover:underline">developer.bukalapak.com</a>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-on-surface-variant">API Partner</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-pending font-medium">● Pending</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
+                                            <div class="h-full bg-tertiary w-[0%]"></div>
+                                        </div>
+                                        <span class="text-sm font-medium">0/0</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="bg-tertiary/20 hover:bg-tertiary/30 text-tertiary px-3 py-1 rounded-lg text-sm font-medium transition-colors mr-2">Connect</button>
+                                    <button class="bg-surface-container-high/50 hover:bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-lg text-sm font-medium transition-colors">Setup</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- API Scopes Info -->
+            <div class="col-span-12 md:col-span-6 glass-card rounded-xl p-6">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Scopes API Aktif</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-surface-container-high/30 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary">shopping_cart</span>
+                            <span class="text-body-md text-on-surface">Orders (Read/Write)</span>
+                        </div>
+                        <span class="text-tertiary text-sm">4 Marketplace</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-surface-container-high/30 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-secondary">inventory_2</span>
+                            <span class="text-body-md text-on-surface">Products (Read/Write)</span>
+                        </div>
+                        <span class="text-tertiary text-sm">4 Marketplace</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-surface-container-high/30 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-tertiary">payments</span>
+                            <span class="text-body-md text-on-surface">Payments (Read)</span>
+                        </div>
+                        <span class="text-tertiary text-sm">3 Marketplace</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Status -->
+            <div class="col-span-12 md:col-span-6 glass-card rounded-xl p-6">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Status Keamanan</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-tertiary mt-1">verified_user</span>
+                        <div>
+                            <p class="font-medium text-on-surface">Semua token terenkripsi</p>
+                            <p class="text-sm text-on-surface-variant">Token access dan refresh disimpan dengan aman</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary mt-1">autorenew</span>
+                        <div>
+                            <p class="font-medium text-on-surface">Auto-refresh token aktif</p>
+                            <p class="text-sm text-on-surface-variant">Token akan diperbarui otomatis sebelum kadaluarsa</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-secondary mt-1">shield</span>
+                        <div>
+                            <p class="font-medium text-on-surface">Rate limiting aktif</p>
+                            <p class="text-sm text-on-surface-variant">Penggunaan API dipantau dan dibatasi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg rounded-t-xl">
+        <a href="../index.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="font-label-caps text-[10px] mt-1">Home</span>
+        </a>
+        <a href="../ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+            <span class="material-symbols-outlined">psychology</span>
+            <span class="font-label-caps text-[10px] mt-1">Intelligence</span>
+        </a>
+        <a href="../manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span class="font-label-caps text-[10px] mt-1">Orders</span>
+        </a>
+        <a href="../analitik_eksekutif/code.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+            <span class="font-label-caps text-[10px] mt-1">Analytics</span>
+        </a>
+    </nav>
+
+    <script src="../js/navigation.js"></script>
+    <script src="../js/interactive.js"></script>
+    <script src="../js/dummy-data.js"></script>
+</body>
+</html>
