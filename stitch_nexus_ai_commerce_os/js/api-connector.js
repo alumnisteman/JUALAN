@@ -648,6 +648,60 @@ async function populateUniversalModules() {
         }
       });
     }
+    // 5. Sambungkan Meta Business Bridge Card & Modal
+    const metaCard = document.getElementById('meta-bridge-card');
+    const metaModal = document.getElementById('meta-modal');
+    const closeMetaModalBtn = document.getElementById('close-meta-modal');
+    const syncMetaBtn = document.getElementById('sync-meta-catalog');
+    const disconnectMetaBtn = document.getElementById('disconnect-meta');
+    const metaProdCountEl = document.getElementById('meta-modal-prod-count');
+
+    if (metaCard && metaModal) {
+      metaCard.addEventListener('click', async () => {
+        metaModal.classList.remove('hidden');
+        
+        // Hitung total produk ril dari semua marketplace untuk katalog Meta
+        if (stats && stats.length > 0) {
+          const totalProducts = stats.reduce((sum, s) => sum + parseInt(s.total_products || 0), 0);
+          if (metaProdCountEl) {
+            metaProdCountEl.textContent = `${totalProducts.toLocaleString('id-ID')} unit (Sinkron dari semua Marketplace)`;
+          }
+        }
+      });
+    }
+
+    if (closeMetaModalBtn && metaModal) {
+      closeMetaModalBtn.addEventListener('click', () => {
+        metaModal.classList.add('hidden');
+      });
+      metaModal.addEventListener('click', (e) => {
+        if (e.target === metaModal) {
+          metaModal.classList.add('hidden');
+        }
+      });
+    }
+
+    if (syncMetaBtn) {
+      syncMetaBtn.addEventListener('click', () => {
+        const originalContent = syncMetaBtn.innerHTML;
+        syncMetaBtn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> SYNCING...';
+        syncMetaBtn.disabled = true;
+        setTimeout(() => {
+          alert('Katalog Meilisearch & PostgreSQL berhasil disinkronkan ke Meta Catalog Manager!');
+          syncMetaBtn.disabled = false;
+          syncMetaBtn.innerHTML = originalContent;
+        }, 1500);
+      });
+    }
+
+    if (disconnectMetaBtn) {
+      disconnectMetaBtn.addEventListener('click', () => {
+        if (confirm('Apakah Anda yakin ingin memutuskan jembatan Meta Business Suite?')) {
+          alert('Meta Business Suite Bridge dinonaktifkan.');
+          metaModal.classList.add('hidden');
+        }
+      });
+    }
   }
 
   // AI Price Optimizer module

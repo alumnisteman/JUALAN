@@ -306,7 +306,7 @@ Sync: 15m ago
 </div>
 </div>
 <!-- Instagram/Meta Bridge -->
-<div class="col-span-1 md:col-span-2 glass-card rounded-xl p-4 flex flex-row items-center gap-6 h-44 bg-gradient-to-br from-[#18181B] to-[#1e1431]">
+<div id="meta-bridge-card" class="col-span-1 md:col-span-2 glass-card rounded-xl p-4 flex flex-row items-center gap-6 h-44 bg-gradient-to-br from-[#18181B] to-[#1e1431] cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-transform">
 <div class="flex-shrink-0 relative">
 <div class="w-20 h-20 rounded-full bg-secondary-container/20 border border-secondary/30 flex items-center justify-center">
 <span class="material-symbols-outlined text-4xl text-secondary">hub</span>
@@ -318,7 +318,7 @@ Sync: 15m ago
 <div class="flex-grow">
 <div class="flex items-center gap-2 mb-1">
 <h3 class="font-headline-md text-lg text-on-surface">Meta Business Bridge</h3>
-<span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="material-symbols-outlined text-sm text-secondary hover:text-white transition-colors" style="font-variation-settings: 'FILL' 1;">verified</span>
 </div>
 <p class="font-body-sm text-on-surface-variant text-xs mb-3">Graph API v18.0 Connected via Meta Business Suite</p>
 <div class="flex gap-4">
@@ -530,6 +530,96 @@ Sync: 15m ago
             });
         }
     </script>
+
+<!-- Meta Business Bridge Modal Overlay -->
+<div id="meta-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+  <div class="glass-card rounded-xl border border-outline-variant w-full max-w-lg p-6 bg-[#18181B] shadow-2xl relative">
+    <button id="close-meta-modal" class="absolute top-4 right-4 text-outline hover:text-on-surface transition-colors">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-12 h-12 rounded-full bg-secondary-container/20 border border-secondary/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-2xl text-secondary">hub</span>
+      </div>
+      <div>
+        <h3 class="font-headline-md text-lg font-bold text-on-surface">Meta Business Suite Bridge</h3>
+        <p class="text-xs text-outline font-data-mono">Graph API Connection Active</p>
+      </div>
+    </div>
+    
+    <div class="space-y-4 mb-6">
+      <!-- Status Items -->
+      <div class="p-3 bg-surface-container rounded-lg border border-outline-variant flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <span class="status-dot bg-tertiary"></span>
+          <span class="text-sm font-semibold">Graph API Status</span>
+        </div>
+        <span class="text-xs font-data-mono text-tertiary">CONNECTED (v18.0)</span>
+      </div>
+      
+      <!-- Connected Assets -->
+      <div class="space-y-2">
+        <p class="font-label-caps text-[10px] text-outline">CONNECTED ASSETS</p>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="p-3 bg-surface-container rounded-lg border border-outline-variant">
+            <p class="text-[10px] text-outline">FACEBOOK PAGE</p>
+            <p class="text-xs font-semibold text-on-surface">Stitch Commerce Hub</p>
+          </div>
+          <div class="p-3 bg-surface-container rounded-lg border border-outline-variant">
+            <p class="text-[10px] text-outline">INSTAGRAM SHOP</p>
+            <p class="text-xs font-semibold text-on-surface">@stitch_nexus_shop</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Catalog Manager -->
+      <div class="p-3 bg-surface-container rounded-lg border border-outline-variant">
+        <div class="flex justify-between items-center mb-2">
+          <p class="font-label-caps text-[10px] text-outline">CATALOG MANAGER</p>
+          <span class="text-xs text-tertiary flex items-center gap-1"><span class="material-symbols-outlined text-xs">done</span> Synced</span>
+        </div>
+        <div class="flex justify-between text-xs font-data-mono">
+          <span>Catalog ID:</span>
+          <span class="text-primary">meta_cat_891238910</span>
+        </div>
+        <div class="flex justify-between text-xs font-data-mono mt-1">
+          <span>Synced Products:</span>
+          <span class="text-secondary" id="meta-modal-prod-count">0 items</span>
+        </div>
+      </div>
+      
+      <!-- Ads Reach Performance -->
+      <div class="p-3 bg-surface-container rounded-lg border border-outline-variant">
+        <p class="font-label-caps text-[10px] text-outline mb-2">ADS CAMPAIGN PERFORMANCE (30 DAYS)</p>
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div>
+            <p class="text-[10px] text-outline">IMPRESSIONS</p>
+            <p class="text-sm font-bold text-secondary">24,520</p>
+          </div>
+          <div>
+            <p class="text-[10px] text-outline">CLICKS</p>
+            <p class="text-sm font-bold text-primary">1,840</p>
+          </div>
+          <div>
+            <p class="text-[10px] text-outline">CTR</p>
+            <p class="text-sm font-bold text-tertiary">7.5%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex gap-3">
+      <button id="sync-meta-catalog" class="flex-1 py-2 bg-primary text-on-primary font-label-caps text-xs rounded-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-sm">sync</span> SYNC CATALOG NOW
+      </button>
+      <button id="disconnect-meta" class="px-4 py-2 border border-error/50 text-error hover:bg-error/10 font-label-caps text-xs rounded-lg active:scale-95 transition-transform">
+        DISCONNECT
+      </button>
+    </div>
+  </div>
+</div>
+
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>
 <script src="../js/api-connector.js"></script>
