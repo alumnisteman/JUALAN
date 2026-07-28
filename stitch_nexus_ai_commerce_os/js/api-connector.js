@@ -102,6 +102,15 @@ const API = {
     return await this.fetch('/api/credentials/logs');
   },
 
+  // ─── Revenue Engine ───────────────────────────────────────────
+  async getRevenueOverview() {
+    return await this.fetch('/api/revenue/overview');
+  },
+
+  async getRevenueTransactions() {
+    return await this.fetch('/api/revenue/transactions');
+  },
+
   // ─── Helper: Format Rupiah ──────────────────────────────────────
   formatRupiah(num) {
     if (!num && num !== 0) return 'Rp 0';
@@ -725,6 +734,119 @@ async function populateUniversalModules() {
             </tr>`;
         });
       }
+    }
+  }
+
+  // Mesin Pendapatan (Revenue Engine) module
+  if (page.includes('revenue_engine') || page.includes('mesin_pendapatan')) {
+    const revOverview = await API.getRevenueOverview();
+    const revTxs = await API.getRevenueTransactions();
+
+    if (revOverview) {
+      // 1. Update Total Revenue Card
+      const totalRevEl = document.querySelector('.text-primary.text-display-lg');
+      if (totalRevEl) {
+        totalRevEl.textContent = API.formatRupiah(revOverview.total_revenue);
+      }
+
+      // 2. Update Bento Sub-metrics (breakdown)
+      const subMetricCards = document.querySelectorAll('main > section:first-of-type > div.grid-cols-2 > .glass-card');
+      subMetricCards.forEach(card => {
+        const titleEl = card.querySelector('p');
+        if (!titleEl) return;
+        const title = titleEl.textContent.trim().toUpperCase();
+        
+        let amount = 0;
+        let color = 'bg-primary';
+        if (title === 'AFILIASI') {
+          amount = revOverview.breakdown.affiliate;
+          color = 'bg-primary';
+        } else if (title === 'MARGIN') {
+          amount = revOverview.breakdown.margin;
+          color = 'bg-secondary';
+        } else if (title === 'LANGGANAN') {
+          amount = revOverview.breakdown.subscription;
+          color = 'bg-tertiary';
+        } else if (title === 'PASAR') {
+          amount = revOverview.breakdown.marketplace;
+          color = 'bg-primary-container';
+        }
+
+        const amountEl = card.querySelector('.font-headline-md');
+        if (amountEl) {
+          amountEl.textContent = API.formatRupiah(amount);
+        }
+
+        const bar = card.querySelector('.h-full');
+        if (bar) {
+          const pct = revOverview.total_revenue > 0 ? ((amount / revOverview.total_revenue) * 100).toFixed(0) : 0;
+          bar.className = `h-full ${color}`;
+          bar.style.width = `${pct}%`;
+        }
+      });
+
+      // 3. Update Saluran Aktif
+      const channelCards = document.querySelectorAll('main > section:nth-of-type(3) .glass-card');
+      channelCards.forEach(card => {
+        const titleEl = card.querySelector('.font-bold');
+        if (!titleEl) return;
+        const title = titleEl.textContent.trim();
+        
+        let revAmount = 0;
+        if (title === 'Mesin Afiliasi') {
+          revAmount = revOverview.breakdown.affiliate;
+        } else if (title === 'Mesin Margin') {
+          revAmount = revOverview.breakdown.margin;
+        } else if (title === 'Toko Plugin') {
+          revAmount = revOverview.breakdown.subscription;
+        }
+
+        const amountValEl = card.querySelector('.text-right p');
+        if (amountValEl) {
+          amountValEl.textContent = `+${API.formatCompact(revAmount)}`;
+        }
+      });
+    }
+
+    // 4. Update Real-time Transactions Feed (Acara Pendapatan)
+    const feedContainer = document.querySelector('main > section:last-of-type > div.space-y-2');
+    if (feedContainer && revTxs) {
+      feedContainer.innerHTML = '';
+      revTxs.slice(0, 5).forEach(tx => {
+        const dateObj = new Date(tx.created_at);
+        const timeStr = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+        
+        let icon = 'check_circle';
+        let colorClass = 'text-primary';
+        let bgClass = 'bg-primary/10';
+        
+        if (tx.platform === 'Subscription') {
+          icon = 'bolt';
+          colorClass = 'text-secondary';
+          bgClass = 'bg-secondary/10';
+        } else if (tx.platform === 'Margin') {
+          icon = 'sync_saved_locally';
+          colorClass = 'text-tertiary';
+          bgClass = 'bg-tertiary/10';
+        } else if (tx.platform === 'Affiliate') {
+          icon = 'hub';
+          colorClass = 'text-primary';
+          bgClass = 'bg-primary/10';
+        }
+
+        feedContainer.innerHTML += `
+          <div class="flex items-center gap-3 p-3 rounded-lg border border-outline-variant/30 bg-surface-container-lowest/50">
+            <div class="w-10 h-10 rounded-full ${bgClass} flex items-center justify-center ${colorClass}">
+              <span class="material-symbols-outlined text-lg">${icon}</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-on-surface text-sm font-medium">${tx.product_name}</p>
+              <p class="text-[10px] font-data-mono text-on-surface-variant uppercase">${timeStr}</p>
+            </div>
+            <span class="text-tertiary font-data-mono text-sm">+${API.formatRupiah(tx.amount)}</span>
+          </div>
+        `;
+      });
     }
   }
 

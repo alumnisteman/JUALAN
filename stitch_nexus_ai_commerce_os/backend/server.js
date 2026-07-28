@@ -700,6 +700,52 @@ app.get('/api/credentials/logs', async (req, res) => {
 });
 
 
+// ─────────────────────────────────────────────────────────────────
+// REVENUE ENGINE API
+// ─────────────────────────────────────────────────────────────────
+app.get('/api/revenue/overview', async (req, res) => {
+  try {
+    const statsResult = await pool.query(`
+      SELECT 
+        COALESCE(SUM(amount), 0) as total_revenue,
+        COALESCE(SUM(CASE WHEN platform = 'Affiliate' THEN amount ELSE 0 END), 0) as affiliate_rev,
+        COALESCE(SUM(CASE WHEN platform = 'Margin' THEN amount ELSE 0 END), 0) as margin_rev,
+        COALESCE(SUM(CASE WHEN platform = 'Subscription' THEN amount ELSE 0 END), 0) as subscription_rev,
+        COALESCE(SUM(CASE WHEN platform = 'Marketplace' THEN amount ELSE 0 END), 0) as marketplace_rev
+      FROM orders
+      WHERE status = 'COMPLETED'
+    `);
+    
+    const row = statsResult.rows[0];
+    res.json({
+      total_revenue: parseFloat(row.total_revenue),
+      growth_pct: 12.4,
+      breakdown: {
+        affiliate: parseFloat(row.affiliate_rev),
+        margin: parseFloat(row.margin_rev),
+        subscription: parseFloat(row.subscription_rev),
+        marketplace: parseFloat(row.marketplace_rev)
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/revenue/transactions', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT * FROM orders 
+      ORDER BY created_at DESC 
+      LIMIT 20
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 app.get('/api/orders', async (req, res) => {
   try {
     const cacheKey = 'orders:all';
@@ -775,6 +821,26 @@ async function initializeDatabase() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // Seed initial orders if empty
+    const ordersCount = await pool.query('SELECT COUNT(*) FROM orders');
+    if (parseInt(ordersCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO orders (customer_name, product_name, amount, status, platform, created_at) VALUES
+        ('Budi Santoso', 'Langganan Paket Enterprise AI Suite', 2499000.00, 'COMPLETED', 'Subscription', NOW() - INTERVAL '2 hours'),
+        ('Siti Aminah', 'Komisi Penjualan Skincare Viral (Shopee Affiliate)', 142100.00, 'COMPLETED', 'Affiliate', NOW() - INTERVAL '3 hours'),
+        ('Joko Prasetyo', 'Selisih Margin Penjualan Laptop ASUS ROG', 819200.00, 'COMPLETED', 'Margin', NOW() - INTERVAL '4 hours'),
+        ('Rini Handayani', 'Pembelian Tokopedia: Kopi Kenangan 1L', 89000.00, 'COMPLETED', 'Marketplace', NOW() - INTERVAL '5 hours'),
+        ('Ahmad Fauzi', 'Langganan Paket Pro Member Weekly', 152200.00, 'COMPLETED', 'Subscription', NOW() - INTERVAL '6 hours'),
+        ('Dewi Lestari', 'Komisi Penjualan Baju Gamis OOTD (Tiktok Affiliate)', 56000.00, 'COMPLETED', 'Affiliate', NOW() - INTERVAL '7 hours'),
+        ('Andi Wijaya', 'Selisih Margin Penjualan Meja Kerja Minimalis', 210000.00, 'COMPLETED', 'Margin', NOW() - INTERVAL '8 hours'),
+        ('Lina Marlina', 'Pembelian Shopee: Headphone Bluetooth JBL', 450000.00, 'COMPLETED', 'Marketplace', NOW() - INTERVAL '9 hours'),
+        ('Eko Yulianto', 'Langganan Add-on: WhatsApp API Gateway', 99000.00, 'COMPLETED', 'Subscription', NOW() - INTERVAL '10 hours'),
+        ('Sri Wahyuni', 'Komisi Penjualan Blender Portable (Lazada Affiliate)', 28500.00, 'COMPLETED', 'Affiliate', NOW() - INTERVAL '12 hours'),
+        ('Hadi Syahputra', 'Pembelian TikTok Shop: Parfum HMNS Orgasm', 320000.00, 'COMPLETED', 'Marketplace', NOW() - INTERVAL '14 hours'),
+        ('Indah Permata', 'Selisih Margin Penjualan Rak Buku Kayu', 180000.00, 'COMPLETED', 'Margin', NOW() - INTERVAL '16 hours')
+      `);
+    }
     await pool.query(`
       CREATE TABLE IF NOT EXISTS products (
         id SERIAL PRIMARY KEY,
