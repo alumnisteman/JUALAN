@@ -1,7 +1,8 @@
 /**
  * Shopee Scraper - Menggunakan Shopee Public Search API
  */
-const axios = require('axios');
+const { getAxiosClient } = require('./proxy');
+const axios = getAxiosClient();
 
 const SHOPEE_HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',

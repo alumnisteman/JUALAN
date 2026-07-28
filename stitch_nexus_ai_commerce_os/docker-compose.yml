@@ -31,6 +31,7 @@ services:
       - MEILISEARCH_URL=http://meilisearch:7700
       - MEILISEARCH_MASTER_KEY=masterKey123SecureKeyForProd2026
       - REDIS_URL=redis://redis:6379
+      - SCRAPER_API_KEY=${SCRAPER_API_KEY:-}
     depends_on:
       - database
       - meilisearch

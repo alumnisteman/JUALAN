@@ -1,7 +1,8 @@
 /**
  * Lazada & Blibli Scraper - menggunakan public API/feed mereka
  */
-const axios = require('axios');
+const { getAxiosClient } = require('./proxy');
+const axios = getAxiosClient();
 
 const HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
