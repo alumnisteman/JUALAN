@@ -21,7 +21,8 @@
     "axios": "^1.6.7",
     "cheerio": "^1.0.0-rc.12",
     "node-cron": "^3.0.3",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "@google/generative-ai": "^0.24.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

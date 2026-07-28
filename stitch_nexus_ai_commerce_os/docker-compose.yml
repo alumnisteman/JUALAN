@@ -18,7 +18,7 @@ services:
 
   # Backend API (Node.js/Express)
   backend:
-    image: node:18-alpine
+    image: node:20-alpine
     container_name: ai-commerce-backend
     working_dir: /app
     volumes:
@@ -32,6 +32,9 @@ services:
       - MEILISEARCH_MASTER_KEY=masterKey123SecureKeyForProd2026
       - REDIS_URL=redis://redis:6379
       - SCRAPER_API_KEY=${SCRAPER_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-AQ.Ab8RN6J1IZq4ePk9aCemk1U6fGveFPq9lRvQgfZ-6WptkJcG3Q}
+      - TIKTOK_CLIENT_KEY=${TIKTOK_CLIENT_KEY:-awttslvj9382dr8j}
+      - TIKTOK_CLIENT_SECRET=${TIKTOK_CLIENT_SECRET:-9qj0MnSGx9v2nEXTdE2V91qDdPyMkVHk}
     depends_on:
       - database
       - meilisearch

@@ -65,6 +65,21 @@
         }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .toast-enter {
+            animation: toast-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .toast-exit {
+            animation: toast-slide-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes toast-slide-in {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes toast-slide-out {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
     </style>
 <script id="tailwind-config">
         tailwind.config = {
@@ -171,76 +186,32 @@
 </div>
 </div>
 </section>
-<!-- Bento Content Preview Area -->
-<div class="bento-grid">
-<!-- Large Preview Card -->
-<div class="col-span-2 glass-card rounded-xl overflow-hidden">
-<div class="relative h-48 w-full">
-<img class="w-full h-full object-cover" data-alt="A cinematic, high-contrast video thumbnail for a premium coffee brand, showing slow-motion espresso pouring into a glass. The scene is lit with dramatic side-lighting in a dark, moody kitchen environment, reflecting a luxury commerce aesthetic. Subtle glowing overlays indicate AI-detected hotspots for engagement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxB5J3w1rWLg3o59Ri9-ObJRqlUrABWre0UQg36wELBNj8zc04U53UwfG_tmenuBnVmDZs5ABkjEU2CO37nQqNG7vJwUTN5Om3-sKdMrE_qFwqiRKe4esoH8QWHeC86tfaSYZHJlNaPikwlG1JKxBhEMVDF1_VKxSzr-Of9wYdt471T3vFcEy4C_6_LQlfZ1s4wKoS2K5jo3y-hQ5iyx39yKMbl3tja4UUFbv_6Gwx4In-g868n9wNQe7ex0-dKn-Ty5aJ11vBVVVh"/>
-<div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent flex flex-col justify-end p-4">
-<div class="flex items-center gap-2 mb-2">
-<span class="px-2 py-0.5 bg-primary text-on-primary text-[10px] font-bold rounded-full">DIHASILKAN AI</span>
-<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] rounded-full">VIDEO REEL</span>
-</div>
-<h3 class="font-headline-md text-sm text-on-surface line-clamp-1">Ritual Pagi: Seni Tuangan</h3>
-</div>
-</div>
-<div class="p-4 bg-surface-container-low">
-<div class="flex items-start gap-2 mb-3">
-<span class="material-symbols-outlined text-primary text-base">auto_awesome</span>
-<p class="text-xs text-on-surface-variant font-data-mono italic">
-                            "Rasakan presisi pagi yang sempurna. #PremiumCoffee #MorningRitual <span class="terminal-cursor"></span>"
-                        </p>
-</div>
-<div class="grid grid-cols-3 gap-2 border-t border-outline-variant pt-3">
-<div class="text-center">
-<p class="text-[10px] text-on-surface-variant">EST. JANGKAUAN</p>
-<p class="font-data-mono text-tertiary">12.4k</p>
-</div>
-<div class="text-center border-x border-outline-variant">
-<p class="text-[10px] text-on-surface-variant">KONVERSI</p>
-<p class="font-data-mono text-primary">4.2%</p>
-</div>
-<div class="text-center">
-<p class="text-[10px] text-on-surface-variant">ROI</p>
-<p class="font-data-mono text-secondary">3.1x</p>
-</div>
-</div>
-</div>
-</div>
-<!-- Calendar Module -->
-<div class="glass-card rounded-xl p-4 flex flex-col justify-between aspect-square">
-<div>
-<p class="font-label-caps text-[10px] text-on-surface-variant mb-2">NEXT POST</p>
-<div class="flex items-baseline gap-1">
-<span class="text-3xl font-bold font-headline-md">14</span>
-<span class="text-sm font-data-mono text-primary">:30</span>
-</div>
-<p class="text-[10px] text-on-surface-variant mt-1">Today, May 12</p>
-</div>
-<div class="flex -space-x-2 mt-4">
-<div class="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-[12px] text-white">camera_alt</span></div>
-<div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-[12px] text-white">video_library</span></div>
-</div>
-</div>
-<!-- Conversion Module -->
-<div class="glass-card rounded-xl p-4 flex flex-col justify-between aspect-square">
-<div>
-<p class="font-label-caps text-[10px] text-on-surface-variant mb-2">ENGAGEMENT</p>
-<div class="h-16 flex items-end gap-1">
-<div class="w-2 bg-primary/20 h-1/2 rounded-t-sm"></div>
-<div class="w-2 bg-primary/40 h-2/3 rounded-t-sm"></div>
-<div class="w-2 bg-primary/60 h-3/4 rounded-t-sm"></div>
-<div class="w-2 bg-primary h-full rounded-t-sm"></div>
-<div class="w-2 bg-primary/50 h-1/3 rounded-t-sm"></div>
-</div>
-</div>
+<!-- Scheduled Queue List (Dynamic) will go here in the DOM, replacing the old Bento grid -->
+
 <div class="flex items-center justify-between text-[10px]">
 <span class="text-tertiary">+12%</span>
 <span class="text-on-surface-variant font-data-mono">LAST 24H</span>
 </div>
 </div>
 </div>
+
+<!-- Scheduled Queue Container -->
+<section class="space-y-3">
+<div class="flex justify-between items-end mb-3">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant">ANTREAN JADWAL (DATABASE)</h2>
+<button onclick="fetchSchedules()" class="text-[10px] text-primary flex items-center gap-1 hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined text-[12px]">refresh</span> REFRESH
+</button>
+</div>
+<div id="schedule-queue-container" class="space-y-3">
+<!-- Loading State -->
+<div class="glass-card rounded-lg p-6 flex flex-col items-center justify-center border-dashed border-outline-variant">
+<span class="material-symbols-outlined text-primary animate-spin mb-2">refresh</span>
+<p class="text-xs text-on-surface-variant">Memuat data dari database...</p>
+</div>
+</div>
+</section>
+
 <!-- Bot Activity Feed -->
 <section class="space-y-3">
 <h2 class="font-label-caps text-label-caps text-on-surface-variant">LIVE AI AGENT FEED</h2>
@@ -262,6 +233,83 @@
 </div>
 </section>
 </main>
+
+<!-- Floating Action Button -->
+<button id="fab-create-schedule" class="fixed bottom-28 right-4 w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(173,198,255,0.4)] hover:scale-105 active:scale-95 transition-all z-40">
+    <span class="material-symbols-outlined text-2xl">edit_calendar</span>
+</button>
+
+<!-- Schedule Modal -->
+<div id="schedule-modal" class="hidden fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this){document.getElementById('schedule-modal').classList.add('hidden')}">
+    <div class="schedule-modal-inner w-full max-w-md rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] bg-surface-container-lowest border border-outline-variant" onclick="event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">event_available</span>
+                <h3 class="font-headline-md text-lg text-on-surface">Buat Jadwal Baru</h3>
+            </div>
+            <span id="close-schedule-modal" class="material-symbols-outlined text-on-surface-variant cursor-pointer" style="font-size:24px" onclick="document.getElementById('schedule-modal').classList.add('hidden')">close</span>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-5">
+            <!-- Content Textarea -->
+            <div>
+                <label class="block font-label-caps text-[10px] text-on-surface-variant mb-2">Teks Postingan / Caption</label>
+                <textarea id="schedule-caption" class="w-full h-32 bg-surface border border-outline-variant rounded-lg p-3 text-sm text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors" placeholder="Paste teks hasil AI di sini..."></textarea>
+            </div>
+            
+            <!-- Platform Selection -->
+            <div>
+                <label class="block font-label-caps text-[10px] text-on-surface-variant mb-2">Pilih Platform</label>
+                <div id="platform-chips" class="flex flex-wrap gap-2">
+                    <div role="button" data-platform="Instagram" data-selected="false" class="platform-chip px-3 py-1.5 rounded-full border border-outline-variant text-xs text-on-surface-variant transition-all flex items-center gap-1 cursor-pointer select-none" onclick="toggleChip(this)">
+                        <span class="material-symbols-outlined text-sm">camera_alt</span> Instagram
+                    </div>
+                    <div role="button" data-platform="TikTok" data-selected="false" class="platform-chip px-3 py-1.5 rounded-full border border-outline-variant text-xs text-on-surface-variant transition-all flex items-center gap-1 cursor-pointer select-none" onclick="toggleChip(this)">
+                        <span class="material-symbols-outlined text-sm">video_library</span> TikTok
+                    </div>
+                    <div role="button" data-platform="Facebook" data-selected="false" class="platform-chip px-3 py-1.5 rounded-full border border-outline-variant text-xs text-on-surface-variant transition-all flex items-center gap-1 cursor-pointer select-none" onclick="toggleChip(this)">
+                        <span class="material-symbols-outlined text-sm">thumb_up</span> Facebook
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DateTime Picker -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-label-caps text-[10px] text-on-surface-variant mb-2">Tanggal Posting</label>
+                    <input type="date" id="schedule-date" class="w-full bg-surface border border-outline-variant rounded-lg p-2.5 text-sm text-on-surface focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" />
+                </div>
+                <div>
+                    <label class="block font-label-caps text-[10px] text-on-surface-variant mb-2">Waktu Posting</label>
+                    <input type="time" id="schedule-time" class="w-full bg-surface border border-outline-variant rounded-lg p-2.5 text-sm text-on-surface focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" />
+                </div>
+            </div>
+            
+            <!-- Media Upload -->
+            <div>
+                <label class="block font-label-caps text-[10px] text-on-surface-variant mb-2">Media (Gambar/Video)</label>
+                <input type="file" id="media-file-input" accept="image/*,video/*" class="hidden" />
+                <div id="media-upload-area" onclick="document.getElementById('media-file-input').click()" class="w-full min-h-[96px] border-2 border-dashed border-outline-variant rounded-lg flex flex-col items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors cursor-pointer bg-surface/50 p-3">
+                    <span class="material-symbols-outlined mb-1">upload_file</span>
+                    <span class="text-xs">Klik atau Drag media ke sini</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="p-4 border-t border-outline-variant bg-surface-container-lowest">
+            <div id="submit-schedule-btn" role="button" onclick="submitSchedule()" class="w-full py-3 rounded-lg bg-primary text-on-primary font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer select-none">
+                <span class="material-symbols-outlined text-sm">schedule_send</span> JADWALKAN SEKARANG
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification Container -->
+<div id="toast-container" class="fixed top-4 right-4 z-[70] flex flex-col gap-2"></div>
+
 <!-- Bottom Navigation Bar -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 border-t border-outline-variant backdrop-blur-2xl shadow-lg rounded-t-xl">
 <a href="../index.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] transition-transform active:scale-90">
@@ -337,6 +385,252 @@
                 alert('Pengaturan Marketing Hub');
             });
         }
+
+        // --- Scheduler Logic (all inline onclick, no addEventListener conflicts) ---
+
+        // Open Modal via FAB
+        document.getElementById('fab-create-schedule').onclick = function(e) {
+            e.stopPropagation();
+            document.getElementById('schedule-modal').classList.remove('hidden');
+        };
+
+        // Platform chip colors
+        const chipColors = {
+            Instagram: { bg: 'rgba(236,72,153,0.25)', border: '#ec4899', text: '#f472b6' },
+            TikTok:    { bg: 'rgba(59,130,246,0.25)',  border: '#3b82f6', text: '#60a5fa' },
+            Facebook:  { bg: 'rgba(37,99,235,0.25)',   border: '#2563eb', text: '#93c5fd' }
+        };
+
+        // Toggle chip (called from inline onclick)
+        function toggleChip(el) {
+            event.stopPropagation();
+            const isSelected = el.dataset.selected === 'true';
+            const platform = el.dataset.platform;
+            const colors = chipColors[platform];
+
+            if (isSelected) {
+                el.dataset.selected = 'false';
+                el.style.backgroundColor = '';
+                el.style.borderColor = '';
+                el.style.color = '';
+            } else {
+                el.dataset.selected = 'true';
+                el.style.backgroundColor = colors.bg;
+                el.style.borderColor = colors.border;
+                el.style.color = colors.text;
+            }
+        }
+
+        // Media upload preview
+        document.getElementById('media-file-input').addEventListener('change', function() {
+            const file = this.files[0];
+            const area = document.getElementById('media-upload-area');
+            if (!file) return;
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    area.innerHTML = `
+                        <img src="${e.target.result}" class="max-h-32 rounded-lg object-contain" />
+                        <span class="text-[10px] text-on-surface-variant mt-1">${file.name}</span>
+                        <span class="text-[10px] text-primary cursor-pointer mt-1" onclick="event.stopPropagation(); resetMediaUpload()">Hapus</span>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                area.innerHTML = `
+                    <span class="material-symbols-outlined text-tertiary">videocam</span>
+                    <span class="text-xs text-on-surface mt-1">${file.name}</span>
+                    <span class="text-[10px] text-primary cursor-pointer mt-1" onclick="event.stopPropagation(); resetMediaUpload()">Hapus</span>
+                `;
+            }
+        });
+
+        function resetMediaUpload() {
+            document.getElementById('media-file-input').value = '';
+            document.getElementById('media-upload-area').innerHTML = `
+                <span class="material-symbols-outlined mb-1">upload_file</span>
+                <span class="text-xs">Klik atau Drag media ke sini</span>
+            `;
+        }
+
+        // Drag and drop
+        const uploadArea = document.getElementById('media-upload-area');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            this.style.borderColor = '#adc6ff';
+        });
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            this.style.borderColor = '';
+        });
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            this.style.borderColor = '';
+            if (e.dataTransfer.files.length > 0) {
+                document.getElementById('media-file-input').files = e.dataTransfer.files;
+                document.getElementById('media-file-input').dispatchEvent(new Event('change'));
+            }
+        });
+
+        // Show Toast
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-surface-container-high border border-outline-variant px-4 py-3 rounded-lg flex items-center gap-3 shadow-xl toast-enter';
+            toast.innerHTML = `
+                <div class="w-6 h-6 rounded-full bg-tertiary/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-tertiary text-[14px]">check</span>
+                </div>
+                <p class="font-data-mono text-xs text-on-surface">${message}</p>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.replace('toast-enter', 'toast-exit');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Reset all modal fields
+        function resetScheduleModal() {
+            document.getElementById('schedule-caption').value = '';
+            document.querySelectorAll('.platform-chip').forEach(chip => {
+                chip.dataset.selected = 'false';
+                chip.style.backgroundColor = '';
+                chip.style.borderColor = '';
+                chip.style.color = '';
+            });
+            document.getElementById('schedule-date').value = '';
+            document.getElementById('schedule-time').value = '';
+            resetMediaUpload();
+        }
+
+        // Handle Submit (called from inline onclick)
+        async function submitSchedule() {
+            event.stopPropagation();
+            const caption = document.getElementById('schedule-caption').value;
+            const checkedPlatforms = Array.from(document.querySelectorAll('.platform-chip[data-selected="true"]')).map(c => c.dataset.platform);
+            const date = document.getElementById('schedule-date').value;
+            const time = document.getElementById('schedule-time').value;
+
+            if (!caption || checkedPlatforms.length === 0 || !date || !time) {
+                alert('Harap isi semua kolom, pilih platform, dan tentukan waktu posting!');
+                return;
+            }
+
+            const btn = document.getElementById('submit-schedule-btn');
+            const oldText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span> MEMPROSES...';
+            btn.style.pointerEvents = 'none';
+
+            // Construct ISO 8601 timestamp for postgres
+            const scheduledAt = new Date(`${date}T${time}:00`).toISOString();
+
+            try {
+                const response = await fetch('/api/social/schedule', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        caption: caption,
+                        platforms: checkedPlatforms,
+                        scheduled_at: scheduledAt
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    document.getElementById('schedule-modal').classList.add('hidden');
+                    resetScheduleModal();
+                    showToast('Sukses menjadwalkan ke ' + checkedPlatforms.join(', '));
+                    // Fetch data terbaru setelah sukses menjadwalkan
+                    fetchSchedules();
+                } else {
+                    alert('Gagal menjadwalkan: ' + (result.error || 'Server error'));
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Gagal menghubungi server.');
+            } finally {
+                btn.innerHTML = oldText;
+                btn.style.pointerEvents = '';
+            }
+        }
+
+        async function fetchSchedules() {
+            const container = document.getElementById('schedule-queue-container');
+            if (!container) return;
+            
+            try {
+                const response = await fetch('/api/social/schedule');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const posts = await response.json();
+                
+                if (posts.length === 0) {
+                    container.innerHTML = `
+                    <div class="glass-card rounded-lg p-6 flex flex-col items-center justify-center border-dashed border-outline-variant">
+                        <span class="material-symbols-outlined text-on-surface-variant text-4xl mb-2">inbox</span>
+                        <p class="text-xs text-on-surface-variant">Belum ada antrean jadwal.</p>
+                    </div>`;
+                    return;
+                }
+
+                container.innerHTML = '';
+                posts.forEach(post => {
+                    // Parse platforms array safely
+                    let platforms = [];
+                    try {
+                        platforms = typeof post.platforms === 'string' ? JSON.parse(post.platforms) : post.platforms;
+                    } catch (e) {
+                        platforms = post.platforms || [];
+                    }
+
+                    // Format date
+                    const dateObj = new Date(post.scheduled_at);
+                    const formattedDate = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                    const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+                    // Generate Platform Icons
+                    let platformIcons = '';
+                    platforms.forEach(p => {
+                        if (p === 'instagram') platformIcons += '<span class="material-symbols-outlined text-pink-500 text-sm">camera_alt</span>';
+                        if (p === 'tiktok') platformIcons += '<span class="material-symbols-outlined text-blue-400 text-sm">video_library</span>';
+                        if (p === 'facebook') platformIcons += '<span class="material-symbols-outlined text-blue-600 text-sm">thumb_up</span>';
+                    });
+
+                    // Status Badge
+                    let statusColor = post.status === 'PENDING' ? 'bg-secondary/20 text-secondary border-secondary/50' : 'bg-primary/20 text-primary border-primary/50';
+
+                    const itemHTML = `
+                    <div class="glass-card rounded-xl p-4 flex gap-4 items-center">
+                        <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg bg-surface-container border border-outline-variant">
+                            <span class="text-xs font-bold font-headline-md">${dateObj.getDate()}</span>
+                            <span class="text-[9px] text-on-surface-variant">${dateObj.toLocaleDateString('id-ID', {month: 'short'})}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                ${platformIcons}
+                                <span class="px-2 py-0.5 text-[9px] font-bold rounded-full border ${statusColor}">
+                                    ${post.status}
+                                </span>
+                                <span class="text-[10px] text-on-surface-variant font-data-mono ml-auto">${formattedTime}</span>
+                            </div>
+                            <p class="text-xs text-on-surface line-clamp-1 italic">"${post.caption}"</p>
+                        </div>
+                    </div>`;
+                    container.innerHTML += itemHTML;
+                });
+            } catch (error) {
+                console.error('Error fetching schedules:', error);
+                container.innerHTML = `
+                <div class="glass-card rounded-lg p-4 text-center">
+                    <p class="text-xs text-error">Gagal memuat antrean data.</p>
+                </div>`;
+            }
+        }
+
+        // Call fetchSchedules on page load
+        fetchSchedules();
     </script>
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>

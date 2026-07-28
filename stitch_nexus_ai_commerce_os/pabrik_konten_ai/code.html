@@ -229,82 +229,11 @@
 <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
 <h3 class="font-label-caps text-label-caps text-on-surface">PROYEK AKTIF</h3>
 <div class="flex gap-2">
-<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary text-[10px] font-bold rounded border border-secondary/20">8 SEDANG JALAN</span>
+<span id="active-projects-badge" class="px-2 py-0.5 bg-secondary-container/20 text-secondary text-[10px] font-bold rounded border border-secondary/20">MEMUAT...</span>
 </div>
 </div>
-<div class="divide-y divide-outline-variant">
-<!-- Project Item 1 -->
-<div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-bright/20 transition-colors group">
-<div class="flex gap-4">
-<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
-<span class="material-symbols-outlined text-primary">headphones</span>
-</div>
-<div>
-<h4 class="font-headline-md text-[18px] text-on-surface">Headphones SEO Copy</h4>
-<p class="text-sm text-on-surface-variant">Target: Tokopedia &amp; Shopee • 12 Varian</p>
-</div>
-</div>
-<div class="flex items-center gap-6 w-full md:w-auto">
-<div class="flex-1 md:w-32">
-<div class="flex justify-between text-[10px] font-label-caps mb-1">
-<span>PROGRES</span>
-<span class="text-primary">85%</span>
-</div>
-<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[85%]"></div>
-</div>
-</div>
-<button class="text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined">open_in_new</span>
-</button>
-</div>
-</div>
-<!-- Project Item 2 -->
-<div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-bright/20 transition-colors">
-<div class="flex gap-4">
-<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
-<span class="material-symbols-outlined text-secondary">movie_filter</span>
-</div>
-<div>
-<h4 class="font-headline-md text-[18px] text-on-surface">Instagram Reel Script</h4>
-<p class="text-sm text-on-surface-variant">Campaign: Summer Sale • Hook &amp; CTA Gen</p>
-</div>
-</div>
-<div class="flex items-center gap-6 w-full md:w-auto">
-<div class="flex-1 md:w-32">
-<div class="flex justify-between text-[10px] font-label-caps mb-1">
-<span>PROGRES</span>
-<span class="text-secondary">42%</span>
-</div>
-<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-secondary w-[42%]"></div>
-</div>
-</div>
-<button class="text-on-surface-variant hover:text-secondary transition-colors">
-<span class="material-symbols-outlined">open_in_new</span>
-</button>
-</div>
-</div>
-<!-- Project Item 3 -->
-<div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-bright/20 transition-colors">
-<div class="flex gap-4">
-<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
-<span class="material-symbols-outlined text-tertiary">email</span>
-</div>
-<div>
-<h4 class="font-headline-md text-[18px] text-on-surface">Newsletter Automation</h4>
-<p class="text-sm text-on-surface-variant">Segment: VIP Customer • Personalized</p>
-</div>
-</div>
-<div class="flex items-center gap-6 w-full md:w-auto">
-<div class="flex-1 md:w-32 text-right">
-<span class="px-2 py-1 rounded bg-tertiary/10 text-tertiary text-[10px] font-bold border border-tertiary/20">SELESAI</span>
-</div>
-<button class="text-on-surface-variant hover:text-tertiary transition-colors">
-<span class="material-symbols-outlined">download</span>
-</button>
-</div>
-</div>
+<div id="project-list-container" class="divide-y divide-outline-variant">
+    <div class="p-6 text-center text-on-surface-variant text-sm">Sedang memuat data dari API...</div>
 </div>
 </div>
 <!-- Live Generation Preview -->
@@ -316,6 +245,30 @@
 <div class="bg-surface-container-lowest p-4 rounded border border-outline-variant font-data-mono text-sm min-h-[120px] relative">
 <div class="text-on-surface leading-relaxed" id="typewriter"></div>
 <span class="terminal-cursor"></span>
+</div>
+</div>
+<!-- HASIL KONTEN AI -->
+<div id="content-result-area" class="hidden glass-card rounded-xl overflow-hidden border-tertiary/30 animate-fadeIn">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-gradient-to-r from-tertiary/10 to-surface-container-low">
+    <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-tertiary text-sm">auto_awesome</span>
+        <h3 class="font-label-caps text-label-caps text-tertiary">HASIL KONTEN AI</h3>
+    </div>
+    <div class="flex gap-2">
+        <button id="copy-result-btn" class="px-3 py-1.5 rounded-lg bg-tertiary/10 text-tertiary text-[11px] font-bold border border-tertiary/20 hover:bg-tertiary/20 transition-all flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">content_copy</span> SALIN
+        </button>
+        <button id="download-result-btn" class="px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-[11px] font-bold border border-primary/20 hover:bg-primary/20 transition-all flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">download</span> DOWNLOAD
+        </button>
+    </div>
+</div>
+<div class="p-6">
+    <div class="flex items-center gap-2 mb-3">
+        <span id="result-type-badge" class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded border border-primary/20">Deskripsi</span>
+        <span id="result-id-badge" class="px-2 py-0.5 bg-secondary/10 text-secondary text-[10px] font-bold rounded border border-secondary/20">PRJ-XXX</span>
+    </div>
+    <div id="content-result-text" class="text-on-surface text-sm leading-relaxed whitespace-pre-wrap max-h-[400px] overflow-y-auto p-4 bg-surface-container-lowest rounded border border-outline-variant"></div>
 </div>
 </div>
 </div>
@@ -340,87 +293,330 @@
 <span class="font-label-caps text-[10px]">Analytics</span>
 </a>
 </nav>
+
+<!-- MODAL BUAT ASSET BARU -->
+<div id="asset-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="glass-card bg-surface-container w-full max-w-md rounded-2xl border border-outline-variant shadow-2xl p-6 relative">
+        <button id="close-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <h3 class="font-headline-md text-xl text-on-surface mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">auto_awesome</span> 
+            <span id="modal-title">Buat Deskripsi AI</span>
+        </h3>
+        <p class="text-sm text-on-surface-variant mb-6">Gemini AI akan menganalisis produk dan membuat konten nyata.</p>
+        
+        <form id="generate-form" class="space-y-4">
+            <input type="hidden" id="asset-type" value="Deskripsi">
+            <div>
+                <label class="block text-[11px] font-label-caps text-on-surface-variant mb-2">PROMPT / NAMA PRODUK</label>
+                <input type="text" id="asset-prompt" required class="w-full bg-surface-container-highest border border-outline-variant rounded-lg p-3 text-on-surface text-sm focus:border-primary focus:outline-none transition-colors" placeholder="Masukkan nama produk atau instruksi...">
+            </div>
+            <button type="submit" id="submit-asset-btn" class="w-full py-3 rounded-lg bg-primary text-on-primary font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-sm">rocket_launch</span>
+                MULAI GENERATE
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DETAIL KONTEN -->
+<div id="detail-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="glass-card bg-surface-container w-full max-w-2xl max-h-[80vh] rounded-2xl border border-outline-variant shadow-2xl relative flex flex-col">
+        <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center shrink-0">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-tertiary">article</span>
+                <h3 class="font-headline-md text-lg text-on-surface" id="detail-modal-title">Detail Konten</h3>
+            </div>
+            <button id="close-detail-btn" class="text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="p-6 overflow-y-auto flex-1">
+            <div class="flex items-center gap-2 mb-4">
+                <span id="detail-type-badge" class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded border border-primary/20">Deskripsi</span>
+                <span id="detail-id-badge" class="px-2 py-0.5 bg-secondary/10 text-secondary text-[10px] font-bold rounded border border-secondary/20">PRJ-XXX</span>
+                <span id="detail-date-badge" class="px-2 py-0.5 bg-outline-variant/30 text-on-surface-variant text-[10px] rounded">-</span>
+            </div>
+            <div id="detail-content-text" class="text-on-surface text-sm leading-relaxed whitespace-pre-wrap p-4 bg-surface-container-lowest rounded border border-outline-variant"></div>
+        </div>
+        <div class="px-6 py-4 border-t border-outline-variant flex gap-2 justify-end shrink-0">
+            <button id="detail-copy-btn" class="px-4 py-2 rounded-lg bg-tertiary/10 text-tertiary text-sm font-bold border border-tertiary/20 hover:bg-tertiary/20 transition-all flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">content_copy</span> SALIN
+            </button>
+            <button id="detail-download-btn" class="px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-bold border border-primary/20 hover:bg-primary/20 transition-all flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">download</span> DOWNLOAD TXT
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
-        // Toggle Logic
-        const toggle = document.getElementById('auto-gen-toggle');
-        const statusText = document.getElementById('mode-status');
-        
-        toggle.addEventListener('change', () => {
-            if (toggle.checked) {
-                statusText.innerText = 'AKTIF';
-                statusText.classList.remove('text-on-surface-variant');
-                statusText.classList.add('text-primary');
+    // Toggle Logic
+    const toggle = document.getElementById('auto-gen-toggle');
+    const statusText = document.getElementById('mode-status');
+    
+    toggle.addEventListener('change', () => {
+        if (toggle.checked) {
+            statusText.innerText = 'AKTIF';
+            statusText.classList.remove('text-on-surface-variant');
+            statusText.classList.add('text-primary');
+        } else {
+            statusText.innerText = 'NONAKTIF';
+            statusText.classList.remove('text-primary');
+            statusText.classList.add('text-on-surface-variant');
+        }
+    });
+
+    // Typewriter Effect
+    const typewriterElement = document.getElementById('typewriter');
+    let dynamicPhrases = [
+        "> Menunggu instruksi...",
+        "> Menghubungkan ke Engine Gemini 1.5 Flash..."
+    ];
+    let isGenerating = false;
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let currentPhrase = "";
+
+    function startTypewriter() {
+        if (charIndex < dynamicPhrases[phraseIndex].length) {
+            currentPhrase += dynamicPhrases[phraseIndex].charAt(charIndex);
+            typewriterElement.innerHTML = currentPhrase;
+            charIndex++;
+            setTimeout(startTypewriter, 30);
+        } else {
+            setTimeout(() => {
+                charIndex = 0;
+                currentPhrase = "";
+                phraseIndex = (phraseIndex + 1) % dynamicPhrases.length;
                 startTypewriter();
-            } else {
-                statusText.innerText = 'NONAKTIF';
-                statusText.classList.remove('text-primary');
-                statusText.classList.add('text-on-surface-variant');
-            }
-        });
+            }, isGenerating ? 800 : 2500);
+        }
+    }
+    startTypewriter();
 
-        // Typewriter Effect
-        const typewriterElement = document.getElementById('typewriter');
-        const phrases = [
-            "> Menganalisis metadata produk...",
-            "> Menghasilkan deskripsi SEO untuk 'Sony WH-1000XM5'...",
-            "> Mengoptimalkan kata kunci untuk pasar Indonesia...",
-            "> Selesai. Menunggu verifikasi user.",
-            "> [System] Gemini 1.5 Flash memproses batch 4...",
-            "> Memperbarui data inventaris sinkron..."
-        ];
+    function setTypewriterStatus(statusString, generating = false) {
+        dynamicPhrases = [statusString];
+        phraseIndex = 0;
+        charIndex = 0;
+        currentPhrase = "";
+        isGenerating = generating;
+    }
+
+    // Modal Logic
+    const modal = document.getElementById('asset-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const generateForm = document.getElementById('generate-form');
+    const modalTitle = document.getElementById('modal-title');
+    const assetTypeInput = document.getElementById('asset-type');
+    const assetPrompt = document.getElementById('asset-prompt');
+
+    closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
+
+    // Asset creation buttons functionality
+    const assetButtons = document.querySelectorAll('button.flex.flex-col.p-4');
+    assetButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const assetType = this.querySelector('span:last-child').textContent;
+            modalTitle.innerText = `Buat ${assetType} AI`;
+            assetTypeInput.value = assetType;
+            assetPrompt.value = '';
+            modal.classList.remove('hidden');
+        });
+    });
+
+    // Fetch and Render Projects
+    async function loadProjects() {
+        try {
+            const res = await API.fetch('/api/content/projects');
+            if (res && res.projects) {
+                const badge = document.getElementById('active-projects-badge');
+                badge.innerText = `${res.stats.active_projects + res.stats.queued_projects} PROYEK ANTRIAN`;
+
+                const container = document.getElementById('project-list-container');
+                container.innerHTML = '';
+
+                res.projects.forEach(p => {
+                    const icon = p.content_type.includes('Social') ? 'share' : (p.content_type.includes('Marketing') ? 'campaign' : 'description');
+                    const color = p.status === 'completed' ? 'tertiary' : (p.status === 'in_progress' ? 'primary' : 'secondary');
+                    const statusText = p.status === 'completed' ? 'SELESAI' : (p.status === 'in_progress' ? 'PROGRES' : 'ANTRIAN');
+                    
+                    const isClickable = p.status === 'completed';
+                    const storedDataStr = localStorage.getItem('generatedContent');
+                    let contentData = null;
+                    if (storedDataStr) {
+                        try {
+                            const stored = JSON.parse(storedDataStr);
+                            if (stored[p.id]) contentData = stored[p.id];
+                        } catch(e) {}
+                    }
+                    
+                    const onClickAttr = (isClickable && contentData) 
+                        ? `onclick="openDetailModal(${JSON.stringify(contentData).replace(/"/g, '&quot;')})"`
+                        : (isClickable ? `onclick="alert('Detail untuk proyek ini belum tersedia di sesi browser ini.')"` : '');
+                    
+                    const cursorStyle = isClickable ? 'cursor-pointer' : '';
+
+                    container.innerHTML += `
+                        <div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-bright/20 transition-colors group ${cursorStyle}" ${onClickAttr}>
+                            <div class="flex gap-4 items-center">
+                                <div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant shrink-0">
+                                    <span class="material-symbols-outlined text-${color}">${icon}</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-headline-md text-[16px] text-on-surface line-clamp-1">${p.product_name}</h4>
+                                    <p class="text-xs text-on-surface-variant">Tipe: ${p.content_type} • ID: ${p.id}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-6 w-full md:w-auto mt-2 md:mt-0">
+                                ${p.status === 'completed' ? `
+                                    <div class="flex-1 md:w-32 text-right">
+                                        <span class="px-2 py-1 rounded bg-tertiary/10 text-tertiary text-[10px] font-bold border border-tertiary/20">SELESAI</span>
+                                    </div>
+                                    <button class="text-on-surface-variant hover:text-tertiary transition-colors">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
+                                ` : `
+                                    <div class="flex-1 md:w-32">
+                                        <div class="flex justify-between text-[10px] font-label-caps mb-1">
+                                            <span>${statusText}</span>
+                                            <span class="text-${color}">${p.progress}%</span>
+                                        </div>
+                                        <div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+                                            <div class="h-full bg-${color}" style="width: ${p.progress}%"></div>
+                                        </div>
+                                    </div>
+                                    <button class="text-on-surface-variant hover:text-${color} transition-colors">
+                                        <span class="material-symbols-outlined">pending</span>
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        } catch (err) {
+            console.error("Gagal load projects:", err);
+            document.getElementById('project-list-container').innerHTML = '<div class="p-6 text-center text-error text-sm">Gagal memuat data.</div>';
+        }
+    }
+
+    // Handle Form Submit
+    generateForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const type = assetTypeInput.value;
+        const prompt = assetPrompt.value;
+        const btn = document.getElementById('submit-asset-btn');
+        const resultArea = document.getElementById('content-result-area');
         
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let currentPhrase = "";
-
-        function startTypewriter() {
-            if (!toggle.checked) return;
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">autorenew</span> MEMPROSES...';
+        btn.disabled = true;
+        resultArea.classList.add('hidden');
+        
+        setTypewriterStatus(`> [Gemini AI] Menganalisis input: '${prompt}'...\n> Tipe konten: ${type}\n> Menghubungkan ke Gemini Flash Latest...`, true);
+        
+        try {
+            const res = await fetch(API.BASE_URL + '/api/content/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type, prompt })
+            });
+            const data = await res.json();
             
-            if (charIndex < phrases[phraseIndex].length) {
-                currentPhrase += phrases[phraseIndex].charAt(charIndex);
-                typewriterElement.innerHTML = currentPhrase;
-                charIndex++;
-                setTimeout(startTypewriter, 40);
-            } else {
-                setTimeout(() => {
-                    charIndex = 0;
-                    currentPhrase = "";
-                    phraseIndex = (phraseIndex + 1) % phrases.length;
-                    startTypewriter();
-                }, 2000);
-            }
+            if (!res.ok) throw new Error(data.error || 'Gagal generate');
+            
+            modal.classList.add('hidden');
+            setTypewriterStatus(`> ✅ Selesai! Asset [${data.data.id}] berhasil di-generate oleh Gemini AI.`);
+            
+            // Tampilkan hasil konten di area hasil
+            document.getElementById('result-type-badge').innerText = data.data.type;
+            document.getElementById('result-id-badge').innerText = data.data.id;
+            document.getElementById('content-result-text').innerText = data.data.content;
+            resultArea.classList.remove('hidden');
+            resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Simpan ke localStorage untuk akses dari project list
+            const stored = JSON.parse(localStorage.getItem('generatedContent') || '{}');
+            stored[data.data.id] = data.data;
+            localStorage.setItem('generatedContent', JSON.stringify(stored));
+            
+            loadProjects();
+        } catch(err) {
+            alert('Gagal membuat aset: ' + err.message);
+            setTypewriterStatus(`> [Error] Gagal generate: ${err.message}`);
+        } finally {
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">rocket_launch</span> MULAI GENERATE';
+            btn.disabled = false;
         }
+    });
 
-        // Initialize
-        startTypewriter();
-
-        // Asset creation buttons functionality
-        const assetButtons = document.querySelectorAll('button.flex.flex-col');
-        assetButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const assetType = this.querySelector('span:last-child').textContent;
-                alert(`Membuka editor untuk membuat: ${assetType}`);
-            });
+    // Copy & Download buttons for result area
+    document.getElementById('copy-result-btn').addEventListener('click', () => {
+        const text = document.getElementById('content-result-text').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.getElementById('copy-result-btn');
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> TERSALIN!';
+            setTimeout(() => btn.innerHTML = '<span class="material-symbols-outlined text-sm">content_copy</span> SALIN', 2000);
         });
+    });
 
-        // Project items click handler
-        const projectItems = document.querySelectorAll('.group.hover\\:bg-surface-bright\\/20');
-        projectItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const projectName = this.querySelector('h4').textContent;
-                alert(`Membuka proyek: ${projectName}`);
-            });
+    document.getElementById('download-result-btn').addEventListener('click', () => {
+        const text = document.getElementById('content-result-text').innerText;
+        const id = document.getElementById('result-id-badge').innerText;
+        const blob = new Blob([text], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${id}-konten.txt`;
+        a.click();
+    });
+
+    // Detail Modal Logic
+    const detailModal = document.getElementById('detail-modal');
+    document.getElementById('close-detail-btn').addEventListener('click', () => detailModal.classList.add('hidden'));
+
+    function openDetailModal(contentData) {
+        document.getElementById('detail-modal-title').innerText = contentData.prompt || contentData.product_name || 'Detail Konten';
+        document.getElementById('detail-type-badge').innerText = contentData.type || contentData.content_type || '-';
+        document.getElementById('detail-id-badge').innerText = contentData.id || '-';
+        document.getElementById('detail-date-badge').innerText = contentData.created_at ? new Date(contentData.created_at).toLocaleDateString('id-ID') : '-';
+        document.getElementById('detail-content-text').innerText = contentData.content || 'Konten belum tersedia untuk proyek ini.';
+        detailModal.classList.remove('hidden');
+    }
+
+    // Detail modal copy & download
+    document.getElementById('detail-copy-btn').addEventListener('click', () => {
+        const text = document.getElementById('detail-content-text').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.getElementById('detail-copy-btn');
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> TERSALIN!';
+            setTimeout(() => btn.innerHTML = '<span class="material-symbols-outlined text-sm">content_copy</span> SALIN', 2000);
         });
+    });
 
-        // Settings button
-        const settingsBtn = document.querySelector('button.p-2');
-        if (settingsBtn) {
-            settingsBtn.addEventListener('click', () => {
-                alert('Pengaturan Pabrik Konten');
-            });
+    document.getElementById('detail-download-btn').addEventListener('click', () => {
+        const text = document.getElementById('detail-content-text').innerText;
+        const id = document.getElementById('detail-id-badge').innerText;
+        const blob = new Blob([text], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${id}-konten.txt`;
+        a.click();
+    });
+
+    // Make window.openDetailModal accessible for inline onclick
+    window.openDetailModal = openDetailModal;
+
+    // Initialize API calls
+    window.addEventListener('DOMContentLoaded', () => {
+        if(typeof API !== 'undefined') {
+            loadProjects();
+            setInterval(loadProjects, 10000);
         }
-    </script>
+    });
+
+</script>
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>
-<script src="../js/dummy-data.js"></script>
+<script src="../js/api-connector.js"></script>
 </body></html>

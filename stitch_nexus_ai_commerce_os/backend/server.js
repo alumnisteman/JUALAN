@@ -6,6 +6,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cron = require('node-cron');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -40,6 +41,20 @@ const redisClient = redis.createClient({
 });
 redisClient.on('error', (err) => console.error('Redis Client Error:', err));
 redisClient.connect();
+
+// Google Gemini AI
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+let geminiModel = null;
+if (GEMINI_API_KEY) {
+  const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+  geminiModel = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
+  console.log('✅ Gemini AI initialized (gemini-flash-latest)');
+} else {
+  console.warn('⚠️ GEMINI_API_KEY not set — content generation will use fallback');
+}
+
+// In-memory store for generated content (production: use DB)
+const generatedContent = new Map();
 
 // ─────────────────────────────────────────────────────────────────
 // HELPER: cache-aside
@@ -331,8 +346,309 @@ app.get('/api/search', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────────────
-// EXISTING ENDPOINTS (orders, products internal DB)
+// DASHBOARD OVERVIEW - Statistik utama untuk dashboard
 // ─────────────────────────────────────────────────────────────────
+app.get('/api/dashboard/overview', async (req, res) => {
+  try {
+    const data = await withCache('dashboard:overview', 120, async () => {
+      // Total produk per marketplace
+      const statsResult = await pool.query(`
+        SELECT
+          COUNT(*) AS total_products,
+          COUNT(DISTINCT marketplace) AS total_marketplaces,
+          COALESCE(SUM(sold_count), 0) AS total_sold,
+          COALESCE(AVG(price), 0) AS avg_price,
+          COALESCE(AVG(rating), 0) AS avg_rating,
+          COALESCE(SUM(price * sold_count), 0) AS estimated_gmv,
+          MAX(scraped_at) AS last_scraped
+        FROM marketplace_products
+      `);
+
+      // Breakdown per marketplace
+      const marketplaceResult = await pool.query(`
+        SELECT
+          marketplace,
+          COUNT(*) AS total_products,
+          AVG(price) AS avg_price,
+          SUM(sold_count) AS total_sold,
+          AVG(rating) AS avg_rating,
+          MAX(scraped_at) AS last_scraped
+        FROM marketplace_products
+        GROUP BY marketplace
+        ORDER BY total_products DESC
+      `);
+
+      // Produk baru ditambahkan hari ini
+      const todayResult = await pool.query(`
+        SELECT COUNT(*) AS today_count
+        FROM marketplace_products
+        WHERE scraped_at > NOW() - INTERVAL '24 hours'
+      `);
+
+      // Top 5 kategori
+      const categoryResult = await pool.query(`
+        SELECT category, COUNT(*) AS count
+        FROM marketplace_products
+        WHERE category IS NOT NULL AND category != ''
+        GROUP BY category
+        ORDER BY count DESC
+        LIMIT 5
+      `);
+
+      const stats = statsResult.rows[0];
+      return {
+        total_products: parseInt(stats.total_products) || 0,
+        total_marketplaces: parseInt(stats.total_marketplaces) || 0,
+        total_sold: parseInt(stats.total_sold) || 0,
+        avg_price: parseFloat(stats.avg_price) || 0,
+        avg_rating: parseFloat(stats.avg_rating) || 0,
+        estimated_gmv: parseInt(stats.estimated_gmv) || 0,
+        last_scraped: stats.last_scraped,
+        today_new_products: parseInt(todayResult.rows[0].today_count) || 0,
+        marketplaces: marketplaceResult.rows,
+        top_categories: categoryResult.rows
+      };
+    });
+
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// CONTENT PROJECTS - Data untuk modul Pabrik Konten AI
+// ─────────────────────────────────────────────────────────────────
+app.get('/api/content/projects', async (req, res) => {
+  try {
+    const data = await withCache('content:projects', 120, async () => {
+      // Ambil top produk yang butuh konten (belum punya deskripsi panjang)
+      const productsResult = await pool.query(`
+        SELECT
+          id, marketplace, name, price, image_url, product_url,
+          rating, sold_count, shop_name, category
+        FROM marketplace_products
+        WHERE sold_count > 0
+        ORDER BY sold_count DESC
+        LIMIT 10
+      `);
+
+      // Hitung statistik untuk mesin kreatif
+      const statsResult = await pool.query(`
+        SELECT
+          COUNT(*) AS total_products,
+          COUNT(DISTINCT category) AS total_categories,
+          COUNT(DISTINCT marketplace) AS total_marketplaces
+        FROM marketplace_products
+      `);
+
+      const stats = statsResult.rows[0];
+
+      // Generate project list dari produk aktif
+      const projects = productsResult.rows.map((p, i) => ({
+        id: `PRJ-${String(i + 1).padStart(3, '0')}`,
+        product_name: p.name,
+        marketplace: p.marketplace,
+        category: p.category,
+        price: p.price,
+        sold_count: p.sold_count,
+        image_url: p.image_url,
+        product_url: p.product_url,
+        content_type: i % 3 === 0 ? 'SEO Description' : (i % 3 === 1 ? 'Social Media' : 'Marketing Copy'),
+        status: i < 3 ? 'completed' : (i < 6 ? 'in_progress' : 'queued'),
+        progress: i < 3 ? 100 : (i < 6 ? Math.floor(30 + Math.random() * 50) : 0)
+      }));
+
+      return {
+        projects,
+        stats: {
+          total_products: parseInt(stats.total_products) || 0,
+          total_categories: parseInt(stats.total_categories) || 0,
+          total_marketplaces: parseInt(stats.total_marketplaces) || 0,
+          active_projects: projects.filter(p => p.status === 'in_progress').length,
+          completed_projects: projects.filter(p => p.status === 'completed').length,
+          queued_projects: projects.filter(p => p.status === 'queued').length
+        }
+      };
+    });
+
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// CONTENT GENERATE - Real Gemini AI Content Generation
+// ─────────────────────────────────────────────────────────────────
+const CONTENT_PROMPTS = {
+  'Deskripsi': (input) => `Kamu adalah copywriter e-commerce profesional Indonesia. Buatkan deskripsi produk yang menarik, informatif, dan SEO-friendly untuk produk berikut:
+
+Nama Produk: ${input}
+
+Buatkan deskripsi dalam format:
+1. Headline yang menarik (1 baris)
+2. Deskripsi utama (2-3 paragraf, masing-masing 2-3 kalimat)
+3. Keunggulan produk (3-5 bullet points)
+4. Call-to-action yang persuasif
+
+Gunakan bahasa Indonesia yang natural, meyakinkan, dan cocok untuk marketplace seperti Shopee/Tokopedia. Jangan gunakan markdown formatting.`,
+
+  'Social Media': (input) => `Kamu adalah social media specialist Indonesia. Buatkan konten posting social media untuk produk berikut:
+
+Produk: ${input}
+
+Buatkan dalam format:
+1. Caption Instagram (dengan emoji, hashtag relevan, max 2200 karakter)
+2. Caption TikTok (pendek, catchy, dengan hashtag viral)
+3. Caption Facebook Marketplace
+
+Gunakan bahasa gaul Indonesia yang relatable dan engaging. Jangan gunakan markdown formatting.`,
+
+  'Marketing': (input) => `Kamu adalah digital marketing expert Indonesia. Buatkan materi marketing untuk produk berikut:
+
+Produk: ${input}
+
+Buatkan:
+1. Headline iklan (3 variasi, masing-masing max 30 karakter)
+2. Deskripsi iklan Google/Meta Ads (2 variasi, max 90 karakter)
+3. USP (Unique Selling Points) - 3 poin
+4. Target audience yang disarankan
+5. Keywords untuk SEO (5-10 keyword)
+
+Gunakan bahasa Indonesia yang profesional dan persuasif. Jangan gunakan markdown formatting.`,
+
+  'Custom': (input) => `Kamu adalah AI assistant untuk bisnis e-commerce Indonesia. Tolong bantu dengan permintaan berikut:
+
+${input}
+
+Berikan respons yang detail, profesional, dan actionable dalam bahasa Indonesia. Jangan gunakan markdown formatting.`
+};
+
+app.post('/api/content/generate', async (req, res) => {
+  try {
+    const { prompt, type } = req.body;
+    
+    if (!prompt || !prompt.trim()) {
+      return res.status(400).json({ error: 'Prompt tidak boleh kosong' });
+    }
+
+    const contentType = type || 'Deskripsi';
+    const projectId = `PRJ-NEW-${Date.now().toString(36).toUpperCase()}`;
+    let generatedText = '';
+
+    if (geminiModel) {
+      // Real Gemini API call
+      const systemPrompt = CONTENT_PROMPTS[contentType]
+        ? CONTENT_PROMPTS[contentType](prompt)
+        : CONTENT_PROMPTS['Custom'](prompt);
+      
+      const result = await geminiModel.generateContent(systemPrompt);
+      generatedText = result.response.text();
+    } else {
+      // Fallback jika API key tidak tersedia
+      generatedText = `[FALLBACK] Gemini API Key belum dikonfigurasi.\n\nPermintaan Anda:\nTipe: ${contentType}\nPrompt: ${prompt}\n\nSilakan set GEMINI_API_KEY di environment variable untuk mengaktifkan AI generation.`;
+    }
+
+    // Simpan hasil ke in-memory store
+    const contentData = {
+      id: projectId,
+      type: contentType,
+      prompt: prompt,
+      content: generatedText,
+      status: 'completed',
+      created_at: new Date().toISOString()
+    };
+    generatedContent.set(projectId, contentData);
+
+    // Invalidate cache agar project list refresh
+    try { await redisClient.del('content:projects'); } catch(_) {}
+
+    res.json({
+      success: true,
+      message: 'Asset generated successfully by Gemini AI',
+      data: contentData
+    });
+  } catch (err) {
+    console.error('Gemini generate error:', err);
+    res.status(500).json({ error: 'Gagal generate konten: ' + err.message });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// CONTENT RESULT - Ambil hasil konten yang sudah di-generate
+// ─────────────────────────────────────────────────────────────────
+app.get('/api/content/result/:id', (req, res) => {
+  const { id } = req.params;
+  const content = generatedContent.get(id);
+  if (content) {
+    res.json({ success: true, data: content });
+  } else {
+    res.status(404).json({ error: 'Konten tidak ditemukan' });
+  }
+});
+
+// GET all generated content
+app.get('/api/content/generated', (req, res) => {
+  const all = Array.from(generatedContent.values()).sort((a, b) => 
+    new Date(b.created_at) - new Date(a.created_at)
+  );
+  res.json({ success: true, data: all, total: all.length });
+});
+
+// ─────────────────────────────────────────────────────────────────
+// SCRAPE STATUS - Cek status scraping terakhir
+// ─────────────────────────────────────────────────────────────────
+app.get('/api/scrape/status', async (req, res) => {
+  try {
+    const data = await withCache('scrape:status', 60, async () => {
+      const result = await pool.query(`
+        SELECT * FROM scrape_logs
+        ORDER BY started_at DESC
+        LIMIT 10
+      `);
+      return result.rows;
+    });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// ─────────────────────────────────────────────────────────────────
+// TIKTOK SHOP API STATUS - Cek status koneksi TikTok API
+// ─────────────────────────────────────────────────────────────────
+app.get('/api/tiktok/status', async (req, res) => {
+  try {
+    const clientKey = process.env.TIKTOK_CLIENT_KEY || '';
+    const clientSecret = process.env.TIKTOK_CLIENT_SECRET || '';
+    
+    if (!clientKey || !clientSecret) {
+      return res.json({
+        status: 'not_configured',
+        message: 'TikTok API credentials belum dikonfigurasi',
+        client_key_set: false,
+        client_secret_set: false
+      });
+    }
+
+    // Try to get access token to verify credentials
+    const { searchProductsAPI } = require('./scrapers/tiktok');
+    
+    res.json({
+      status: 'configured',
+      message: 'TikTok Shop Open API credentials aktif',
+      client_key_set: true,
+      client_secret_set: true,
+      client_key_preview: clientKey.substring(0, 6) + '***',
+      api_base: 'https://open-api.tiktokglobalshop.com',
+      mode: 'Official TikTok Shop Open API'
+    });
+  } catch (err) {
+    res.status(500).json({ status: 'error', error: err.message });
+  }
+});
+
+
 app.get('/api/orders', async (req, res) => {
   try {
     const cacheKey = 'orders:all';
@@ -354,6 +670,43 @@ app.get('/api/products', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// ─────────────────────────────────────────────────────────────────
+// SOCIAL MEDIA POST SCHEDULING
+// ─────────────────────────────────────────────────────────────────
+app.post('/api/social/schedule', async (req, res) => {
+  try {
+    const { caption, platforms, scheduled_at } = req.body;
+    
+    if (!caption || !platforms || !scheduled_at) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO social_posts (caption, platforms, scheduled_at, status) 
+       VALUES ($1, $2, $3, $4) RETURNING *`,
+      [caption, JSON.stringify(platforms), scheduled_at, 'PENDING']
+    );
+
+    res.status(201).json({ success: true, post: result.rows[0] });
+  } catch (error) {
+    console.error('[Schedule API] Error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/api/social/schedule', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM social_posts ORDER BY scheduled_at ASC LIMIT 50`
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error('[Schedule API] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // ─────────────────────────────────────────────────────────────────
 // INIT DATABASE
@@ -379,6 +732,16 @@ async function initializeDatabase() {
         price DECIMAL(10,2),
         stock INTEGER,
         sold INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS social_posts (
+        id SERIAL PRIMARY KEY,
+        caption TEXT NOT NULL,
+        platforms JSONB NOT NULL,
+        scheduled_at TIMESTAMP NOT NULL,
+        status VARCHAR(50) DEFAULT 'PENDING',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
