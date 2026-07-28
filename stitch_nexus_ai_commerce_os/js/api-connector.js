@@ -175,15 +175,18 @@ async function populateOrderManagement() {
     const countEl = card.querySelector('.font-display-lg, [class*="text-[32px]"]');
     const subEl = card.querySelector('.font-data-mono.text-xs');
     
-    if (name.includes('shopee') && marketplaceMap.shopee) {
-      if (countEl) countEl.textContent = marketplaceMap.shopee.total_products;
-      if (subEl) subEl.textContent = `${marketplaceMap.shopee.total_sold || 0} terjual`;
-    } else if (name.includes('tokopedia') && marketplaceMap.tokopedia) {
-      if (countEl) countEl.textContent = marketplaceMap.tokopedia.total_products;
-      if (subEl) subEl.textContent = `${marketplaceMap.tokopedia.total_sold || 0} terjual`;
-    } else if (name.includes('tiktok') && marketplaceMap.tiktok) {
-      if (countEl) countEl.textContent = marketplaceMap.tiktok.total_products;
-      if (subEl) subEl.textContent = `${marketplaceMap.tiktok.total_sold || 0} terjual`;
+    if (name.includes('shopee')) {
+      const shopeeData = marketplaceMap.shopee || { total_products: 0, total_sold: 0 };
+      if (countEl) countEl.textContent = shopeeData.total_products;
+      if (subEl) subEl.textContent = `${shopeeData.total_sold || 0} terjual`;
+    } else if (name.includes('tokopedia')) {
+      const tokoData = marketplaceMap.tokopedia || { total_products: 0, total_sold: 0 };
+      if (countEl) countEl.textContent = tokoData.total_products;
+      if (subEl) subEl.textContent = `${tokoData.total_sold || 0} terjual`;
+    } else if (name.includes('tiktok')) {
+      const tiktokData = marketplaceMap.tiktok || { total_products: 0, total_sold: 0 };
+      if (countEl) countEl.textContent = tiktokData.total_products;
+      if (subEl) subEl.textContent = `${tiktokData.total_sold || 0} terjual`;
     }
   });
 
