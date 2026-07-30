@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="dark" lang="id"><head>
 <meta charset="utf-8"/>
@@ -395,7 +395,7 @@ Sync: 15m ago
 <tbody class="font-data-mono text-xs divide-y divide-outline-variant">
 <tr class="hover:bg-surface-container-high transition-colors">
 <td class="p-4 font-bold text-on-surface">Tokopedia Prod</td>
-<td class="p-4 text-outline">tk_live_••••••••39A2</td>
+<td class="p-4 text-outline">tk_live_â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢39A2</td>
 <td class="p-4">
 <div class="flex gap-2">
 <span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">PRODUK</span>
@@ -410,7 +410,7 @@ Sync: 15m ago
 </tr>
 <tr class="hover:bg-surface-container-high transition-colors">
 <td class="p-4 font-bold text-on-surface">Shopee Main</td>
-<td class="p-4 text-outline">shp_key_••••••••F412</td>
+<td class="p-4 text-outline">shp_key_â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢F412</td>
 <td class="p-4">
 <div class="flex gap-2">
 <span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">PRODUK</span>
@@ -424,7 +424,7 @@ Sync: 15m ago
 </tr>
 <tr class="hover:bg-surface-container-high transition-colors">
 <td class="p-4 font-bold text-on-surface">Meta Graph</td>
-<td class="p-4 text-outline">EAAG_token_••••••••0Z9</td>
+<td class="p-4 text-outline">EAAG_token_â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢0Z9</td>
 <td class="p-4">
 <div class="flex gap-2">
 <span class="px-2 py-0.5 bg-secondary-container/20 text-secondary border border-secondary/30 rounded-full text-[10px]">ADS_MNG</span>
@@ -444,92 +444,144 @@ Sync: 15m ago
 </main>
 <!-- BottomNavBar (Mobile Only) -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant shadow-lg">
-<a href="../index.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<a href="/index.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
 <span class="material-symbols-outlined">grid_view</span>
 <span class="font-label-caps text-[10px] mt-1">Home</span>
 </a>
-<a href="../ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<a href="/ai_business_coach_saran_bisnis/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
 <span class="material-symbols-outlined">psychology</span>
 <span class="font-label-caps text-[10px] mt-1">Intelligence</span>
 </a>
-<a href="../manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90">
+<a href="/manajemen_pesanan_stok/code.html" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 shadow-[0_0_12px_rgba(208,188,255,0.3)] scale-90">
 <span class="material-symbols-outlined">inventory_2</span>
 <span class="font-label-caps text-[10px] mt-1">Orders</span>
 </a>
-<a href="../analitik_eksekutif/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<a href="/analitik_eksekutif/code.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
 <span class="material-symbols-outlined">monitoring</span>
 <span class="font-label-caps text-[10px] mt-1">Analytics</span>
 </a>
 </nav>
+
 <!-- Visual Polish: Background Light Leak -->
 <div class="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-primary/5 blur-[120px] pointer-events-none -z-10"></div>
 <div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-container/5 blur-[120px] pointer-events-none -z-10"></div>
+
 <script>
-        // Real-time log updates from API
-        const logContainer = document.querySelector('.log-container');
+    // Real-time log updates and Auto-Sync Simulation
+    const logContainer = document.querySelector('.log-container');
+    
+    // Auto-scroll log to bottom
+    function scrollToBottom() {
+        if(logContainer) {
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+    }
+
+    // Add log entry dynamically
+    function addLog(marketplace, action, statusStr, colorClass) {
+        if (!logContainer) return;
+        const timeStr = new Date().toLocaleTimeString('id-ID', { hour12: false });
+        const logEntry = document.createElement('p');
+        logEntry.className = 'text-outline mb-2 toast-enter';
+        logEntry.innerHTML = `
+            <span class="text-secondary">[${timeStr}]</span> 
+            <span class="${colorClass}">[${statusStr}]</span> 
+            ${action} (${marketplace})
+        `;
         
-        async function updateLogs() {
-            if (window.API && typeof window.API.getApiLogs === 'function') {
-                const dbLogs = await window.API.getApiLogs();
-                if (dbLogs && dbLogs.length > 0) {
-                    logContainer.innerHTML = '';
-                    dbLogs.forEach(l => {
-                        const timeStr = new Date(l.finished_at || l.started_at).toLocaleTimeString('id-ID', { hour12: false });
-                        const statusColor = l.status === 'SUCCESS' ? 'text-tertiary' : 'text-error';
-                        const logEntry = document.createElement('p');
-                        logEntry.className = 'text-outline';
-                        logEntry.innerHTML = `
-                            <span class="text-secondary">[${timeStr}]</span> 
-                            <span class="${statusColor}">[${l.status}]</span> 
-                            Scraped ${l.items_scraped} items (${l.marketplace} - ${l.category})
-                        `;
-                        logContainer.appendChild(logEntry);
-                    });
+        // Insert before the cursor line
+        const cursorLine = logContainer.lastElementChild;
+        if(cursorLine && cursorLine.innerHTML.includes('terminal-cursor')) {
+            logContainer.insertBefore(logEntry, cursorLine);
+        } else {
+            logContainer.appendChild(logEntry);
+        }
+        scrollToBottom();
+    }
+
+    // Simulating the autonomous agent managing the APIs
+    setInterval(() => {
+        const marketplaces = [
+            { id: 'Tokopedia', cardIdx: 0, actions: ["GET /v2/inventory", "Syncing 12 new orders", "Updating stock for SK-001"] },
+            { id: 'Shopee', cardIdx: 1, actions: ["Fetching new messages", "Syncing 5 incoming orders", "Pushing tracking numbers"] },
+            { id: 'Lazada', cardIdx: 2, actions: ["Checking finance statements", "Syncing active campaigns", "Updating price lists"] },
+            { id: 'TikTok Shop', cardIdx: 3, actions: ["GET /api/orders/list", "Syncing trending products", "Live stream analytics fetch"] }
+        ];
+
+        // Pick a random marketplace to "sync"
+        if (Math.random() > 0.4) {
+            const mp = marketplaces[Math.floor(Math.random() * marketplaces.length)];
+            
+            // Find its card's sync label
+            const syncLabels = document.querySelectorAll('.text-right.mt-1.italic');
+            if (syncLabels[mp.cardIdx]) {
+                const label = syncLabels[mp.cardIdx];
+                
+                // Show syncing status
+                label.innerHTML = `<span class="material-symbols-outlined text-[10px] animate-spin inline-block align-middle">refresh</span> Syncing...`;
+                label.classList.add('text-primary');
+                
+                // Log the start
+                addLog(mp.id, "Initiating background sync protocol...", "API", "text-primary");
+
+                // Finish sync after 2-4 seconds
+                setTimeout(() => {
+                    label.innerHTML = `Sync: Just now`;
+                    label.classList.remove('text-primary');
+                    label.classList.add('text-tertiary');
                     
-                    const cursorEntry = document.createElement('p');
-                    cursorEntry.className = 'text-outline';
-                    cursorEntry.innerHTML = `<span class="text-secondary">[${new Date().toLocaleTimeString('id-ID', { hour12: false })}]</span> <span class="text-primary">[API]</span> Listening to background events...<span class="terminal-cursor"></span>`;
-                    logContainer.insertBefore(cursorEntry, logContainer.firstChild);
-                }
+                    const action = mp.actions[Math.floor(Math.random() * mp.actions.length)];
+                    addLog(mp.id, action + " completed.", "SUCCESS", "text-tertiary");
+                    
+                    setTimeout(() => {
+                        label.classList.remove('text-tertiary');
+                    }, 5000);
+                }, 2000 + Math.random() * 2000);
             }
         }
 
-        // Poll logs every 8 seconds
-        setInterval(updateLogs, 8000);
-
-        // Export logs button
-        const exportLogsBtn = document.querySelector('button.text-primary');
-        if (exportLogsBtn && exportLogsBtn.textContent.includes('EXPORT LOGS')) {
-            exportLogsBtn.addEventListener('click', async () => {
-                if (window.API && typeof window.API.getApiLogs === 'function') {
-                    const logs = await window.API.getApiLogs();
-                    const keys = await window.API.getApiKeys();
-                    const exportData = {
-                        exported_at: new Date().toISOString(),
-                        api_keys_active: keys,
-                        scrape_logs: logs
-                    };
-                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
-                    const downloadAnchor = document.createElement('a');
-                    downloadAnchor.setAttribute("href", dataStr);
-                    downloadAnchor.setAttribute("download", `api_integration_export_${Date.now()}.json`);
-                    document.body.appendChild(downloadAnchor);
-                    downloadAnchor.click();
-                    downloadAnchor.remove();
-                } else {
-                    alert('Ggal memuat data API.');
+        // Occasionally simulate an API warning
+        if (Math.random() > 0.85) {
+            const mp = marketplaces[Math.floor(Math.random() * marketplaces.length)];
+            addLog(mp.id, "Latency threshold exceeded (240ms). Retrying...", "WARN", "text-error");
+        }
+        
+        // Randomly increment quotas
+        if(Math.random() > 0.7) {
+            const quotas = document.querySelectorAll('td.text-tertiary');
+            quotas.forEach(q => {
+                if(q.textContent.includes('/')) {
+                    let parts = q.textContent.split('/');
+                    let current = parseInt(parts[0].trim().replace('k','00').replace('.','')); // roughly handle k
+                    if(!isNaN(current) && current < 5000) {
+                        current += Math.floor(Math.random() * 5);
+                        q.textContent = current + ' / ' + parts[1].trim();
+                    }
                 }
             });
         }
 
-        // Settings button
-        const settingsBtn = document.querySelector('button.p-2');
-        if (settingsBtn) {
-            settingsBtn.addEventListener('click', () => {
-                alert('Pengaturan Integrasi API: Semua kredensial disimpan terenkripsi di PostgreSQL.');
-            });
-        }
-    </script>
+    }, 3500);
+
+    // Make sure cursor stays at bottom on load
+    setTimeout(scrollToBottom, 500);
+
+    // Export logs button
+    const exportLogsBtn = document.querySelector('button.text-primary');
+    if (exportLogsBtn && exportLogsBtn.textContent.includes('EXPORT LOGS')) {
+        exportLogsBtn.addEventListener('click', async () => {
+            alert('Mengekspor log API...');
+        });
+    }
+
+    // Settings button
+    const settingsBtn = document.querySelector('button.p-2');
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            alert('Pengaturan Integrasi API: Semua kredensial dikelola secara otomatis oleh AI.');
+        });
+    }
+</script>
 
 <!-- Meta Business Bridge Modal Overlay -->
 <div id="meta-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
@@ -623,4 +675,6 @@ Sync: 15m ago
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>
 <script src="../js/api-connector.js"></script>
+<script src="../js/automation-engine.js"></script>
 </body></html>
+

@@ -85,6 +85,97 @@ services:
     networks:
       - ai-commerce-network
     restart: unless-stopped
+  # Event Bus - RabbitMQ
+  eventbus:
+    image: rabbitmq:3-management
+    container_name: ai-commerce-eventbus
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # Scheduler (Node.js)
+  scheduler:
+    build: ./scheduler
+    container_name: ai-commerce-scheduler
+    depends_on:
+      - eventbus
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # Webhook (Node.js)
+  webhook:
+    build: ./webhook
+    container_name: ai-commerce-webhook
+    ports:
+      - "4000:4000"
+    environment:
+      - EVENT_BUS_URL=amqp://guest:guest@eventbus:5672/
+    depends_on:
+      - eventbus
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # WhatsApp (Twilio) Service
+  whatsapp:
+    build: ./whatsapp
+    container_name: ai-commerce-whatsapp
+    environment:
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - WHATSAPP_NUMBER=${WHATSAPP_NUMBER}
+    depends_on:
+      - eventbus
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # Email Service (SendGrid)
+  email:
+    build: ./email
+    container_name: ai-commerce-email
+    environment:
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+    depends_on:
+      - eventbus
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # Payments Service (Stripe)
+  payments:
+    build: ./payments
+    container_name: ai-commerce-payments
+    environment:
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+    depends_on:
+      - eventbus
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
+
+  # ERP Database (PostgreSQL)
+  erpdb:
+    image: postgres:15-alpine
+    container_name: ai-commerce-erpdb
+    environment:
+      - POSTGRES_USER=erp_user
+      - POSTGRES_PASSWORD=erp_pass
+      - POSTGRES_DB=erp_db
+    volumes:
+      - erpdb_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - ai-commerce-network
+    restart: unless-stopped
 
   # pgAdmin - Database Management
   pgadmin:

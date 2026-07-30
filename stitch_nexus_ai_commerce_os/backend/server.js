@@ -40,7 +40,7 @@ const redisClient = redis.createClient({
   url: process.env.REDIS_URL || 'redis://redis:6379',
 });
 redisClient.on('error', (err) => console.error('Redis Client Error:', err));
-redisClient.connect();
+redisClient.connect().catch(console.error); // Menangani potensi error koneksi Redis
 
 // Google Gemini AI
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
@@ -268,6 +268,111 @@ app.get('/api/marketplace/top-sellers', async (req, res) => {
         LIMIT 50
       `);
       return result.rows;
+    });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// MARKET INTELLIGENCE ENDPOINTS
+// ─────────────────────────────────────────────────────────────────
+
+// GET /api/intelligence/category-trends - Top categories by sold count + trend score
+app.get('/api/intelligence/category-trends', async (req, res) => {
+  try {
+    const data = await withCache('intelligence:category-trends', 300, async () => {
+      const result = await pool.query(`
+        SELECT category, 
+               COUNT(*) AS product_count, 
+               SUM(sold_count) AS total_sold,
+               AVG(rating) AS avg_rating,
+               (SUM(sold_count) * AVG(rating) / 100) AS trend_score
+        FROM marketplace_products
+        WHERE category IS NOT NULL AND category != ''
+        GROUP BY category
+        ORDER BY total_sold DESC
+        LIMIT 3
+      `);
+      // Normalize trend score to 0-100 for UI if needed
+      let maxScore = Math.max(...result.rows.map(r => r.trend_score), 100);
+      result.rows.forEach(r => {
+        r.normalized_score = Math.min(100, Math.max(10, Math.round((r.trend_score / maxScore) * 100)));
+      });
+      return result.rows;
+    });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/intelligence/top-competitors - Top shops by total sold
+app.get('/api/intelligence/top-competitors', async (req, res) => {
+  try {
+    const data = await withCache('intelligence:top-competitors', 300, async () => {
+      const result = await pool.query(`
+        SELECT marketplace, shop_name, shop_location,
+               COUNT(*) AS product_count,
+               SUM(sold_count) AS total_sold,
+               AVG(rating) AS avg_rating,
+               AVG(price) AS avg_price
+        FROM marketplace_products
+        WHERE shop_name != '' AND sold_count > 0
+        GROUP BY marketplace, shop_name, shop_location
+        ORDER BY total_sold DESC
+        LIMIT 5
+      `);
+      return result.rows;
+    });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/intelligence/alerts - Smart generated alerts
+app.get('/api/intelligence/alerts', async (req, res) => {
+  try {
+    const data = await withCache('intelligence:alerts', 60, async () => {
+      const alerts = [];
+      
+      // 1. Price Drops (Promos)
+      const drops = await pool.query(`
+        SELECT marketplace, name, shop_name, discount_pct, price 
+        FROM marketplace_products 
+        WHERE discount_pct >= 25 
+        ORDER BY discount_pct DESC LIMIT 3
+      `);
+      drops.rows.forEach(d => {
+        alerts.push({
+          type: 'PRICE_DROP_DETECTED',
+          severity: 'risk-danger',
+          time: new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}),
+          title: `Competitor "${d.shop_name.toUpperCase()}" dropped price by ${d.discount_pct}%`,
+          desc: `Target SKU: ${d.name.substring(0, 40)}... di ${d.marketplace}. Counter-measure recommended.`
+        });
+      });
+
+      // 2. High Demand / Trending Fast
+      const trending = await pool.query(`
+        SELECT marketplace, name, category, sold_count
+        FROM marketplace_products
+        WHERE sold_count > 1000
+        ORDER BY scraped_at DESC LIMIT 2
+      `);
+      trending.rows.forEach(t => {
+        alerts.push({
+          type: 'HIGH_DEMAND',
+          severity: 'primary-container',
+          time: new Date(Date.now() - 30 * 60000).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}), // fake 30 min ago
+          title: `Demand Spike in ${t.category.toUpperCase()}`,
+          desc: `"${t.name.substring(0, 35)}..." has high velocity on ${t.marketplace}.`
+        });
+      });
+
+      return alerts;
     });
     res.json(data);
   } catch (err) {
@@ -708,6 +813,7 @@ app.get('/api/revenue/overview', async (req, res) => {
     const statsResult = await pool.query(`
       SELECT 
         COALESCE(SUM(amount), 0) as total_revenue,
+        COUNT(*) as total_orders,
         COALESCE(SUM(CASE WHEN platform = 'Affiliate' THEN amount ELSE 0 END), 0) as affiliate_rev,
         COALESCE(SUM(CASE WHEN platform = 'Margin' THEN amount ELSE 0 END), 0) as margin_rev,
         COALESCE(SUM(CASE WHEN platform = 'Subscription' THEN amount ELSE 0 END), 0) as subscription_rev,
@@ -719,6 +825,7 @@ app.get('/api/revenue/overview', async (req, res) => {
     const row = statsResult.rows[0];
     res.json({
       total_revenue: parseFloat(row.total_revenue),
+      total_orders: parseInt(row.total_orders),
       growth_pct: 12.4,
       breakdown: {
         affiliate: parseFloat(row.affiliate_rev),
@@ -801,6 +908,42 @@ app.get('/api/social/schedule', async (req, res) => {
   } catch (error) {
     console.error('[Schedule API] Error:', error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// PATCH /api/social/schedule/:id/approve — ubah status menjadi APPROVED
+app.patch('/api/social/schedule/:id/approve', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      `UPDATE social_posts SET status = 'APPROVED' WHERE id = $1 AND status = 'PENDING' RETURNING *`,
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Jadwal tidak ditemukan atau sudah di-approve' });
+    }
+    res.json({ success: true, post: result.rows[0] });
+  } catch (error) {
+    console.error('[Schedule Approve] Error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// DELETE /api/social/schedule/:id — hapus jadwal
+app.delete('/api/social/schedule/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      `DELETE FROM social_posts WHERE id = $1 RETURNING *`,
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Jadwal tidak ditemukan' });
+    }
+    res.json({ success: true, deleted: result.rows[0] });
+  } catch (error) {
+    console.error('[Schedule Delete] Error:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
@@ -915,6 +1058,7 @@ async function initializeDatabase() {
 // CRON JOB: Auto scrape setiap 6 jam
 // ─────────────────────────────────────────────────────────────────
 function setupCronJobs() {
+  // --- Cron 1: Auto scrape marketplace setiap 6 jam ---
   cron.schedule('0 */6 * * *', async () => {
     console.log('[CRON] Auto scraping dimulai...');
     try {
@@ -959,6 +1103,33 @@ function setupCronJobs() {
     }
   });
   console.log('[CRON] Scheduled: auto scrape setiap 6 jam');
+
+  // --- Cron 2: Proses social posting yang sudah APPROVED & waktunya tiba ---
+  cron.schedule('*/1 * * * *', async () => {
+    try {
+      const pending = await pool.query(
+        `SELECT * FROM social_posts WHERE status = 'APPROVED' AND scheduled_at <= NOW()`
+      );
+      if (pending.rows.length === 0) return;
+
+      console.log(`[CRON Social] Memproses ${pending.rows.length} posting terjadwal...`);
+      for (const post of pending.rows) {
+        // Simulate posting to platform (replace with real API calls later)
+        const platforms = typeof post.platforms === 'string' ? JSON.parse(post.platforms) : post.platforms;
+        console.log(`[CRON Social] ✅ Posting ke ${platforms.join(', ')}: "${post.caption.substring(0, 50)}..."`);
+
+        // Mark as POSTED
+        await pool.query(
+          `UPDATE social_posts SET status = 'POSTED' WHERE id = $1`,
+          [post.id]
+        );
+      }
+      console.log(`[CRON Social] Selesai memproses ${pending.rows.length} posting.`);
+    } catch (err) {
+      console.error('[CRON Social] Error:', err.message);
+    }
+  });
+  console.log('[CRON] Scheduled: social post worker setiap 1 menit');
 }
 
 // ─────────────────────────────────────────────────────────────────

@@ -59,7 +59,9 @@ const Navigation = {
         for (const category in this.modules) {
             const module = this.modules[category].find(m => m.id === moduleId);
             if (module) {
-                window.location.href = module.path;
+                // Use absolute path from root to ensure correct navigation regardless of current directory depth
+                const targetPath = '/' + module.path.replace(/^\//, '');
+                window.location.href = targetPath;
                 return;
             }
         }
@@ -67,7 +69,8 @@ const Navigation = {
 
     // Navigate to home
     navigateHome() {
-        window.location.href = '../index.html';
+        // Absolute path to the root index page
+        window.location.href = '/index.html';
     },
 
     // Create sidebar HTML

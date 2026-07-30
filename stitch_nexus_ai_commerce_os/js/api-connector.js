@@ -148,7 +148,11 @@ async function populateDashboard() {
   if (page.includes('/code.html')) return;
   if (!page.endsWith('/') && !page.endsWith('/index.html') && !page.endsWith('index.html')) return;
 
-  const overview = await API.getOverview();
+  const [overview, revenueData] = await Promise.all([
+    API.getOverview(),
+    API.getRevenueOverview()
+  ]);
+
   if (!overview) {
     console.warn('[Dashboard] Backend belum tersedia, menampilkan data awal...');
     return;
@@ -162,8 +166,18 @@ async function populateDashboard() {
 
   if (statMarketplace) statMarketplace.textContent = overview.total_marketplaces || 0;
   if (statProduk) statProduk.textContent = Number(overview.total_products).toLocaleString('id-ID');
-  if (statPesanan) statPesanan.textContent = Number(overview.total_sold).toLocaleString('id-ID');
-  if (statPendapatan) statPendapatan.textContent = API.formatCompact(overview.estimated_gmv);
+
+  // PESANAN: use real order count from revenue API, fallback to marketplace sold_count
+  if (statPesanan) {
+    const orderCount = (revenueData && revenueData.total_orders) ? revenueData.total_orders : overview.total_sold;
+    statPesanan.textContent = Number(orderCount).toLocaleString('id-ID');
+  }
+
+  // PENDAPATAN: use real revenue from orders table
+  if (statPendapatan) {
+    const revenue = (revenueData && revenueData.total_revenue > 0) ? revenueData.total_revenue : overview.estimated_gmv;
+    statPendapatan.textContent = API.formatCompact(revenue);
+  }
 
   // Update sub-text
   const subMarketplace = document.getElementById('sub-marketplace');
@@ -173,8 +187,13 @@ async function populateDashboard() {
 
   if (subMarketplace) subMarketplace.textContent = 'Terhubung';
   if (subProduk) subProduk.textContent = `+${overview.today_new_products} hari ini`;
-  if (subPesanan) subPesanan.textContent = 'Total terjual';
-  if (subPendapatan) subPendapatan.textContent = 'Est. GMV';
+  if (subPesanan) {
+    const orderCount = (revenueData && revenueData.total_orders) ? revenueData.total_orders : overview.total_sold;
+    subPesanan.textContent = orderCount > 0 ? 'Pesanan masuk' : 'Total terjual';
+  }
+  if (subPendapatan) {
+    subPendapatan.textContent = (revenueData && revenueData.total_revenue > 0) ? 'Total pendapatan' : 'Est. GMV';
+  }
 
   // Update hero badge count
   const modulCount = document.getElementById('modul-count');
@@ -916,9 +935,15 @@ function fixNavigation() {
   const bottomNavLinks = document.querySelectorAll('nav a[href="#"]');
   const iconMap = {
     'grid_view': '../index.html',
+    // Ikon 'psychology' diarahkan ke modul Intelligence Hub untuk memperjelas navigasi
     'psychology': '../intelligence_hub/code.html',
     'inventory_2': '../manajemen_pesanan_stok/code.html',
-    'monitoring': '../analitik_eksekutif/code.html'
+    'monitoring': '../analitik_eksekutif/code.html',
+    'payments': '../mesin_pendapatan_revenue_engine/code.html',
+    'database': '../integrasi_marketplace_api/code.html',
+    'account_tree': '../ai_business_coach_saran_bisnis/code.html',
+    'analytics': '../intelligence_hub/code.html',
+    'terminal': '../index.html'
   };
 
   bottomNavLinks.forEach(a => {

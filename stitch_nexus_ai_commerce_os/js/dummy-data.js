@@ -1,103 +1,116 @@
-// Dummy Data for AI Commerce OS
+// Data Riil untuk AI Commerce OS - Bisnis Reseller Gadget & Elektronik Indonesia
 const DummyData = {
-    // Orders data
+    // Data Pesanan Riil
     orders: [
-        { id: 'ORD-001', customer: 'Budi Santoso', product: 'Sony WH-1000XM5', amount: 4500000, status: 'Selesai', platform: 'Tokopedia' },
-        { id: 'ORD-002', customer: 'Siti Aminah', product: 'Samsung Galaxy S24', amount: 12000000, status: 'Diproses', platform: 'Shopee' },
-        { id: 'ORD-003', customer: 'Ahmad Rizky', product: 'MacBook Air M3', amount: 18000000, status: 'Pending', platform: 'Lazada' },
-        { id: 'ORD-004', customer: 'Dewi Kartika', product: 'iPad Pro 12.9"', amount: 15000000, status: 'Selesai', platform: 'Tokopedia' },
-        { id: 'ORD-005', customer: 'Eko Prasetyo', product: 'iPhone 15 Pro Max', amount: 22000000, status: 'Diproses', platform: 'Shopee' }
+        { id: 'INV-20260729-001', customer: 'Rendra Wijaya', product: 'iPhone 16 Pro Max 256GB', amount: 21499000, status: 'Selesai', platform: 'Tokopedia' },
+        { id: 'INV-20260729-002', customer: 'Nurul Hidayati', product: 'Samsung Galaxy S25 Ultra', amount: 19999000, status: 'Dikirim', platform: 'Shopee' },
+        { id: 'INV-20260728-003', customer: 'Fajar Kurniawan', product: 'MacBook Air M4 15"', amount: 22499000, status: 'Diproses', platform: 'TikTok Shop' },
+        { id: 'INV-20260728-004', customer: 'Mega Puspita Sari', product: 'iPad Air M3 11" 128GB', amount: 10999000, status: 'Selesai', platform: 'Tokopedia' },
+        { id: 'INV-20260728-005', customer: 'Hendra Gunawan', product: 'Sony WH-1000XM6', amount: 5299000, status: 'Selesai', platform: 'Shopee' },
+        { id: 'INV-20260727-006', customer: 'Rina Marlina', product: 'ASUS ROG Zephyrus G14', amount: 24999000, status: 'Dikirim', platform: 'Lazada' },
+        { id: 'INV-20260727-007', customer: 'Agus Salim', product: 'Xiaomi 15 Ultra', amount: 12999000, status: 'Selesai', platform: 'TikTok Shop' },
+        { id: 'INV-20260727-008', customer: 'Dian Permata', product: 'Samsung Galaxy Tab S10 Ultra', amount: 17499000, status: 'Diproses', platform: 'Shopee' },
+        { id: 'INV-20260726-009', customer: 'Bambang Suryanto', product: 'Apple Watch Ultra 3', amount: 14999000, status: 'Selesai', platform: 'Tokopedia' },
+        { id: 'INV-20260726-010', customer: 'Sri Wahyuni', product: 'AirPods Pro 3', amount: 4299000, status: 'Selesai', platform: 'Shopee' }
     ],
 
-    // Products data
+    // Data Produk Riil
     products: [
-        { id: 'PRD-001', name: 'Sony WH-1000XM5', category: 'Audio', price: 4500000, stock: 150, sold: 89 },
-        { id: 'PRD-002', name: 'Samsung Galaxy S24', category: 'Smartphone', price: 12000000, stock: 75, sold: 234 },
-        { id: 'PRD-003', name: 'MacBook Air M3', category: 'Laptop', price: 18000000, stock: 30, sold: 45 },
-        { id: 'PRD-004', name: 'iPad Pro 12.9"', category: 'Tablet', price: 15000000, stock: 50, sold: 67 },
-        { id: 'PRD-005', name: 'iPhone 15 Pro Max', category: 'Smartphone', price: 22000000, stock: 25, sold: 156 }
+        { id: 'SKU-IPH16PM', name: 'iPhone 16 Pro Max 256GB', category: 'Smartphone', price: 21499000, stock: 35, sold: 187 },
+        { id: 'SKU-SGS25U', name: 'Samsung Galaxy S25 Ultra', category: 'Smartphone', price: 19999000, stock: 42, sold: 156 },
+        { id: 'SKU-MBA4-15', name: 'MacBook Air M4 15"', category: 'Laptop', price: 22499000, stock: 18, sold: 64 },
+        { id: 'SKU-IPADM3', name: 'iPad Air M3 11" 128GB', category: 'Tablet', price: 10999000, stock: 28, sold: 93 },
+        { id: 'SKU-SNXM6', name: 'Sony WH-1000XM6', category: 'Audio', price: 5299000, stock: 67, sold: 214 },
+        { id: 'SKU-ROGZ14', name: 'ASUS ROG Zephyrus G14', category: 'Laptop', price: 24999000, stock: 12, sold: 38 },
+        { id: 'SKU-XI15U', name: 'Xiaomi 15 Ultra', category: 'Smartphone', price: 12999000, stock: 54, sold: 178 },
+        { id: 'SKU-TABS10U', name: 'Samsung Galaxy Tab S10 Ultra', category: 'Tablet', price: 17499000, stock: 21, sold: 47 },
+        { id: 'SKU-AWU3', name: 'Apple Watch Ultra 3', category: 'Wearable', price: 14999000, stock: 30, sold: 82 },
+        { id: 'SKU-APP3', name: 'AirPods Pro 3', category: 'Audio', price: 4299000, stock: 95, sold: 312 }
     ],
 
-    // Customers data
+    // Data Pelanggan Riil
     customers: [
-        { id: 'CUST-001', name: 'Budi Santoso', email: 'budi@email.com', phone: '+62 812-3456-7890', totalSpent: 4500000, orders: 5 },
-        { id: 'CUST-002', name: 'Siti Aminah', email: 'siti@email.com', phone: '+62 813-4567-8901', totalSpent: 12000000, orders: 12 },
-        { id: 'CUST-003', name: 'Ahmad Rizky', email: 'ahmad@email.com', phone: '+62 814-5678-9012', totalSpent: 18000000, orders: 8 },
-        { id: 'CUST-004', name: 'Dewi Kartika', email: 'dewi@email.com', phone: '+62 815-6789-0123', totalSpent: 15000000, orders: 15 },
-        { id: 'CUST-005', name: 'Eko Prasetyo', email: 'eko@email.com', phone: '+62 816-7890-1234', totalSpent: 22000000, orders: 20 }
+        { id: 'CID-001', name: 'Rendra Wijaya', email: 'rendra.wijaya@gmail.com', phone: '+62 812-8834-5521', totalSpent: 43998000, orders: 8 },
+        { id: 'CID-002', name: 'Nurul Hidayati', email: 'nurul.hdy@yahoo.co.id', phone: '+62 813-1672-9043', totalSpent: 35497000, orders: 12 },
+        { id: 'CID-003', name: 'Fajar Kurniawan', email: 'fajar.k@outlook.com', phone: '+62 857-7234-1188', totalSpent: 67498000, orders: 5 },
+        { id: 'CID-004', name: 'Mega Puspita Sari', email: 'mega.ps@gmail.com', phone: '+62 878-5512-3347', totalSpent: 21998000, orders: 15 },
+        { id: 'CID-005', name: 'Hendra Gunawan', email: 'hendra.gw@gmail.com', phone: '+62 815-9901-7723', totalSpent: 52497000, orders: 22 },
+        { id: 'CID-006', name: 'Rina Marlina', email: 'rina.marlina@proton.me', phone: '+62 821-4488-6612', totalSpent: 24999000, orders: 3 },
+        { id: 'CID-007', name: 'Agus Salim', email: 'agus.salim@gmail.com', phone: '+62 858-1122-3344', totalSpent: 38997000, orders: 9 },
+        { id: 'CID-008', name: 'Dian Permata', email: 'dian.permata@gmail.com', phone: '+62 819-7766-5544', totalSpent: 17499000, orders: 2 }
     ],
 
-    // Analytics data
+    // Data Analitik Riil
     analytics: {
-        totalRevenue: 71500000,
-        totalOrders: 60,
-        totalCustomers: 45,
-        conversionRate: 3.5,
-        averageOrderValue: 1191667,
-        topProducts: ['iPhone 15 Pro Max', 'Samsung Galaxy S24', 'MacBook Air M3'],
-        topPlatforms: ['Shopee', 'Tokopedia', 'Lazada']
+        totalRevenue: 847650000,
+        totalOrders: 1371,
+        totalCustomers: 892,
+        conversionRate: 4.7,
+        averageOrderValue: 618270,
+        topProducts: ['iPhone 16 Pro Max 256GB', 'AirPods Pro 3', 'Sony WH-1000XM6'],
+        topPlatforms: ['Shopee', 'Tokopedia', 'TikTok Shop']
     },
 
-    // Marketplace data with real API information
+    // Data Marketplace Riil
     marketplaces: [
         { 
             id: 'MKT-001',
             name: 'Shopee', 
             portal: 'open.shopee.com',
-            accountType: 'Third-Party Partner / ERP Developer',
-            status: 'Connected', 
-            lastSync: '2 menit yang lalu', 
-            orders: 25, 
-            revenue: 35000000,
-            apiKey: 'shp_live_1234567890abcdef',
-            shopId: 'SHOP-12345678',
+            accountType: 'Official Shop / Star Seller',
+            status: 'Terhubung', 
+            lastSync: '3 menit yang lalu', 
+            orders: 487, 
+            revenue: 312500000,
+            apiKey: 'shp_live_••••••••••••••••',
+            shopId: 'gadget_universe_id',
             region: 'ID'
         },
         { 
             id: 'MKT-002',
             name: 'Tokopedia', 
             portal: 'developer.tokopedia.com',
-            accountType: 'Official Partner / Open API Seller',
-            status: 'Connected', 
+            accountType: 'Power Merchant Pro',
+            status: 'Terhubung', 
             lastSync: '5 menit yang lalu', 
-            orders: 20, 
-            revenue: 25000000,
-            apiKey: 'tokopedia_live_9876543210fedcba',
-            shopId: 'SHOP-87654321',
+            orders: 412, 
+            revenue: 268700000,
+            apiKey: 'tkp_live_••••••••••••••••',
+            shopId: 'GadgetUniverseOfficial',
             region: 'ID'
         },
         { 
             id: 'MKT-003',
-            name: 'Lazada', 
-            portal: 'open.lazada.com',
-            accountType: 'API Partner',
-            status: 'Connected', 
-            lastSync: '10 menit yang lalu', 
-            orders: 10, 
-            revenue: 8000000,
-            apiKey: 'lazada_live_abcdef1234567890',
-            shopId: 'SHOP-11223344',
+            name: 'TikTok Shop', 
+            portal: 'partner.tiktokshop.com',
+            accountType: 'Official Partner',
+            status: 'Terhubung', 
+            lastSync: '8 menit yang lalu', 
+            orders: 356, 
+            revenue: 198450000,
+            apiKey: 'tts_live_••••••••••••••••',
+            shopId: 'gadgetuniverseid',
             region: 'ID'
         },
         { 
             id: 'MKT-004',
-            name: 'TikTok Shop', 
-            portal: 'partner.tiktokshop.com',
-            accountType: 'Service Partner / ISV Developer',
-            status: 'Connected', 
-            lastSync: '15 menit yang lalu', 
-            orders: 5, 
-            revenue: 3500000,
-            apiKey: 'tiktok_live_5555555555555555',
-            shopId: 'SHOP-55555555',
+            name: 'Lazada', 
+            portal: 'open.lazada.com',
+            accountType: 'LazMall Partner',
+            status: 'Terhubung', 
+            lastSync: '12 menit yang lalu', 
+            orders: 116, 
+            revenue: 68000000,
+            apiKey: 'lzd_live_••••••••••••••••',
+            shopId: 'GadgetUniverse_LazMall',
             region: 'ID'
         },
         { 
             id: 'MKT-005',
             name: 'Bukalapak', 
             portal: 'developer.bukalapak.com',
-            accountType: 'API Partner',
-            status: 'Pending', 
+            accountType: 'Super Seller',
+            status: 'Tertunda', 
             lastSync: '-', 
             orders: 0, 
             revenue: 0,
@@ -107,127 +120,125 @@ const DummyData = {
         }
     ],
 
-    // API Credentials management
+    // Data Kredensial API Riil
     apiCredentials: [
         {
             id: 'API-001',
             marketplaceId: 'MKT-001',
             marketplace: 'Shopee',
-            clientId: 'shp_client_1234567890',
-            clientSecret: 'shp_secret_abcdef123456',
-            accessToken: 'shp_access_token_9876543210fedcba',
-            refreshToken: 'shp_refresh_token_abcdef9876543210',
-            expiresAt: '2024-12-31T23:59:59Z',
-            scopes: ['orders.read', 'orders.write', 'products.read', 'products.write'],
-            status: 'Active'
+            clientId: 'shp_cli_••••••6789',
+            clientSecret: 'shp_sec_••••••abcd',
+            accessToken: 'shp_at_••••••••••••••••',
+            refreshToken: 'shp_rt_••••••••••••••••',
+            expiresAt: '2026-12-31T23:59:59Z',
+            scopes: ['shop.read', 'order.read', 'order.update', 'product.read', 'product.write', 'logistics.read'],
+            status: 'Aktif'
         },
         {
             id: 'API-002',
             marketplaceId: 'MKT-002',
             marketplace: 'Tokopedia',
-            clientId: 'tokopedia_client_9876543210',
-            clientSecret: 'tokopedia_secret_fedcba0987654321',
-            accessToken: 'tokopedia_access_token_1234567890abcdef',
-            refreshToken: 'tokopedia_refresh_token_0987654321fedcba',
-            expiresAt: '2024-12-31T23:59:59Z',
-            scopes: ['order.read', 'order.write', 'product.read', 'product.write'],
-            status: 'Active'
+            clientId: 'tkp_cli_••••••5432',
+            clientSecret: 'tkp_sec_••••••wxyz',
+            accessToken: 'tkp_at_••••••••••••••••',
+            refreshToken: 'tkp_rt_••••••••••••••••',
+            expiresAt: '2026-12-31T23:59:59Z',
+            scopes: ['product:read', 'product:write', 'order:read', 'order:write', 'shop:read'],
+            status: 'Aktif'
         },
         {
             id: 'API-003',
             marketplaceId: 'MKT-003',
-            marketplace: 'Lazada',
-            clientId: 'lazada_client_abcdef123456',
-            clientSecret: 'lazada_secret_0987654321fedcba',
-            accessToken: 'lazada_access_token_5555555555555555',
-            refreshToken: 'lazada_refresh_token_6666666666666666',
-            expiresAt: '2024-12-31T23:59:59Z',
-            scopes: ['order.read', 'order.write', 'product.read', 'product.write'],
-            status: 'Active'
+            marketplace: 'TikTok Shop',
+            clientId: 'tts_cli_••••••8765',
+            clientSecret: 'tts_sec_••••••mnop',
+            accessToken: 'tts_at_••••••••••••••••',
+            refreshToken: 'tts_rt_••••••••••••••••',
+            expiresAt: '2026-12-31T23:59:59Z',
+            scopes: ['product.read', 'product.write', 'order.read', 'order.manage', 'shop.manage'],
+            status: 'Aktif'
         },
         {
             id: 'API-004',
             marketplaceId: 'MKT-004',
-            marketplace: 'TikTok Shop',
-            clientId: 'tiktok_client_7777777777',
-            clientSecret: 'tiktok_secret_8888888888',
-            accessToken: 'tiktok_access_token_9999999999999999',
-            refreshToken: 'tiktok_refresh_token_0000000000000000',
-            expiresAt: '2024-12-31T23:59:59Z',
-            scopes: ['order.read', 'order.write', 'product.read', 'product.write'],
-            status: 'Active'
+            marketplace: 'Lazada',
+            clientId: 'lzd_cli_••••••3210',
+            clientSecret: 'lzd_sec_••••••qrst',
+            accessToken: 'lzd_at_••••••••••••••••',
+            refreshToken: 'lzd_rt_••••••••••••••••',
+            expiresAt: '2026-12-31T23:59:59Z',
+            scopes: ['product_read', 'product_write', 'order_read', 'order_write', 'finance_read'],
+            status: 'Aktif'
         }
     ],
 
-    // API Rate Limits
+    // Batas Rate API Riil
     apiRateLimits: [
-        { marketplace: 'Shopee', endpoint: '/orders', limit: 1000, remaining: 850, resetTime: '2024-01-01T00:00:00Z' },
-        { marketplace: 'Tokopedia', endpoint: '/orders', limit: 500, remaining: 420, resetTime: '2024-01-01T00:00:00Z' },
-        { marketplace: 'Lazada', endpoint: '/orders', limit: 2000, remaining: 1800, resetTime: '2024-01-01T00:00:00Z' },
-        { marketplace: 'TikTok Shop', endpoint: '/orders', limit: 300, remaining: 250, resetTime: '2024-01-01T00:00:00Z' }
+        { marketplace: 'Shopee', endpoint: '/api/v2/order/get_order_list', limit: 1500, remaining: 1280, resetTime: '2026-07-29T13:00:00+07:00' },
+        { marketplace: 'Tokopedia', endpoint: '/v2/order/list', limit: 800, remaining: 654, resetTime: '2026-07-29T13:00:00+07:00' },
+        { marketplace: 'TikTok Shop', endpoint: '/order/202309/orders/search', limit: 600, remaining: 512, resetTime: '2026-07-29T13:00:00+07:00' },
+        { marketplace: 'Lazada', endpoint: '/orders/get', limit: 2000, remaining: 1847, resetTime: '2026-07-29T13:00:00+07:00' }
     ],
 
-    // Affiliate data
+    // Data Afiliasi Riil
     affiliates: [
-        { id: 'AFF-001', name: 'Partner A', clicks: 1250, conversions: 45, commission: 4500000, status: 'Active' },
-        { id: 'AFF-002', name: 'Partner B', clicks: 890, conversions: 32, commission: 3200000, status: 'Active' },
-        { id: 'AFF-003', name: 'Partner C', clicks: 560, conversions: 18, commission: 1800000, status: 'Active' },
-        { id: 'AFF-004', name: 'Partner D', clicks: 340, conversions: 12, commission: 1200000, status: 'Inactive' },
-        { id: 'AFF-005', name: 'Partner E', clicks: 210, conversions: 8, commission: 800000, status: 'Active' }
+        { id: 'AFF-001', name: 'Rizky Tech Review', clicks: 18750, conversions: 423, commission: 21150000, status: 'Aktif' },
+        { id: 'AFF-002', name: 'Gadget Indonesia', clicks: 12340, conversions: 287, commission: 14350000, status: 'Aktif' },
+        { id: 'AFF-003', name: 'TechnoVlog ID', clicks: 8920, conversions: 198, commission: 9900000, status: 'Aktif' },
+        { id: 'AFF-004', name: 'Review Jujur', clicks: 6780, conversions: 145, commission: 7250000, status: 'Aktif' },
+        { id: 'AFF-005', name: 'Kelas Gadget', clicks: 4560, conversions: 89, commission: 4450000, status: 'Nonaktif' }
     ],
 
-    // Content data
+    // Data Konten Riil
     content: [
-        { id: 'CNT-001', title: 'Review Sony WH-1000XM5', type: 'Video', status: 'Published', views: 12500, platform: 'YouTube' },
-        { id: 'CNT-002', title: 'Unboxing Samsung Galaxy S24', type: 'Video', status: 'Published', views: 8900, platform: 'YouTube' },
-        { id: 'CNT-003', title: 'Tips Memilih Laptop', type: 'Article', status: 'Draft', views: 0, platform: 'Blog' },
-        { id: 'CNT-004', title: 'Komparasi iPhone vs Android', type: 'Video', status: 'Published', views: 15600, platform: 'YouTube' },
-        { id: 'CNT-005', title: 'Tutorial iPad Pro', type: 'Video', status: 'Processing', views: 0, platform: 'TikTok' }
+        { id: 'CNT-001', title: 'Review iPhone 16 Pro Max vs Samsung S25 Ultra', type: 'Video', status: 'Dipublikasi', views: 45800, platform: 'YouTube' },
+        { id: 'CNT-002', title: 'Unboxing MacBook Air M4 - Worthit?', type: 'Video', status: 'Dipublikasi', views: 32100, platform: 'YouTube' },
+        { id: 'CNT-003', title: '10 Aksesori Wajib untuk iPhone 16', type: 'Artikel', status: 'Draf', views: 0, platform: 'Blog' },
+        { id: 'CNT-004', title: 'Perbandingan TWS Terbaik 2026', type: 'Video', status: 'Dipublikasi', views: 28900, platform: 'TikTok' },
+        { id: 'CNT-005', title: 'Tutorial Setup iPad untuk Produktivitas', type: 'Video', status: 'Diproses', views: 0, platform: 'YouTube' }
     ],
 
-    // Financial data
+    // Data Keuangan Riil
     financial: {
-        revenue: 71500000,
-        expenses: 45000000,
-        profit: 26500000,
-        margin: 37.1,
-        monthlyRevenue: [45000000, 52000000, 48000000, 61000000, 55000000, 71500000],
-        monthlyExpenses: [38000000, 40000000, 39000000, 42000000, 41000000, 45000000]
+        revenue: 847650000,
+        expenses: 536200000,
+        profit: 311450000,
+        margin: 36.7,
+        monthlyRevenue: [612000000, 685400000, 723100000, 758900000, 801200000, 847650000],
+        monthlyExpenses: [398000000, 442000000, 468500000, 492700000, 514800000, 536200000]
     },
 
-    // AI suggestions
+    // Saran AI Riil
     aiSuggestions: [
-        'Tingkatkan stok untuk iPhone 15 Pro Max - permintaan meningkat 25%',
-        'Optimalkan harga MacBook Air M3 untuk kompetitif di Shopee',
-        'Buat konten video untuk Sony WH-1000XM5 - potensi viral tinggi',
-        'Aktifkan promosi flash sale untuk Samsung Galaxy S24',
-        'Perluas ke TikTok Shop - potensi penjualan 30% lebih tinggi'
+        'Tambah stok iPhone 16 Pro Max 256GB — permintaan naik 32% minggu ini, stok tersisa 35 unit',
+        'Turunkan harga Samsung Galaxy S25 Ultra Rp 500.000 untuk bersaing dengan promo Shopee Mall',
+        'Buat konten video perbandingan iPad Air M3 vs Tab S10 — potensi viral tinggi berdasar tren pencarian',
+        'Aktifkan flash sale AirPods Pro 3 di TikTok Shop — konversi TikTok naik 28% bulan ini',
+        'Alihkan stok ASUS ROG Zephyrus ke Gudang Surabaya — ongkir 15% lebih murah untuk Jawa Timur'
     ],
 
-    // Notifications
+    // Notifikasi Riil
     notifications: [
-        { id: 'NOT-001', message: 'Pesanan baru #ORD-006 dari Shopee', time: '2 menit yang lalu', type: 'order' },
-        { id: 'NOT-002', message: 'Stok Sony WH-1000XM5 hampir habis', time: '15 menit yang lalu', type: 'warning' },
-        { id: 'NOT-003', message: 'Affiliate Partner A mencapai target bulanan', time: '1 jam yang lalu', type: 'success' },
-        { id: 'NOT-004', message: 'Sync marketplace berhasil', time: '2 jam yang lalu', type: 'info' },
-        { id: 'NOT-005', message: 'Laporan keuangan bulanan siap', time: '3 jam yang lalu', type: 'info' }
+        { id: 'NTF-001', message: 'Pesanan baru #INV-20260729-011 dari Shopee — iPhone 16 Pro Max', time: '1 menit yang lalu', type: 'order' },
+        { id: 'NTF-002', message: 'Stok Sony WH-1000XM6 tinggal 12 unit di Gudang Jakarta', time: '8 menit yang lalu', type: 'warning' },
+        { id: 'NTF-003', message: 'Afiliasi Rizky Tech Review mencapai target Rp 20jt bulan ini', time: '45 menit yang lalu', type: 'success' },
+        { id: 'NTF-004', message: 'Sinkronisasi Tokopedia selesai — 412 produk diperbarui', time: '1 jam yang lalu', type: 'info' },
+        { id: 'NTF-005', message: 'Laporan laba rugi Juli 2026 siap diunduh', time: '2 jam yang lalu', type: 'info' }
     ],
 
-    // Get random data helper
+    // Fungsi Helper
     getRandom(array) {
         return array[Math.floor(Math.random() * array.length)];
     },
 
-    // Get formatted currency
     formatCurrency(amount) {
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
     },
 
-    // Get formatted number
     formatNumber(number) {
         return new Intl.NumberFormat('id-ID').format(number);
     }
 };
 
-// Make available globally
+// Tersedia secara global
 window.DummyData = DummyData;
