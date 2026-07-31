@@ -23,6 +23,10 @@ const limiter = rateLimit({
   max: 200
 });
 app.use('/api/', limiter);
+const ordersRouter = require('./orders');
+app.use('/api/orders', ordersRouter);
+const gopayRouter = require('./payment/gopay');
+app.use('/api/payment/gopay', gopayRouter);
 
 // PostgreSQL
 const pool = new Pool({

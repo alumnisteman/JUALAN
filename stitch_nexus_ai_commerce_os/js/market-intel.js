@@ -10,6 +10,11 @@ async function initMarketIntel() {
         API.fetch('/api/intelligence/category-trends'),
         API.fetch('/api/intelligence/top-competitors'),
         API.fetch('/api/intelligence/alerts')
+    ];
+
+    // 5. Ambil data produk riil dari backend
+    const products = await API.fetch('/api/marketplace/products');
+    renderProducts(products);
     ]);
 
     // 2. Populate Trends
