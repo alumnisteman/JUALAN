@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="dark" lang="id"><head>
 <meta charset="utf-8"/>
@@ -486,12 +486,7 @@
                 } else if (name === "Gerbang Pembayaran") {
                     showNodeToast(`Sinkronisasi dengan <span class="font-bold text-primary">Laporan Keuangan & Laba Rugi</span>...`);
                 } else if (name === "Bus Acara") {
-                    showNodeToast(`Menghubungkan ke <span class="font-bold text-primary">Event Bus (Pusat Komando)</span>...`);
-                } else if (name === "Webhook API") {
-                    showNodeToast(`Mengaktifkan <span class="font-bold text-primary">Webhook API Listener</span>...`);
-                } else {
-                    showNodeToast(`Menambahkan komponen <span class="font-bold">${name}</span> ke kanvas...`);
-                }
+                showNodeToast(`Memproses ${name}...`);
 
                 const newNode = document.createElement('div');
                 const leftPos = 150 + (newNodesCount * 180) % 600;
@@ -507,18 +502,31 @@
                         <span class="text-[10px] font-code-label text-outline uppercase tracking-tighter">${type}</span>
                     </div>
                     <div class="text-sm font-bold text-on-surface">${name}</div>
-                    <div class="mt-2 text-[11px] text-on-surface-variant italic">Klik untuk mengatur...</div>
+                    <div class="mt-2 text-[11px] text-on-surface-variant italic">Connecting...</div>
                     <div class="mt-2 flex justify-between items-center">
-                        <span class="text-[10px] px-1.5 py-0.5 bg-surface-container-high text-primary rounded border border-primary/20">DRAFT</span>
+                        <span class="status-badge text-[10px] px-1.5 py-0.5 bg-surface-container-high text-primary rounded border border-primary/20">DRAFT</span>
                         <div class="w-3 h-3 rounded-full bg-outline-variant"></div>
                     </div>
                 `;
                 
                 canvasContainer.appendChild(newNode);
                 makeDraggable(newNode);
-                
-                if(typeof addActivityLog === 'function') {
-                    addActivityLog(`Added node: ${name}`, 'add_circle', 'text-primary');
+
+                try {
+                    const response = await fetch('/api/nodes', {
+                        method: 'POST',
+                        body: JSON.stringify({ name, type })
+                    });
+                    if (response.ok) {
+                        const statusBadge = newNode.querySelector('.status-badge');
+                        statusBadge.textContent = 'ACTIVE';
+                        statusBadge.classList.replace('bg-surface-container-high', 'bg-green-500/20');
+                        statusBadge.classList.replace('text-primary', 'text-green-500');
+                        newNode.querySelector('.italic').textContent = 'Live & Running';
+                        showNodeToast(`${name} berhasil diaktifkan!`);
+                    }
+                } catch (err) {
+                    showNodeToast(`Gagal mengaktifkan ${name}.`);
                 }
                 
                 newNodesCount++;
@@ -526,7 +534,6 @@
         });
     });</script><script src="../js/navigation.js"></script>
 <script src="../js/automation-engine.js"></script>
-</body></html>
 
 
 

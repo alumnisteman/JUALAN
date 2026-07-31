@@ -383,15 +383,103 @@ app.get('/api/intelligence/alerts', async (req, res) => {
 // POST /api/marketplace/scrape  - trigger scraping manual
 app.post('/api/marketplace/scrape', async (req, res) => {
   try {
+    const startedAt = new Date();
+    // Respond immediately so client isn't blocked
+    res.json({ message: 'Scraping started in background', status: 'running' });
+
+    // Run scraper asynchronously (non-blocking)
+    (async () => {
+      console.log('[Manual Scrape] Started...');
+      const { initMarketplaceTable, saveProducts, indexToMeilisearch } = require('./scrapers/db');
+      const tokopedia = require('./scrapers/tokopedia');
+      const shopee = require('./scrapers/shopee');
+      const { scrapeAllLazada, scrapeAllBlibli } = require('./scrapers/lazada-blibli');
+      const { scrapeAllZalora } = require('./scrapers/zalora');
+      const { scrapeAllTikTok } = require('./scrapers/tiktok');
+
+      await initMarketplaceTable();
+
+      const allProducts = [];
+      let totalScraped = 0;
+      let totalSaved = 0;
+
+      const results = await Promise.allSettled([
+        tokopedia.scrapeAllCategories(),
+        shopee.scrapeAllCategories(),
+        scrapeAllLazada(),
+        scrapeAllBlibli(),
+        scrapeAllZalora(),
+        scrapeAllTikTok()
+      ]);
+
+      for (const r of results) {
+        if (r.status === 'fulfilled') {
+          const scrapedCount = r.value.length;
+          totalScraped += scrapedCount;
+          const saved = await saveProducts(r.value);
+          totalSaved += saved;
+          allProducts.push(...r.value);
+          console.log(`[Scrape] Saved ${saved} products`);
+        } else {
+          console.error('[Scrape] Error in one source:', r.reason);
+        }
+      }
+
+      await indexToMeilisearch(allProducts);
+      await redisClient.del(['marketplace:stats', 'marketplace:trending:20', 'marketplace:flash-sale']);
+
+      const finishedAt = new Date();
+
+      // Insert log record
+      try {
+        await pool.query(
+          `INSERT INTO scrape_logs (marketplace, category, items_scraped, items_saved, status, started_at, finished_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          ['manual', 'all', totalScraped, totalSaved, 'SUCCESS', startedAt, finishedAt]
+        );
+      } catch (logErr) {
+        console.error('Failed to insert scrape log:', logErr);
+      }
+
+      console.log('[Manual Scrape] Finished!', allProducts.length, 'products');
+    })().catch(console.error);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+  try {
+    const startedAt = new Date();
     res.json({ message: 'Scraping dimulai di background', status: 'running' });
 
     // Jalankan scraper di background (non-blocking)
-    const { initMarketplaceTable, saveProducts, indexToMeilisearch } = require('./scrapers/db');
+    const { initMarketplaceTable, saveProducts, indexToMeilisearch, pool } = require('./scrapers/db');
     const tokopedia = require('./scrapers/tokopedia');
     const shopee = require('./scrapers/shopee');
     const { scrapeAllLazada, scrapeAllBlibli } = require('./scrapers/lazada-blibli');
     const { scrapeAllZalora } = require('./scrapers/zalora');
     const { scrapeAllTikTok } = require('./scrapers/tiktok');
+
+    (async () => {
+      console.log('[Manual Scrape] Dimulai...');
+      await initMarketplaceTable();
+
+      const allProducts = [];
+      let totalScraped = 0;
+      let totalSaved = 0;
+
+      const [tp, sp, lz, bb, zl, tt] = await Promise.allSettled([
+        tokopedia.scrapeAllCategories(),
+        shopee.scrapeAllCategories(),
+        scrapeAllLazada(),
+        scrapeAllBlibli(),
+        scrapeAllZalora(),
+        scrapeAllTikTok()
+      ]);
+
+      for (const r of [tp, sp, lz, bb, zl, tt]) {
+        if (r.status === 'fulfilled') {
+          const scrapedCount = r.value.length;
+         { scrapeAllTikTok } = require('./scrapers/tiktok');
 
     (async () => {
       console.log('[Manual Scrape] Dimulai...');
@@ -408,7 +496,34 @@ app.post('/api/marketplace/scrape', async (req, res) => {
         scrapeAllTikTok()
       ]);
 
-      for (const r of [tp, sp, lz, bb, zl, tt]) {
+      let totalScraped = 0;
+let totalSaved = 0;
+for (const r of [tp, sp, lz, bb, zl, tt]) {
+  if (r.status === 'fulfilled') {
+    const scrapedCount = r.value.length;
+    totalScraped += scrapedCount;
+    const saved = await saveProducts(r.value);
+    totalSaved += saved;
+    allProducts.push(...r.value);
+    console.log(`[Scrape] Saved ${saved} products`);
+  }
+}
+
+await indexToMeilisearch(allProducts);
+await redisClient.del(['marketplace:stats', 'marketplace:trending:20', 'marketplace:flash-sale']);
+
+const finishedAt = new Date();
+try {
+  await pool.query(
+    `INSERT INTO scrape_logs (marketplace, category, items_scraped, items_saved, status, started_at, finished_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+    ['manual', 'all', totalScraped, totalSaved, 'SUCCESS', startedAt, finishedAt]
+  );
+} catch (logErr) {
+  console.error('Failed to insert scrape log:', logErr);
+}
+
+console.log('[Manual Scrape] Selesai!', allProducts.length, 'produk');
         if (r.status === 'fulfilled') {
           const saved = await saveProducts(r.value);
           allProducts.push(...r.value);
