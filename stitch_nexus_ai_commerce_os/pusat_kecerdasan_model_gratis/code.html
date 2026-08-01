@@ -459,4 +459,29 @@
     </script>
 <script src="../js/navigation.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch AI models dari API riil
+async function loadAIModels() {
+    try {
+        const response = await fetch('/api/ai/models');
+        const models = await response.json();
+        
+        if (models && models.length > 0) {
+            // Update status mesin AI dengan jumlah model tersedia
+            const statusElement = document.querySelector('.font-label-caps:contains("STATUS MESIN AI INTI")');
+            if (statusElement) {
+                const parent = statusElement.parentElement;
+                const countBadge = parent.querySelector('.font-data-mono');
+                if (countBadge) {
+                    countBadge.textContent = `${models.length} MODEL TERSEDIA`;
+                }
+            }
+        }
+    } catch (error) {
+        console.log('Gagal memuat AI models:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadAIModels);
+</script>
 </body></html>

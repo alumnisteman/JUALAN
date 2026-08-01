@@ -383,6 +383,68 @@
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch data revenue dari API riil
+async function loadRevenueData() {
+    try {
+        const response = await fetch('/api/revenue/overview');
+        const data = await response.json();
+        
+        if (data) {
+            // Update "TOTAL KOMISI" dengan data riil
+            const totalKomisiElement = document.querySelector('.bento-card:has(p:contains("TOTAL KOMISI")) .font-headline-md');
+            if (totalKomisiElement) {
+                totalKomisiElement.textContent = `Rp ${data.total_revenue.toLocaleString('id-ID')}`;
+            }
+            
+            // Update growth percentage
+            const growthElement = document.querySelector('.bento-card:has(p:contains("TOTAL KOMISI")) .font-data-mono');
+            if (growthElement && data.growth_pct !== undefined) {
+                const sign = data.growth_pct >= 0 ? '+' : '';
+                growthElement.textContent = `${sign}${data.growth_pct}% dari bln lalu`;
+            }
+            
+            // Update breakdown jika ada
+            if (data.breakdown) {
+                // Update affiliate commission
+                const affiliateElement = document.querySelector('.bento-card:has(p:contains("KOMISI AFILIASI")) .font-headline-md');
+                if (affiliateElement) {
+                    affiliateElement.textContent = `Rp ${data.breakdown.affiliate.toLocaleString('id-ID')}`;
+                }
+            }
+        }
+    } catch (error) {
+        console.log('Gagal memuat data revenue:', error);
+    }
+}
+
+// Fallback selector untuk elemen yang tidak support :has()
+function updateRevenueByLoop() {
+    fetch('/api/revenue/overview')
+        .then(res => res.json())
+        .then(data => {
+            if (data) {
+                const cards = document.querySelectorAll('.bento-card');
+                cards.forEach(card => {
+                    const label = card.querySelector('.font-label-caps');
+                    if (label) {
+                        const valueElement = card.querySelector('.font-headline-md');
+                        const growthElement = card.querySelector('.font-data-mono');
+                        
+                        if (label.textContent.includes('TOTAL KOMISI') && valueElement) {
+                            valueElement.textContent = `Rp ${data.total_revenue.toLocaleString('id-ID')}`;
+                            if (growthElement && data.growth_pct !== undefined) {
+                                const sign = data.growth_pct >= 0 ? '+' : '';
+                                growthElement.textContent = `${sign}${data.growth_pct}% dari bln lalu`;
+                            }
+                        }
+                    }
+                });
+            }
+        })
+        .catch(err => console.log('Gagal memuat data revenue:', err));
+}
+
+document.addEventListener('DOMContentLoaded', updateRevenueByLoop);
+</script>
 </body></html>
-
-

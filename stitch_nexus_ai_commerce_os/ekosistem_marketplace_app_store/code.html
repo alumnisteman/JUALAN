@@ -516,4 +516,52 @@
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch app listings dari API riil untuk marketplace
+async function loadAppListings() {
+    try {
+        const response = await fetch('/api/app-store/listings');
+        const listings = await response.json();
+        
+        if (listings && listings.length > 0) {
+            // Update marketplace cards dengan data riil
+            const cardsContainer = document.querySelector('.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3');
+            if (cardsContainer) {
+                // Clear existing cards
+                cardsContainer.innerHTML = '';
+                
+                // Render listings dari API
+                listings.forEach(listing => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-card rounded-2xl p-6 flex flex-col gap-4 group';
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
+                                <span class="material-symbols-outlined text-2xl text-primary">${listing.icon || 'extension'}</span>
+                            </div>
+                            <div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
+                                <span class="material-symbols-outlined text-yellow-400 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="text-xs font-bold">${listing.rating || '4.5'}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-on-surface">${listing.name}</h3>
+                            <p class="text-sm text-on-surface-variant mt-1">${listing.description}</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-sm font-bold text-tertiary">${listing.price || 'Gratis'}</span>
+                            <button class="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-bold hover:opacity-90 transition-opacity">INSTALL</button>
+                        </div>
+                    `;
+                    cardsContainer.appendChild(card);
+                });
+            }
+        }
+    } catch (error) {
+        console.log('Gagal memuat app listings:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadAppListings);
+</script>
 </body></html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
@@ -380,4 +380,50 @@
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch app listings dari API riil untuk low-code builder
+async function loadAppListings() {
+    try {
+        const response = await fetch('/api/app-store/listings');
+        const listings = await response.json();
+        
+        if (listings && listings.length > 0) {
+            // Update widget library dengan data riil
+            const widgetContainer = document.querySelector('.bento-grid');
+            if (widgetContainer) {
+                // Update widget count atau info jika ada
+                const widgetCount = listings.length;
+                console.log(`Loaded ${widgetCount} app listings for widget library`);
+            }
+        }
+    } catch (error) {
+        console.log('Gagal memuat app listings:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadAppListings);
+</script>
+<script>
+// Fetch app listings dari API riil untuk low-code builder
+async function loadAppListings() {
+    try {
+        const response = await fetch('/api/app-store/listings');
+        const listings = await response.json();
+        
+        if (listings && listings.length > 0) {
+            // Update widget library dengan data riil
+            const widgetContainer = document.querySelector('.bento-grid');
+            if (widgetContainer) {
+                // Update widget count atau info jika ada
+                const widgetCount = listings.length;
+                console.log(`Loaded ${widgetCount} app listings for widget library`);
+            }
+        }
+    } catch (error) {
+        console.log('Gagal memuat app listings:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadAppListings);
+</script>
 </body></html>

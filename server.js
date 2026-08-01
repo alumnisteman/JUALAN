@@ -5,6 +5,7 @@
  */
 const express = require('express');
 const path = require('path');
+const gopayRouter = require('./stitch_nexus_ai_commerce_os/backend/payment/gopay');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -23,6 +24,9 @@ app.use((req, res, next) => {
 // ─── Static Files ────────────────────────────────────────────────
 const STATIC_DIR = path.join(__dirname, 'stitch_nexus_ai_commerce_os');
 app.use(express.static(STATIC_DIR));
+
+// ─── Payment: GoPay (via Midtrans) ─────────────────────────────────
+app.use('/api/payment/gopay', gopayRouter);
 
 // ══════════════════════════════════════════════════════════════════
 // IN-MEMORY DATA STORE
@@ -98,6 +102,45 @@ let socialPostIdCounter = 4;
 // Generated content (in-memory)
 const generatedContent = new Map();
 
+// Usage counters untuk tracking pemakaian API riil
+const usageCounters = {
+  ai_chat_calls: 0,
+  content_generate_calls: 0,
+  whatsapp_sends: 0
+};
+
+// Data Tenants (SaaS White-Label / Sub-Reseller)
+const TENANTS = [
+  { id: 1, name: 'Toko Elektronik Jaya', subdomain: 'elektronikjaya', plan: 'Enterprise', status: 'ACTIVE', owner_name: 'Budi Santoso', created_at: new Date(Date.now() - 90*24*3600000).toISOString() },
+  { id: 2, name: 'Fashion Store ID', subdomain: 'fashionstoreid', plan: 'Pro', status: 'ACTIVE', owner_name: 'Siti Aminah', created_at: new Date(Date.now() - 60*24*3600000).toISOString() },
+  { id: 3, name: 'Gadget Corner', subdomain: 'gadgetcorner', plan: 'Starter', status: 'TRIAL', owner_name: 'Joko Prasetyo', created_at: new Date(Date.now() - 15*24*3600000).toISOString() },
+];
+let tenantIdCounter = 4;
+
+// App Store Listings
+const APP_STORE_LISTINGS = [
+  { id: 1, name: 'Shopee Connector', category: 'Marketplace', description: 'Integrasi otomatis dengan Shopee Open API', status: 'INSTALLED', install_count: 127 },
+  { id: 2, name: 'Tokopedia Sync', category: 'Marketplace', description: 'Sinkronisasi produk & pesanan Tokopedia', status: 'INSTALLED', install_count: 98 },
+  { id: 3, name: 'WhatsApp Business', category: 'Communication', description: 'Notifikasi pesanan via WhatsApp', status: 'INSTALLED', install_count: 234 },
+  { id: 4, name: 'Email Marketing', category: 'Marketing', description: 'Campaign email otomatis', status: 'AVAILABLE', install_count: 56 },
+  { id: 5, name: 'ERP Integration', category: 'Business', description: 'Koneksi ke sistem ERP', status: 'AVAILABLE', install_count: 34 },
+];
+
+// Margin Rules
+const MARGIN_RULES = [
+  { id: 1, name: 'Proteksi Margin Tipis', category: 'Smartphone', min_margin_pct: 15, enabled: true },
+  { id: 2, name: 'Booster Produk Terlaris', category: 'Laptop', min_margin_pct: 10, enabled: true },
+  { id: 3, name: 'Flash Sale Limit', category: 'Audio', min_margin_pct: 20, enabled: false },
+  { id: 4, name: 'Fashion Protection', category: 'Fashion', min_margin_pct: 25, enabled: true },
+];
+
+// Workflows
+const WORKFLOWS = [
+  { id: 1, name: 'Auto-Price Adjustment', trigger: 'price_drop_detected', status: 'ACTIVE' },
+  { id: 2, name: 'Low Stock Alert', trigger: 'stock_below_threshold', status: 'ACTIVE' },
+  { id: 3, name: 'New Order Notification', trigger: 'order_created', status: 'PAUSED' },
+];
+
 // ══════════════════════════════════════════════════════════════════
 // HELPER FUNCTIONS
 // ══════════════════════════════════════════════════════════════════
@@ -127,7 +170,7 @@ app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     database: 'in-memory (mock mode)',
-    meilisearch: 'available',
+    meilisearch: 'not configured',
     redis: 'in-memory',
     timestamp: new Date().toISOString(),
     mode: 'standalone',
@@ -620,11 +663,20 @@ app.get('/api/revenue/overview', (req, res) => {
   const margin = completed.filter(o => o.platform === 'Margin').reduce((s, o) => s + o.amount, 0);
   const subscription = completed.filter(o => o.platform === 'Subscription').reduce((s, o) => s + o.amount, 0);
   const marketplace = completed.filter(o => o.platform === 'Marketplace').reduce((s, o) => s + o.amount, 0);
+  
+  // Hitung growth_pct riil dari data order (bandingkan dengan periode sebelumnya)
+  const now = new Date();
+  const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const recentOrders = completed.filter(o => new Date(o.created_at) >= oneMonthAgo);
+  const olderOrders = completed.filter(o => new Date(o.created_at) < oneMonthAgo);
+  const recentTotal = recentOrders.reduce((s, o) => s + o.amount, 0);
+  const olderTotal = olderOrders.reduce((s, o) => s + o.amount, 0);
+  const growth_pct = olderTotal > 0 ? ((recentTotal - olderTotal) / olderTotal * 100).toFixed(1) : 0;
 
   res.json({
     total_revenue: total,
     total_orders: completed.length,
-    growth_pct: 12.4,
+    growth_pct: parseFloat(growth_pct),
     breakdown: { affiliate, margin, subscription, marketplace }
   });
 });
@@ -676,6 +728,109 @@ app.delete('/api/social/schedule/:id', (req, res) => {
   if (idx === -1) return res.status(404).json({ success: false, error: 'Jadwal tidak ditemukan' });
   const deleted = SOCIAL_POSTS.splice(idx, 1)[0];
   res.json({ success: true, deleted });
+});
+
+// ─── AI Chat Endpoint ─────────────────────────────────────────────
+function buildChatFallback(mode, message) {
+  const modeResponses = {
+    'ai-business-coach': `Berdasarkan data bisnis Anda, saya sarankan fokus pada produk dengan margin tertinggi. Produk elektronik menunjukkan growth positif 15% bulan ini. Pertimbangkan untuk meningkatkan inventory kategori tersebut.`,
+    'customer-support': `Terima kasih telah menghubungi kami. Tim support kami akan membantu Anda dalam 5-10 menit. Untuk pertanyaan terkait pesanan, silakan sertakan nomor order Anda.`
+  };
+  return modeResponses[mode] || `Maaf, saya belum dapat menjawab pertanyaan tersebut. Silakan coba lagi atau hubungi tim support kami.`;
+}
+
+app.post('/api/ai/chat', async (req, res) => {
+  usageCounters.ai_chat_calls++;
+  const { message, mode } = req.body;
+  if (!message || !message.trim()) return res.status(400).json({ error: 'Pesan tidak boleh kosong' });
+
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+  if (GEMINI_API_KEY) {
+    try {
+      const { GoogleGenerativeAI } = require('@google/generative-ai');
+      const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      
+      const systemPrompt = mode === 'ai-business-coach' 
+        ? `Kamu AI Business Coach untuk e-commerce Indonesia. Berikan saran bisnis berbasis data riil: ${message}`
+        : `Kamu Customer Support AI untuk e-commerce Indonesia. Bantu pelanggan: ${message}`;
+      
+      const result = await model.generateContent(systemPrompt);
+      res.json({ success: true, response: result.response.text(), source: 'gemini' });
+    } catch (err) {
+      console.warn('[Gemini Chat] Error:', err.message, '— menggunakan fallback');
+      res.json({ success: true, response: buildChatFallback(mode, message), source: 'fallback' });
+    }
+  } else {
+    res.json({ success: true, response: buildChatFallback(mode, message), source: 'fallback' });
+  }
+});
+
+// ─── Additional API Endpoints for Frontend Modules ─────────────────
+app.get('/api/margin-rules', (req, res) => {
+  res.json(MARGIN_RULES);
+});
+
+app.post('/api/margin-rules', (req, res) => {
+  const { name, category, min_margin_pct, enabled } = req.body;
+  if (!name || !category || min_margin_pct === undefined) return res.status(400).json({ error: 'Field tidak lengkap' });
+  
+  const newRule = { id: MARGIN_RULES.length + 1, name, category, min_margin_pct, enabled: enabled !== false };
+  MARGIN_RULES.push(newRule);
+  res.status(201).json({ success: true, rule: newRule });
+});
+
+app.patch('/api/margin-rules/:id', (req, res) => {
+  const rule = MARGIN_RULES.find(r => r.id === parseInt(req.params.id));
+  if (!rule) return res.status(404).json({ error: 'Rule tidak ditemukan' });
+  
+  Object.assign(rule, req.body);
+  res.json({ success: true, rule });
+});
+
+app.get('/api/events/feed', (req, res) => {
+  const events = [
+    { id: 1, type: 'order_created', message: 'Order baru dari Budi Santoso', timestamp: new Date().toISOString() },
+    { id: 2, type: 'stock_low', message: 'Stok iPhone 16 Pro menipis', timestamp: new Date(Date.now() - 3600000).toISOString() },
+    { id: 3, type: 'price_updated', message: 'Harga Samsung S25 Ultra diperbarui', timestamp: new Date(Date.now() - 7200000).toISOString() },
+  ];
+  res.json(events);
+});
+
+app.get('/api/ai/models', (req, res) => {
+  res.json([
+    { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', provider: 'Google', status: 'available', cost: 'Free tier' },
+    { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', provider: 'Google', status: 'available', cost: 'Paid' },
+  ]);
+});
+
+app.get('/api/customers/segments', (req, res) => {
+  res.json([
+    { id: 1, name: 'VIP Customers', count: 156, avg_order_value: 2500000 },
+    { id: 2, name: 'Regular Buyers', count: 843, avg_order_value: 750000 },
+    { id: 3, name: 'New Customers', count: 234, avg_order_value: 320000 },
+  ]);
+});
+
+app.get('/api/app-store/listings', (req, res) => {
+  res.json(APP_STORE_LISTINGS);
+});
+
+app.get('/api/tenants', (req, res) => {
+  res.json(TENANTS);
+});
+
+app.post('/api/tenants', (req, res) => {
+  const { name, subdomain, plan, owner_name } = req.body;
+  if (!name || !subdomain || !plan || !owner_name) return res.status(400).json({ error: 'Field tidak lengkap' });
+  
+  const newTenant = { id: tenantIdCounter++, name, subdomain, plan, status: 'TRIAL', owner_name, created_at: new Date().toISOString() };
+  TENANTS.push(newTenant);
+  res.status(201).json({ success: true, tenant: newTenant });
+});
+
+app.get('/api/workflows', (req, res) => {
+  res.json(WORKFLOWS);
 });
 
 // ─── Catch-all: serve index.html ─────────────────────────────────

@@ -376,4 +376,86 @@
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch tenants data dari API riil
+async function loadTenantsData() {
+    try {
+        const response = await fetch('/api/tenants');
+        const tenants = await response.json();
+        
+        if (tenants && tenants.length > 0) {
+            // Update "Enterprise Plan" dengan jumlah tenants aktif
+            const activeUsersElement = document.querySelector('.bento-card:has(h3:contains("Enterprise Plan")) .font-data-mono');
+            if (activeUsersElement) {
+                activeUsersElement.textContent = `${tenants.length} ACTIVE TENANTS`;
+            }
+            
+            // Update tier counts berdasarkan data riil
+            const proCount = tenants.filter(t => t.plan === 'Pro').length;
+            const businessCount = tenants.filter(t => t.plan === 'Enterprise').length;
+            
+            // Update Pro Tier count
+            const proTierElement = document.querySelector('.bento-card p:contains("Pro Tier")');
+            if (proTierElement) {
+                const countSpan = proTierElement.parentElement.querySelector('.font-body-sm');
+                if (countSpan) {
+                    countSpan.textContent = `${proCount} Active Entities`;
+                }
+            }
+            
+            // Update Business Tier count
+            const businessTierElement = document.querySelector('.bento-card p:contains("Business Tier")');
+            if (businessTierElement) {
+                const countSpan = businessTierElement.parentElement.querySelector('.font-body-sm');
+                if (countSpan) {
+                    countSpan.textContent = `${businessCount} Active Entities`;
+                }
+            }
+        }
+    } catch (error) {
+        console.log('Failed to load tenants data:', error);
+    }
+}
+
+// Fallback selector untuk elemen yang tidak support :has()
+function updateTenantsByLoop() {
+    fetch('/api/tenants')
+        .then(res => res.json())
+        .then(tenants => {
+            if (tenants && tenants.length > 0) {
+                const cards = document.querySelectorAll('.bento-card');
+                cards.forEach(card => {
+                    const h3 = card.querySelector('h3');
+                    if (h3 && h3.textContent.includes('Enterprise Plan')) {
+                        const countElement = card.querySelector('.font-data-mono');
+                        if (countElement) {
+                            countElement.textContent = `${tenants.length} ACTIVE TENANTS`;
+                        }
+                    }
+                    
+                    const p = card.querySelector('p');
+                    if (p) {
+                        if (p.textContent.includes('Pro Tier')) {
+                            const countSpan = card.querySelector('.font-body-sm');
+                            const proCount = tenants.filter(t => t.plan === 'Pro').length;
+                            if (countSpan) {
+                                countSpan.textContent = `${proCount} Active Entities`;
+                            }
+                        }
+                        if (p.textContent.includes('Business Tier')) {
+                            const countSpan = card.querySelector('.font-body-sm');
+                            const businessCount = tenants.filter(t => t.plan === 'Enterprise').length;
+                            if (countSpan) {
+                                countSpan.textContent = `${businessCount} Active Entities`;
+                            }
+                        }
+                    }
+                });
+            }
+        })
+        .catch(err => console.log('Failed to load tenants data:', err));
+}
+
+document.addEventListener('DOMContentLoaded', updateTenantsByLoop);
+</script>
 </body></html>

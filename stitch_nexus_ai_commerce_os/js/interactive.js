@@ -33,8 +33,29 @@ const Interactive = {
         input.value = '';
         container.scrollTop = container.scrollHeight;
 
-        // Simulate AI response
-        setTimeout(() => {
+        // Fetch AI response dari API riil
+        fetch('/api/ai/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message, mode: 'ai-business-coach' })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'flex gap-3 max-w-[80%]';
+            aiMsg.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant">
+                    <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+                </div>
+                <div class="bg-surface-container-high p-4 rounded-xl rounded-tl-none border border-outline-variant">
+                    <p class="text-body-md">${data.response || 'Terima kasih atas pertanyaan Anda.'}</p>
+                </div>
+            `;
+            container.appendChild(aiMsg);
+            container.scrollTop = container.scrollHeight;
+        })
+        .catch(() => {
+            // Fallback response
             const aiMsg = document.createElement('div');
             aiMsg.className = 'flex gap-3 max-w-[80%]';
             aiMsg.innerHTML = `
@@ -47,7 +68,7 @@ const Interactive = {
             `;
             container.appendChild(aiMsg);
             container.scrollTop = container.scrollHeight;
-        }, 1000);
+        });
     },
 
     // Form validation and submission

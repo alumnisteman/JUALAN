@@ -450,4 +450,31 @@
     </script>
 <script src="../js/navigation.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch konten yang digenerate dari API riil
+async function loadGeneratedContent() {
+    try {
+        const response = await fetch('/api/content/generated');
+        const data = await response.json();
+        
+        if (data.success && data.data && data.data.length > 0) {
+            // Update "Content Factory" card dengan data riil
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                const h4 = card.querySelector('h4');
+                if (h4 && h4.textContent.includes('Content Factory')) {
+                    const countElement = card.querySelector('.font-data-mono');
+                    if (countElement) {
+                        countElement.textContent = `${data.data.length} Active Runs`;
+                    }
+                }
+            });
+        }
+    } catch (error) {
+        console.log('Failed to load generated content:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadGeneratedContent);
+</script>
 </body></html>

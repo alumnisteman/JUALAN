@@ -330,4 +330,34 @@
 </script>
 <script src="../js/navigation.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch dashboard data dari API riil untuk optimasi biaya
+async function loadDashboardData() {
+    try {
+        const response = await fetch('/api/dashboard/overview');
+        const data = await response.json();
+        
+        if (data) {
+            // Update status sistem dengan data riil
+            const statusElement = document.querySelector('.font-display-lg');
+            if (statusElement && data.system_health) {
+                const healthStatus = data.system_health.status || 'Optimal';
+                statusElement.innerHTML = `Status Sistem: <span class="text-tertiary">${healthStatus}</span>`;
+            }
+            
+            // Update efisiensi jika ada
+            if (data.system_health && data.system_health.efficiency) {
+                const efficiencyElement = document.querySelector('.font-body-md');
+                if (efficiencyElement) {
+                    efficiencyElement.innerHTML = `Node otonom tersinkronisasi. Semua ${data.system_health.workflows || 12} alur kerja komersial berjalan dengan efisiensi presisi ${data.system_health.efficiency}% menggunakan infrastruktur terbuka.`;
+                }
+            }
+        }
+    } catch (error) {
+        console.log('Gagal memuat dashboard data:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadDashboardData);
+</script>
 </body></html>

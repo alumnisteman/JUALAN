@@ -101,38 +101,49 @@ const AutomationEngine = {
 
     startToastCycle() {
         const loop = () => {
-            if (window.DummyData) {
-                // Generate a random dynamic notification
-                const r = Math.random();
-                if (r < 0.5) {
-                    // New Order
-                    const product = window.DummyData.getRandom(window.DummyData.products);
-                    const customer = window.DummyData.getRandom(window.DummyData.customers);
-                    const platform = window.DummyData.getRandom(window.DummyData.marketplaces).name;
-                    this.showToast(
-                        'PESANAN BARU', 
-                        `<strong>${customer.name}</strong> baru saja membeli <span class="text-tertiary">${product.name}</span> via ${platform}.`, 
-                        'order'
-                    );
-                } else if (r < 0.75) {
-                    // Stock Warning
-                    const product = window.DummyData.getRandom(window.DummyData.products);
-                    this.showToast(
-                        'PERINGATAN STOK', 
-                        `Sisa stok <strong>${product.name}</strong> menipis (Tersisa: ${Math.floor(Math.random() * 5) + 1} unit).`, 
-                        'warning'
-                    );
-                } else {
-                    // System Info
-                    this.showToast(
-                        'AI SYSTEM UPDATE', 
-                        'Harga dinamis telah diperbarui berdasarkan tren kompetitor terkini.', 
-                        'success'
-                    );
-                }
-            } else {
-                this.showToast('SISTEM AKTIF', 'AI Commerce OS sedang memantau operasi Anda.', 'info');
-            }
+            // Fetch data riil dari API untuk notifikasi dinamis
+            fetch('/api/orders')
+                .then(res => res.json())
+                .then(orders => {
+                    if (orders && orders.length > 0) {
+                        const r = Math.random();
+                        if (r < 0.5) {
+                            // New Order dari data riil
+                            const order = orders[Math.floor(Math.random() * orders.length)];
+                            this.showToast(
+                                'PESANAN BARU',
+                                `<strong>${order.customer_name}</strong> baru saja membeli <span class="text-tertiary">${order.product_name}</span> via ${order.platform}.`,
+                                'order'
+                            );
+                        } else if (r < 0.75) {
+                            // Stock Warning
+                            fetch('/api/products')
+                                .then(res => res.json())
+                                .then(products => {
+                                    if (products && products.length > 0) {
+                                        const product = products[Math.floor(Math.random() * products.length)];
+                                        this.showToast(
+                                            'PERINGATAN STOK',
+                                            `Sisa stok <strong>${product.name}</strong> menipis (Tersisa: ${product.stock} unit).`,
+                                            'warning'
+                                        );
+                                    }
+                                });
+                        } else {
+                            // System Info
+                            this.showToast(
+                                'AI SYSTEM UPDATE',
+                                'Harga dinamis telah diperbarui berdasarkan tren kompetitor terkini.',
+                                'success'
+                            );
+                        }
+                    } else {
+                        this.showToast('SISTEM AKTIF', 'AI Commerce OS sedang memantau operasi Anda.', 'info');
+                    }
+                })
+                .catch(() => {
+                    this.showToast('SISTEM AKTIF', 'AI Commerce OS sedang memantau operasi Anda.', 'info');
+                });
 
             const nextInterval = Math.random() * (this.config.toastIntervalMax - this.config.toastIntervalMin) + this.config.toastIntervalMin;
             setTimeout(loop, nextInterval);

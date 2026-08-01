@@ -587,6 +587,45 @@
         });
     });</script><script src="../js/navigation.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch events dari API riil untuk Log Aktivitas Terbaru
+async function loadEventsFeed() {
+    try {
+        const response = await fetch('/api/events/feed');
+        const events = await response.json();
+        
+        if (events && events.length > 0) {
+            const logContainer = document.querySelector('.space-y-2');
+            if (logContainer) {
+                // Clear existing logs
+                logContainer.innerHTML = '';
+                
+                // Render events dari API
+                events.forEach(event => {
+                    const icon = event.type === 'order_created' ? 'check_circle' : 
+                                event.type === 'stock_low' ? 'warning' : 'update';
+                    const color = event.type === 'order_created' ? 'text-green-400' : 
+                                 event.type === 'stock_low' ? 'text-yellow-400' : 'text-blue-400';
+                    const time = new Date(event.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    
+                    const logEntry = document.createElement('div');
+                    logEntry.className = 'flex items-center justify-between py-2 border-b border-outline-variant/10';
+                    logEntry.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-[16px] ${color}">${icon}</span>
+                            <span class="text-sm text-on-surface font-code-label">${event.message}</span>
+                        </div>
+                        <span class="text-[11px] text-outline font-code-label">${time}</span>
+                    `;
+                    logContainer.appendChild(logEntry);
+                });
+            }
+        }
+    } catch (error) {
+        console.log('Gagal memuat events feed:', error);
+    }
+}
 
-
-
+document.addEventListener('DOMContentLoaded', loadEventsFeed);
+</script>
+</body></html>

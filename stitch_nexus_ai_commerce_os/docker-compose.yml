@@ -24,7 +24,7 @@ services:
     volumes:
       - ./backend:/app
     ports:
-      - "3000:3000"
+      - "5000:3000"
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:postgres@database:5432/ai_commerce
@@ -202,4 +202,6 @@ volumes:
   meilisearch_data:
     driver: local
   redis_data:
+    driver: local
+  erpdb_data:
     driver: local

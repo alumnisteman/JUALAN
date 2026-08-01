@@ -531,4 +531,39 @@
 <script src="../js/navigation.js"></script>
 <script src="../js/interactive.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Fetch dashboard data dari API riil untuk data acquisition
+async function loadDashboardData() {
+    try {
+        const response = await fetch('/api/dashboard/overview');
+        const data = await response.json();
+        
+        if (data) {
+            // Update ingestion rates dengan data riil
+            const ingestionElements = document.querySelectorAll('.font-data-mono.text-on-surface-variant');
+            ingestionElements.forEach(el => {
+                if (el.textContent.includes('Ingestion:')) {
+                    if (data.ingestion_rate) {
+                        el.textContent = `Ingestion: ${data.ingestion_rate} GB/s`;
+                    }
+                }
+            });
+            
+            // Update status nodes
+            const statusElements = document.querySelectorAll('.font-label-caps');
+            statusElements.forEach(el => {
+                if (data.node_status) {
+                    if (el.textContent === 'STABLE' || el.textContent === 'ACTIVE' || el.textContent === 'SYNCED') {
+                        el.textContent = data.node_status;
+                    }
+                }
+            });
+        }
+    } catch (error) {
+        console.log('Gagal memuat dashboard data:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadDashboardData);
+</script>
 </body></html>
