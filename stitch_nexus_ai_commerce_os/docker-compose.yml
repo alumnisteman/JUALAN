@@ -27,14 +27,21 @@ services:
       - "5000:3000"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:postgres@database:5432/ai_commerce
+      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@database:5432/${DB_NAME:-ai_commerce}
       - MEILISEARCH_URL=http://meilisearch:7700
-      - MEILISEARCH_MASTER_KEY=masterKey123SecureKeyForProd2026
+      - MEILISEARCH_MASTER_KEY=${MEILI_MASTER_KEY}
       - REDIS_URL=redis://redis:6379
       - SCRAPER_API_KEY=${SCRAPER_API_KEY:-}
-      - GEMINI_API_KEY=${GEMINI_API_KEY:-AQ.Ab8RN6J1IZq4ePk9aCemk1U6fGveFPq9lRvQgfZ-6WptkJcG3Q}
-      - TIKTOK_CLIENT_KEY=${TIKTOK_CLIENT_KEY:-awttslvj9382dr8j}
-      - TIKTOK_CLIENT_SECRET=${TIKTOK_CLIENT_SECRET:-9qj0MnSGx9v2nEXTdE2V91qDdPyMkVHk}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - TIKTOK_CLIENT_KEY=${TIKTOK_CLIENT_KEY}
+      - TIKTOK_CLIENT_SECRET=${TIKTOK_CLIENT_SECRET}
+      - TIKTOK_CONTENT_CLIENT_KEY=${TIKTOK_CONTENT_CLIENT_KEY}
+      - TIKTOK_CONTENT_CLIENT_SECRET=${TIKTOK_CONTENT_CLIENT_SECRET}
+      - TIKTOK_REDIRECT_URI=${TIKTOK_REDIRECT_URI}
+      - TIKTOK_PRIVACY_LEVEL=${TIKTOK_PRIVACY_LEVEL}
+      - INSTAGRAM_APP_ID=${INSTAGRAM_APP_ID}
+      - INSTAGRAM_APP_SECRET=${INSTAGRAM_APP_SECRET}
+      - INSTAGRAM_REDIRECT_URI=${INSTAGRAM_REDIRECT_URI}
     depends_on:
       - database
       - meilisearch
@@ -48,9 +55,9 @@ services:
     image: postgres:15-alpine
     container_name: ai-commerce-database
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=ai_commerce
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-ai_commerce}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -64,7 +71,7 @@ services:
     image: getmeili/meilisearch:v1.5
     container_name: ai-commerce-meilisearch
     environment:
-      - MEILI_MASTER_KEY=masterKey123SecureKeyForProd2026
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
       - MEILI_ENV=production
     volumes:
       - meilisearch_data:/meili_data
@@ -101,8 +108,13 @@ services:
 
   # Scheduler (Node.js)
   scheduler:
-    build: ./scheduler
+    build:
+      context: .
+      dockerfile: scheduler/Dockerfile
     container_name: ai-commerce-scheduler
+    environment:
+      - EVENT_BUS_URL=amqp://guest:guest@eventbus:5672/
+      - BASE_URL=http://backend:3000
     depends_on:
       - eventbus
     networks:
@@ -111,7 +123,9 @@ services:
 
   # Webhook (Node.js)
   webhook:
-    build: ./webhook
+    build:
+      context: .
+      dockerfile: webhook/Dockerfile
     container_name: ai-commerce-webhook
     ports:
       - "4000:4000"
@@ -125,12 +139,15 @@ services:
 
   # WhatsApp (Twilio) Service
   whatsapp:
-    build: ./whatsapp
+    build:
+      context: .
+      dockerfile: whatsapp/Dockerfile
     container_name: ai-commerce-whatsapp
     environment:
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - WHATSAPP_NUMBER=${WHATSAPP_NUMBER}
+      - EVENT_BUS_URL=amqp://guest:guest@eventbus:5672/
     depends_on:
       - eventbus
     networks:
@@ -139,10 +156,13 @@ services:
 
   # Email Service (SendGrid)
   email:
-    build: ./email
+    build:
+      context: .
+      dockerfile: email/Dockerfile
     container_name: ai-commerce-email
     environment:
       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - EVENT_BUS_URL=amqp://guest:guest@eventbus:5672/
     depends_on:
       - eventbus
     networks:
@@ -151,10 +171,13 @@ services:
 
   # Payments Service (Stripe)
   payments:
-    build: ./payments
+    build:
+      context: .
+      dockerfile: payments/Dockerfile
     container_name: ai-commerce-payments
     environment:
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - EVENT_BUS_URL=amqp://guest:guest@eventbus:5672/
     depends_on:
       - eventbus
     networks:
@@ -166,9 +189,9 @@ services:
     image: postgres:15-alpine
     container_name: ai-commerce-erpdb
     environment:
-      - POSTGRES_USER=erp_user
-      - POSTGRES_PASSWORD=erp_pass
-      - POSTGRES_DB=erp_db
+      - POSTGRES_USER=${ERP_DB_USER:-erp_user}
+      - POSTGRES_PASSWORD=${ERP_DB_PASSWORD:-erp_pass}
+      - POSTGRES_DB=${ERP_DB_NAME:-erp_db}
     volumes:
       - erpdb_data:/var/lib/postgresql/data
     ports:
@@ -182,8 +205,8 @@ services:
     image: dpage/pgadmin4:latest
     container_name: ai-commerce-pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@ai-commerce.com
-      - PGADMIN_DEFAULT_PASSWORD=admin123
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@ai-commerce.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
       - "5050:80"
     depends_on:

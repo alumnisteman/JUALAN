@@ -27,6 +27,8 @@ const ordersRouter = require('./orders');
 app.use('/api/orders', ordersRouter);
 const gopayRouter = require('./payment/gopay');
 app.use('/api/payment/gopay', gopayRouter);
+const tiktokPosting = require('./social/tiktok-posting');
+const instagramPosting = require('./social/instagram-posting');
 
 // PostgreSQL
 const pool = new Pool({
@@ -447,99 +449,6 @@ app.post('/api/marketplace/scrape', async (req, res) => {
 
       console.log('[Manual Scrape] Finished!', allProducts.length, 'products');
     })().catch(console.error);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-  try {
-    const startedAt = new Date();
-    res.json({ message: 'Scraping dimulai di background', status: 'running' });
-
-    // Jalankan scraper di background (non-blocking)
-    const { initMarketplaceTable, saveProducts, indexToMeilisearch, pool } = require('./scrapers/db');
-    const tokopedia = require('./scrapers/tokopedia');
-    const shopee = require('./scrapers/shopee');
-    const { scrapeAllLazada, scrapeAllBlibli } = require('./scrapers/lazada-blibli');
-    const { scrapeAllZalora } = require('./scrapers/zalora');
-    const { scrapeAllTikTok } = require('./scrapers/tiktok');
-
-    (async () => {
-      console.log('[Manual Scrape] Dimulai...');
-      await initMarketplaceTable();
-
-      const allProducts = [];
-      let totalScraped = 0;
-      let totalSaved = 0;
-
-      const [tp, sp, lz, bb, zl, tt] = await Promise.allSettled([
-        tokopedia.scrapeAllCategories(),
-        shopee.scrapeAllCategories(),
-        scrapeAllLazada(),
-        scrapeAllBlibli(),
-        scrapeAllZalora(),
-        scrapeAllTikTok()
-      ]);
-
-      for (const r of [tp, sp, lz, bb, zl, tt]) {
-        if (r.status === 'fulfilled') {
-          const scrapedCount = r.value.length;
-         { scrapeAllTikTok } = require('./scrapers/tiktok');
-
-    (async () => {
-      console.log('[Manual Scrape] Dimulai...');
-      await initMarketplaceTable();
-
-      const allProducts = [];
-
-      const [tp, sp, lz, bb, zl, tt] = await Promise.allSettled([
-        tokopedia.scrapeAllCategories(),
-        shopee.scrapeAllCategories(),
-        scrapeAllLazada(),
-        scrapeAllBlibli(),
-        scrapeAllZalora(),
-        scrapeAllTikTok()
-      ]);
-
-      let totalScraped = 0;
-let totalSaved = 0;
-for (const r of [tp, sp, lz, bb, zl, tt]) {
-  if (r.status === 'fulfilled') {
-    const scrapedCount = r.value.length;
-    totalScraped += scrapedCount;
-    const saved = await saveProducts(r.value);
-    totalSaved += saved;
-    allProducts.push(...r.value);
-    console.log(`[Scrape] Saved ${saved} products`);
-  }
-}
-
-await indexToMeilisearch(allProducts);
-await redisClient.del(['marketplace:stats', 'marketplace:trending:20', 'marketplace:flash-sale']);
-
-const finishedAt = new Date();
-try {
-  await pool.query(
-    `INSERT INTO scrape_logs (marketplace, category, items_scraped, items_saved, status, started_at, finished_at)
-     VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-    ['manual', 'all', totalScraped, totalSaved, 'SUCCESS', startedAt, finishedAt]
-  );
-} catch (logErr) {
-  console.error('Failed to insert scrape log:', logErr);
-}
-
-console.log('[Manual Scrape] Selesai!', allProducts.length, 'produk');
-        if (r.status === 'fulfilled') {
-          const saved = await saveProducts(r.value);
-          allProducts.push(...r.value);
-          console.log(`[Scrape] Saved ${saved} products`);
-        }
-      }
-
-      await indexToMeilisearch(allProducts);
-      await redisClient.del(['marketplace:stats', 'marketplace:trending:20', 'marketplace:flash-sale']);
-      console.log('[Manual Scrape] Selesai!', allProducts.length, 'produk');
-    })().catch(console.error);
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -995,6 +904,112 @@ app.get('/api/products', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────────────
+// TIKTOK CONTENT POSTING API — OAUTH CONNECT (untuk akun @skuypergibelanja)
+// ─────────────────────────────────────────────────────────────────
+// Buka endpoint ini di browser sekali, login sebagai @skuypergibelanja,
+// lalu approve izin. Setelah itu token tersimpan otomatis di DB.
+app.get('/api/social/tiktok/connect', (req, res) => {
+  try {
+    if (!tiktokPosting.isConfigured()) {
+      return res.status(400).send(
+        'TIKTOK_CONTENT_CLIENT_KEY / SECRET belum diisi di .env. Isi dulu dengan Client Key & Secret asli dari developers.tiktok.com (bukan yang dummy).'
+      );
+    }
+    const url = tiktokPosting.getAuthorizationUrl('skuypergibelanja');
+    res.redirect(url);
+  } catch (err) {
+    res.status(500).send(`Gagal membuat link authorize: ${err.message}`);
+  }
+});
+
+app.get('/api/social/tiktok/callback', async (req, res) => {
+  try {
+    const { code, error, error_description } = req.query;
+    if (error) {
+      return res.status(400).send(`TikTok menolak authorize: ${error_description || error}`);
+    }
+    if (!code) {
+      return res.status(400).send('Parameter "code" tidak ditemukan dari TikTok.');
+    }
+
+    const tokenData = await tiktokPosting.exchangeCodeForToken(code);
+    if (!tokenData.access_token) {
+      return res.status(400).send(`Gagal tukar token: ${JSON.stringify(tokenData)}`);
+    }
+
+    let displayName = 'skuypergibelanja';
+    try {
+      const info = await tiktokPosting.getUserInfo(tokenData.access_token);
+      displayName = info?.data?.user?.display_name || displayName;
+    } catch (e) {
+      console.warn('[TikTok Connect] gagal ambil user info:', e.message);
+    }
+
+    const expiresAt = new Date(Date.now() + (tokenData.expires_in || 0) * 1000);
+
+    await pool.query(`
+      INSERT INTO api_keys (platform, api_key, permissions, quota, access_token, refresh_token, open_id, account_name, token_expires_at)
+      VALUES ('TikTok Content Posting', $1, '["video.publish","video.upload"]', 'OAuth', $2, $3, $4, $5, $6)
+      ON CONFLICT (platform) DO UPDATE SET
+        access_token = EXCLUDED.access_token,
+        refresh_token = EXCLUDED.refresh_token,
+        open_id = EXCLUDED.open_id,
+        account_name = EXCLUDED.account_name,
+        token_expires_at = EXCLUDED.token_expires_at
+    `, [tokenData.open_id || 'n/a', tokenData.access_token, tokenData.refresh_token, tokenData.open_id, displayName, expiresAt]);
+
+    res.send(`✅ Akun TikTok "${displayName}" berhasil terhubung. Auto-post sekarang bisa publish video ke akun ini. Anda boleh tutup tab ini.`);
+  } catch (err) {
+    console.error('[TikTok Callback] Error:', err.response?.data || err.message);
+    res.status(500).send(`Gagal menghubungkan akun TikTok: ${err.message}`);
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// INSTAGRAM GRAPH API — OAUTH CONNECT (untuk akun @skuypergibelanja)
+// ─────────────────────────────────────────────────────────────────
+app.get('/api/social/instagram/connect', (req, res) => {
+  try {
+    if (!instagramPosting.isConfigured()) {
+      return res.status(400).send(
+        'INSTAGRAM_APP_ID / INSTAGRAM_APP_SECRET belum diisi di .env. Daftar dulu Meta App di developers.facebook.com + tambah produk "Instagram Graph API".'
+      );
+    }
+    res.redirect(instagramPosting.getAuthorizationUrl('skuypergibelanja'));
+  } catch (err) {
+    res.status(500).send(`Gagal membuat link authorize: ${err.message}`);
+  }
+});
+
+app.get('/api/social/instagram/callback', async (req, res) => {
+  try {
+    const { code, error, error_description } = req.query;
+    if (error) return res.status(400).send(`Meta menolak authorize: ${error_description || error}`);
+    if (!code) return res.status(400).send('Parameter "code" tidak ditemukan dari Meta.');
+
+    const tokenData = await instagramPosting.exchangeCodeForToken(code);
+    const { igUserId, pageAccessToken, pageName } = await instagramPosting.getInstagramBusinessAccount(tokenData.access_token);
+
+    const expiresAt = new Date(Date.now() + (tokenData.expires_in || 5184000) * 1000); // default 60 hari
+
+    await pool.query(`
+      INSERT INTO api_keys (platform, api_key, permissions, quota, access_token, open_id, account_name, token_expires_at)
+      VALUES ('Instagram Content Publish', $1, '["instagram_content_publish"]', 'OAuth', $2, $3, $4, $5)
+      ON CONFLICT (platform) DO UPDATE SET
+        access_token = EXCLUDED.access_token,
+        open_id = EXCLUDED.open_id,
+        account_name = EXCLUDED.account_name,
+        token_expires_at = EXCLUDED.token_expires_at
+    `, [igUserId, pageAccessToken, igUserId, pageName, expiresAt]);
+
+    res.send(`✅ Instagram Business Account (via Page "${pageName}") berhasil terhubung. Anda boleh tutup tab ini.`);
+  } catch (err) {
+    console.error('[Instagram Callback] Error:', err.response?.data || err.message);
+    res.status(500).send(`Gagal menghubungkan akun Instagram: ${err.response?.data ? JSON.stringify(err.response.data) : err.message}`);
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
 // SOCIAL MEDIA POST SCHEDULING
 // ─────────────────────────────────────────────────────────────────
 app.post('/api/social/schedule', async (req, res) => {
@@ -1136,6 +1151,18 @@ async function initializeDatabase() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+    // Kolom tambahan untuk simpan OAuth token akun sosial (mis. TikTok @skuypergibelanja)
+    await pool.query(`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS access_token TEXT`);
+    await pool.query(`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS refresh_token TEXT`);
+    await pool.query(`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS open_id VARCHAR(255)`);
+    await pool.query(`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS account_name VARCHAR(255)`);
+    await pool.query(`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS token_expires_at TIMESTAMP`);
+    // Kolom video untuk social_posts (Content Posting API TikTok wajib pakai video)
+    await pool.query(`ALTER TABLE social_posts ADD COLUMN IF NOT EXISTS video_path TEXT`);
+    await pool.query(`ALTER TABLE social_posts ADD COLUMN IF NOT EXISTS image_url TEXT`);
+    await pool.query(`ALTER TABLE social_posts ADD COLUMN IF NOT EXISTS video_url TEXT`);
+    await pool.query(`ALTER TABLE social_posts ADD COLUMN IF NOT EXISTS publish_id VARCHAR(255)`);
+    await pool.query(`ALTER TABLE social_posts ADD COLUMN IF NOT EXISTS failure_reason TEXT`);
 
     // Seed initial keys if empty
     const keysCount = await pool.query('SELECT COUNT(*) FROM api_keys');
@@ -1233,15 +1260,91 @@ function setupCronJobs() {
 
       console.log(`[CRON Social] Memproses ${pending.rows.length} posting terjadwal...`);
       for (const post of pending.rows) {
-        // Simulate posting to platform (replace with real API calls later)
         const platforms = typeof post.platforms === 'string' ? JSON.parse(post.platforms) : post.platforms;
-        console.log(`[CRON Social] ✅ Posting ke ${platforms.join(', ')}: "${post.caption.substring(0, 50)}..."`);
+        let allOk = true;
+        let failureReason = null;
 
-        // Mark as POSTED
-        await pool.query(
-          `UPDATE social_posts SET status = 'POSTED' WHERE id = $1`,
-          [post.id]
-        );
+        for (const platform of platforms) {
+          const p = String(platform).toLowerCase();
+
+          if (p === 'tiktok') {
+            try {
+              const keyRow = await pool.query(
+                `SELECT * FROM api_keys WHERE platform = 'TikTok Content Posting' LIMIT 1`
+              );
+              const account = keyRow.rows[0];
+
+              if (!account || !account.access_token) {
+                throw new Error('Akun TikTok belum terhubung — buka /api/social/tiktok/connect dulu');
+              }
+              if (!post.video_path) {
+                throw new Error('Post ini belum ada video_path — TikTok Content Posting API wajib video');
+              }
+
+              const { publish_id } = await tiktokPosting.publishVideo({
+                accessToken: account.access_token,
+                videoPath: post.video_path,
+                caption: post.caption,
+                privacyLevel: process.env.TIKTOK_PRIVACY_LEVEL || 'SELF_ONLY'
+              });
+
+              await pool.query(`UPDATE social_posts SET publish_id = $1 WHERE id = $2`, [publish_id, post.id]);
+              console.log(`[CRON Social] ✅ TikTok (@${account.account_name}) publish_id=${publish_id}: "${post.caption.substring(0, 50)}..."`);
+            } catch (err) {
+              allOk = false;
+              failureReason = `TikTok: ${err.response?.data ? JSON.stringify(err.response.data) : err.message}`;
+              console.error(`[CRON Social] ❌ Gagal publish TikTok post #${post.id}: ${failureReason}`);
+            }
+          } else if (p === 'instagram') {
+            try {
+              const keyRow = await pool.query(
+                `SELECT * FROM api_keys WHERE platform = 'Instagram Content Publish' LIMIT 1`
+              );
+              const account = keyRow.rows[0];
+              if (!account || !account.access_token) {
+                throw new Error('Akun Instagram belum terhubung — buka /api/social/instagram/connect dulu');
+              }
+
+              let result;
+              if (post.video_url) {
+                result = await instagramPosting.publishReel({
+                  igUserId: account.api_key, // igUserId disimpan di kolom api_key saat connect
+                  pageAccessToken: account.access_token,
+                  videoUrl: post.video_url,
+                  caption: post.caption
+                });
+              } else if (post.image_url) {
+                result = await instagramPosting.publishImage({
+                  igUserId: account.api_key,
+                  pageAccessToken: account.access_token,
+                  imageUrl: post.image_url,
+                  caption: post.caption
+                });
+              } else {
+                throw new Error('Post ini belum ada image_url atau video_url untuk Instagram');
+              }
+
+              await pool.query(`UPDATE social_posts SET publish_id = $1 WHERE id = $2`, [result.id, post.id]);
+              console.log(`[CRON Social] ✅ Instagram (@${account.account_name}) media_id=${result.id}: "${post.caption.substring(0, 50)}..."`);
+            } catch (err) {
+              allOk = false;
+              failureReason = `Instagram: ${err.response?.data ? JSON.stringify(err.response.data) : err.message}`;
+              console.error(`[CRON Social] ❌ Gagal publish Instagram post #${post.id}: ${failureReason}`);
+            }
+          } else {
+            // Platform lain belum ada App Review/token asli —
+            // tetap simulasi supaya jelas kelihatan mana yang sudah nyata vs belum.
+            console.log(`[CRON Social] ⚠️  SIMULASI (belum ada token asli) ke ${platform}: "${post.caption.substring(0, 50)}..."`);
+          }
+        }
+
+        // Mark status sesuai hasil — POSTED kalau semua platform nyata sukses,
+        // FAILED kalau ada yang gagal (biar ketahuan, bukan diam-diam dianggap sukses)
+        if (allOk) {
+          await pool.query(`UPDATE social_posts SET status = 'POSTED', failure_reason = NULL WHERE id = $1`, [post.id]);
+        } else {
+          await pool.query(`UPDATE social_posts SET status = 'FAILED', failure_reason = $1 WHERE id = $2`, [failureReason, post.id]);
+        }
       }
       console.log(`[CRON Social] Selesai memproses ${pending.rows.length} posting.`);
     } catch (err) {

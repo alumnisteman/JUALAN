@@ -1,8 +1,8 @@
 FROM node:20-alpine
 WORKDIR /app
-COPY scheduler/package*.json ./
+COPY email/package*.json ./
 RUN npm ci --only=production
-COPY scheduler/ ./
+COPY email/ ./
 COPY utils/ ./utils/
-EXPOSE 3001
+EXPOSE 5001
 CMD ["node", "index.js"]
