@@ -215,8 +215,8 @@
 <div class="lg:col-span-2 space-y-lg">
 <div>
 <label class="font-label-caps text-[10px] text-on-surface-variant block mb-1">NAMA PRODUK UNIVERSAL</label>
-<div class="font-headline-md text-headline-md text-on-surface bg-surface-container-low p-md rounded-xl border border-outline-variant/30">
-                                Quantum Pulse: Stealth Edition 2024
+<div class="font-headline-md text-headline-md text-on-surface bg-surface-container-low p-md rounded-xl border border-outline-variant/30" id="product-name">
+                                Memuat...
                                 <span class="terminal-cursor"></span>
 </div>
 </div>
@@ -224,22 +224,22 @@
 <div>
 <label class="font-label-caps text-[10px] text-on-surface-variant block mb-1">STOK PUSAT (WH-01)</label>
 <div class="bg-surface-container-low p-md rounded-xl border border-outline-variant/30 flex items-center justify-between">
-<span class="font-display-lg text-[24px] text-primary">1,240</span>
+<span class="font-display-lg text-[24px] text-primary" id="product-stock">-</span>
 <span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
 </div>
 </div>
 <div>
 <label class="font-label-caps text-[10px] text-on-surface-variant block mb-1">HARGA DASAR (IDR)</label>
 <div class="bg-surface-container-low p-md rounded-xl border border-outline-variant/30 flex items-center justify-between">
-<span class="font-display-lg text-[24px] text-on-surface">3.499.000</span>
+<span class="font-display-lg text-[24px] text-on-surface" id="product-price">-</span>
 <span class="material-symbols-outlined text-on-surface-variant" data-icon="payments">payments</span>
 </div>
 </div>
 </div>
 <div>
 <label class="font-label-caps text-[10px] text-on-surface-variant block mb-1">DESKRIPSI MASTER</label>
-<div class="font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low p-md rounded-xl border border-outline-variant/30 h-24 overflow-y-auto">
-                                Smartwatch generasi terbaru dengan sensor biomekanik presisi tinggi. Material titanium Grade 5 dengan lapisan kaca safir anti-reflektif. Baterai tahan hingga 21 hari dalam mode 'Power Core'. Tahan air hingga 100m.
+<div class="font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low p-md rounded-xl border border-outline-variant/30 h-24 overflow-y-auto" id="product-description">
+                                Memuat...
                             </div>
 </div>
 </div>
@@ -481,6 +481,39 @@
     </script>
 <script src="../js/navigation.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+async function loadProductDetail() {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id');
+
+        const response = await fetch('/api/products');
+        const products = await response.json();
+        if (!products || products.length === 0) return;
+
+        const product = productId
+            ? products.find(p => String(p.id) === productId) || products[0]
+            : products[0];
+
+        const nameEl = document.getElementById('product-name');
+        const stockEl = document.getElementById('product-stock');
+        const priceEl = document.getElementById('product-price');
+        const descEl = document.getElementById('product-description');
+
+        if (nameEl) nameEl.childNodes[0].textContent = product.name + '\n                                ';
+        if (stockEl) stockEl.textContent = Number(product.stock).toLocaleString('id-ID');
+        if (priceEl) priceEl.textContent = Number(product.price).toLocaleString('id-ID');
+        if (descEl) descEl.textContent = product.description || '(Belum ada deskripsi untuk produk ini)';
+
+        const uidBadge = document.querySelector('[class*="MASTER_UID"]') || document.querySelector('.font-label-caps.text-\\[10px\\].bg-primary\\/10');
+        if (uidBadge) uidBadge.textContent = `MASTER_UID: PRD-${String(product.id).padStart(4, '0')}`;
+    } catch (error) {
+        console.error('Gagal memuat detail produk:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadProductDetail);
+</script>
 </body></html>
 
 

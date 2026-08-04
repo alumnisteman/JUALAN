@@ -676,5 +676,70 @@ Sync: 15m ago
 <script src="../js/interactive.js"></script>
 <script src="../js/api-connector.js"></script>
 <script src="../js/automation-engine.js"></script>
+<script>
+// Status koneksi marketplace yang JUJUR dari database (bukan "ACTIVE" hardcoded)
+// — default semua FALSE sampai Anda benar-benar isi API key & toggle connect.
+async function loadMarketplaceStatus() {
+    try {
+        const response = await fetch('/api/marketplace-integrations');
+        const integrations = await response.json();
+
+        document.querySelectorAll('.glass-card').forEach(card => {
+            const h3 = card.querySelector('h3');
+            if (!h3) return;
+            const integration = integrations.find(i => i.marketplace_name === h3.textContent.trim());
+            if (!integration) return;
+
+            const badge = card.querySelector('.font-label-caps.text-\\[10px\\].rounded');
+            const statusText = card.querySelector('span.text-tertiary, span.text-error');
+            const connected = integration.connected;
+
+            if (badge) {
+                badge.textContent = connected ? 'ACTIVE' : 'BELUM TERHUBUNG';
+                badge.className = connected
+                    ? 'px-2 py-1 bg-tertiary/10 border border-tertiary/50 text-tertiary font-label-caps text-[10px] rounded'
+                    : 'px-2 py-1 bg-error/10 border border-error/50 text-error font-label-caps text-[10px] rounded';
+            }
+            if (statusText) {
+                statusText.textContent = connected ? 'Terhubung' : 'Belum Terhubung';
+                statusText.className = connected ? 'text-tertiary' : 'text-error';
+            }
+
+            const syncInfo = card.querySelector('.italic');
+            if (syncInfo) {
+                syncInfo.textContent = integration.last_sync_at
+                    ? `Sync: ${new Date(integration.last_sync_at).toLocaleString('id-ID')}`
+                    : 'Belum pernah sync';
+            }
+
+            card.style.cursor = 'pointer';
+            card.dataset.integrationId = integration.id;
+            card.dataset.connected = connected;
+        });
+    } catch (error) {
+        console.error('Gagal memuat status marketplace:', error);
+    }
+}
+
+// Klik kartu untuk toggle status connected (setelah Anda isi API key beneran di api_credentials_management)
+document.addEventListener('click', async (e) => {
+    const card = e.target.closest('.glass-card[data-integration-id]');
+    if (!card) return;
+    const id = card.dataset.integrationId;
+    const newConnected = card.dataset.connected !== 'true';
+    try {
+        await fetch(`/api/marketplace-integrations/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ connected: newConnected, last_sync_at: newConnected ? new Date().toISOString() : null })
+        });
+        loadMarketplaceStatus();
+    } catch (err) {
+        console.error('Gagal update status koneksi:', err);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', loadMarketplaceStatus);
+</script>
 </body></html>
 

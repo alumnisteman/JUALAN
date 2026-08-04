@@ -221,15 +221,14 @@
 </div>
 </section>
 <!-- Category Filters -->
-<div class="flex flex-wrap items-center gap-4 mb-10 overflow-x-auto pb-4 custom-scrollbar">
-<button class="px-5 py-2 rounded-full bg-primary text-on-primary font-bold text-sm whitespace-nowrap">Semua</button>
-<button class="px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap">Konektor Marketplace</button>
-<button class="px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap">Plugin Operasional</button>
-<button class="px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap">Business Blueprint</button>
-<button class="px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap">Ekstensi UI</button>
+<div class="flex flex-wrap items-center gap-4 mb-10 overflow-x-auto pb-4 custom-scrollbar" id="category-filters">
+<button class="filter-btn px-5 py-2 rounded-full bg-primary text-on-primary font-bold text-sm whitespace-nowrap" data-category="">Semua</button>
+<button class="filter-btn px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap" data-category="connector">Konektor Marketplace</button>
+<button class="filter-btn px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap" data-category="plugin">Plugin Operasional</button>
+<button class="filter-btn px-5 py-2 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary transition-colors text-sm whitespace-nowrap" data-category="blueprint">Business Blueprint</button>
 </div>
 <!-- Bento Grid: Konektor -->
-<div class="mb-12">
+<div class="mb-12" id="section-connector">
 <div class="flex items-center justify-between mb-6">
 <div class="flex items-center gap-3">
 <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -240,73 +239,13 @@
 <p class="text-xs text-on-surface-variant">Hubungkan inventory dengan platform global.</p>
 </div>
 </div>
-<a class="text-primary font-bold text-sm hover:underline" href="#">Lihat Semua</a>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bento-gap">
-<!-- Shopee Card -->
-<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 group">
-<div class="flex justify-between items-start">
-<div class="w-14 h-14 rounded-2xl bg-[#EE4D2D]/10 flex items-center justify-center border border-[#EE4D2D]/20">
-<img class="w-10 h-10 object-contain" data-alt="Official Shopee brand logo vector icon in a high-tech minimalist style with vibrant orange tones set against a deep professional dark background. The logo is clean and representative of the e-commerce giant, placed within a glowing container. High-contrast and modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6v5HjRcAK0AGZ3hEDeF7wgVvYYdI0NqZmAKXnvpaWSzIzd917WNYb_s7l6dTi4SQi2fJuLwn2pTK0pmSzHKZoJwQ6E8CABTRFsGC9fq4xmd5gRSVjocJSjV9oGMrQyfjcW6Of1NgtSXuyyFUL-b8nAmC2VQpD2aUnu4rkpUG7rsKJq5MAq2mDuTMr7yd7tAQS3-dUy5tnYSNKolnZbz9tb2OIP3dz8xtOfBLyWJYSIpWU2jIyeKEZikZT0CvnxKQjuxxJk8-JCVT9"/>
-</div>
-<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
-<span class="material-symbols-outlined text-yellow-400 text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-[10px] font-bold">4.9</span>
-</div>
-</div>
-<div>
-<h4 class="font-body-base text-body-base font-bold group-hover:text-primary transition-colors">Shopee Sync Pro</h4>
-<p class="text-xs text-on-surface-variant mb-4">Integrasi inventory real-time &amp; order processing otomatis.</p>
-<div class="flex items-center justify-between">
-<span class="text-[10px] font-code-label text-outline bg-surface-container px-2 py-1 rounded">Dev: NeuralCore</span>
-<span class="text-sm font-bold text-primary">Gratis</span>
-</div>
-</div>
-</div>
-<!-- Tokopedia Card -->
-<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 group">
-<div class="flex justify-between items-start">
-<div class="w-14 h-14 rounded-2xl bg-[#42B549]/10 flex items-center justify-center border border-[#42B549]/20">
-<img class="w-10 h-10 object-contain" data-alt="Official Tokopedia brand logo vector icon in a professional tech-focused style with vibrant green color palette. The icon is sharp, minimalist, and perfectly centered within a dark translucent glass container. Clean corporate branding suitable for a high-performance business operating system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdlF89uc7rdu3GDarvTG0AT_7dV0e7jwGc3HQ7Skwo0O6i2N9xVf4EG16UW2FneuMph12w09EvMvvPwhPkKMDBzwGhskjt9Kf3oq8mhKe6o0UWuETKCvhOuqF5cIvtMHLo4sxmeOfbMvgY_O8QVNaaWo66WTjpc4JfiHWuWb_ecT4Sw73Y-3-k3qd5WuFC79iTytPl8KEUa8DcnQ_9WzF-rcZSEeCbxvEdnt3bnZXldDVY97_oVdbi608TXnbNPIkT6r3Uxu72p4kP"/>
-</div>
-<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
-<span class="material-symbols-outlined text-yellow-400 text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-[10px] font-bold">4.8</span>
-</div>
-</div>
-<div>
-<h4 class="font-body-base text-body-base font-bold group-hover:text-primary transition-colors">Tokopedia Bridge</h4>
-<p class="text-xs text-on-surface-variant mb-4">Manajemen multi-gudang dan promosi flash sale terpadu.</p>
-<div class="flex items-center justify-between">
-<span class="text-[10px] font-code-label text-outline bg-surface-container px-2 py-1 rounded">Dev: IndoStack</span>
-<span class="text-sm font-bold text-primary">IDR 149k/bln</span>
-</div>
-</div>
-</div>
-<!-- Amazon Card -->
-<div class="glass-card rounded-2xl p-6 flex flex-col gap-4 group">
-<div class="flex justify-between items-start">
-<div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
-<img class="w-10 h-10 object-contain" data-alt="Amazon marketplace logo with the iconic smile mark in a high-fidelity minimalist digital art style. The logo is white and silver, glowing subtly against a deep obsidian dark background. The aesthetic is clean, premium, and corporate, representing global logistics and commerce." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYH6ZlktwjHDZY5zSvxygsFLE3_8VGwujVAzxPIG2Sl-OidHXh8a9Wnb2F15FIQyIPkYhInxSkahIiUsHNxjyXVCwwti-D-yym5qaUw2zL9-ExF6pfX0HGYExmMPmoCevAB7CKpcmrcozDT-hAa-7sW1h_Ld8-P3YxI9Q4ge2H7tOxlJhtPrFk_CsEbiu7xu5HXeeM5Wd-poApgpX8NxJJ8M3nT9aEBlosFWWjtWQrJQpSxbcG2J-px1y-KZ5uy4R2i2PlF2PAbwe8"/>
-</div>
-<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
-<span class="material-symbols-outlined text-yellow-400 text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-[10px] font-bold">5.0</span>
-</div>
-</div>
-<div>
-<h4 class="font-body-base text-body-base font-bold group-hover:text-primary transition-colors">Global Amazon FBA</h4>
-<p class="text-xs text-on-surface-variant mb-4">Export otomatis dan sinkronisasi stok ke fulfillment center US/UK.</p>
-<div class="flex items-center justify-between">
-<span class="text-[10px] font-code-label text-outline bg-surface-container px-2 py-1 rounded">Dev: Amazon AWS</span>
-<span class="text-sm font-bold text-primary">Komisi 2%</span>
-</div>
-</div>
-</div>
+<div id="grid-connector" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bento-gap">
+<p class="text-sm text-on-surface-variant col-span-full">Memuat konektor...</p>
 </div>
 </div>
 <!-- Bento Grid: Plugins -->
-<div class="mb-12">
+<div class="mb-12" id="section-plugin">
 <div class="flex items-center justify-between mb-6">
 <div class="flex items-center gap-3">
 <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center">
@@ -318,79 +257,12 @@
 </div>
 </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-bento-gap">
-<!-- Logistik Plugin -->
-<div class="glass-card rounded-2xl p-5 border-l-4 border-l-secondary relative overflow-hidden group">
-<div class="relative z-10">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-secondary text-sm" data-icon="local_shipping">local_shipping</span>
-<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Logistic</span>
-</div>
-<h4 class="font-body-base text-body-base font-bold mb-1">Smart Logistics AI</h4>
-<p class="text-xs text-on-surface-variant mb-6">Pemilihan kurir termurah otomatis berdasarkan rute.</p>
-<div class="flex items-center justify-between mt-auto">
-<span class="text-sm font-bold">IDR 89k</span>
-<button class="bg-secondary/20 hover:bg-secondary/40 text-secondary-fixed-dim p-2 rounded-lg transition-colors">
-<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Akuntansi Plugin -->
-<div class="glass-card rounded-2xl p-5 border-l-4 border-l-primary relative overflow-hidden group">
-<div class="relative z-10">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-primary text-sm" data-icon="account_balance_wallet">account_balance_wallet</span>
-<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Finance</span>
-</div>
-<h4 class="font-body-base text-body-base font-bold mb-1">Auto-Accounting Sync</h4>
-<p class="text-xs text-on-surface-variant mb-6">Penjualan langsung masuk ke neraca laba rugi otomatis.</p>
-<div class="flex items-center justify-between mt-auto">
-<span class="text-sm font-bold">Gratis</span>
-<button class="bg-primary/20 hover:bg-primary/40 text-primary p-2 rounded-lg transition-colors">
-<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
-</button>
-</div>
-</div>
-</div>
-<!-- COD Plugin -->
-<div class="glass-card rounded-2xl p-5 border-l-4 border-l-tertiary relative overflow-hidden group">
-<div class="relative z-10">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-tertiary text-sm" data-icon="payments">payments</span>
-<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Payment</span>
-</div>
-<h4 class="font-body-base text-body-base font-bold mb-1">COD Risk Shield</h4>
-<p class="text-xs text-on-surface-variant mb-6">Deteksi buyer bermasalah sebelum kirim paket COD.</p>
-<div class="flex items-center justify-between mt-auto">
-<span class="text-sm font-bold">IDR 45k</span>
-<button class="bg-tertiary/20 hover:bg-tertiary/40 text-tertiary p-2 rounded-lg transition-colors">
-<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Analytics Plugin -->
-<div class="glass-card rounded-2xl p-5 border-l-4 border-l-error relative overflow-hidden group">
-<div class="relative z-10">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-error text-sm" data-icon="analytics">analytics</span>
-<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Insight</span>
-</div>
-<h4 class="font-body-base text-body-base font-bold mb-1">Retention Radar</h4>
-<p class="text-xs text-on-surface-variant mb-6">Analisis customer churn rate dengan machine learning.</p>
-<div class="flex items-center justify-between mt-auto">
-<span class="text-sm font-bold">Enterprise</span>
-<button class="bg-error/20 hover:bg-error/40 text-error p-2 rounded-lg transition-colors">
-<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
-</button>
-</div>
-</div>
-</div>
+<div id="grid-plugin" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-bento-gap">
+<p class="text-sm text-on-surface-variant col-span-full">Memuat plugin...</p>
 </div>
 </div>
 <!-- Featured Blueprints -->
-<div class="mb-20">
+<div class="mb-20" id="section-blueprint">
 <div class="flex items-center justify-between mb-8">
 <div class="flex items-center gap-3">
 <div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center">
@@ -402,70 +274,8 @@
 </div>
 </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-<!-- Laundry Blueprint -->
-<div class="glass-card rounded-[2rem] overflow-hidden group">
-<div class="h-48 relative">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A futuristic minimalist laundry business concept. Industrial high-tech washing machines in a clean white and cyan neon room. The lighting is cold and professional, highlighting a sleek command center tablet interface for managing the business. 3D digital render, sharp focus, cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY_ii-XxHw_P57mNvBzTn3YogWoDteM0ICliX3q8uBA02dxpMYJ0_WKqPTVH3A6o3_fdIhskG9UaqNUYShIJrujuSQBg--HPOx8SZYQZ95cku-bKvj8XtIrzPM8bFVRNKzZCzXgIT_kuyip7ri1_7_JEdfzan5sqtjAyGD-9fhU4lJ5J9vQJeFYA7RGJWBetRZrU6TCsECsyR8Lybc0Li7DNRZIaz91txPyJzQwiZAjOnFC2VMik7KOrWpPMLevn0XP7moOBTdbH75"/>
-<div class="absolute inset-0 bg-gradient-to-t from-[#131315] to-transparent"></div>
-<div class="absolute bottom-4 left-6">
-<span class="bg-primary px-3 py-1 rounded-full text-[10px] font-bold text-on-primary">NEW</span>
-</div>
-</div>
-<div class="p-6">
-<h4 class="font-headline-md text-headline-md mb-2">Modern Laundry OS</h4>
-<p class="text-sm text-on-surface-variant mb-6">Sistem manajemen laundry kiloan &amp; satuan lengkap dengan tracker kurir dan POS.</p>
-<div class="flex items-center justify-between border-t border-outline-variant/30 pt-4">
-<div class="flex -space-x-2">
-<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-surface-bright flex items-center justify-center text-[10px]">JD</div>
-<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-primary-container flex items-center justify-center text-[10px]">MS</div>
-</div>
-<span class="text-sm font-bold text-tertiary">IDR 2.499k</span>
-</div>
-</div>
-</div>
-<!-- Dropship Blueprint -->
-<div class="glass-card rounded-[2rem] overflow-hidden group">
-<div class="h-48 relative">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A digital representation of global dropshipping and supply chain management. Glowing holographic lines connecting digital product nodes across a world map. The aesthetic is deep blue and circuit-like, conveying a sense of fast-moving international trade and e-commerce agility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl-Z7gvDCafO_WqbEJSrzZNdLOuKAFasoWc1jVj81hjA9diQTRcW5qJELP2TmHW0GbSGXHB_ZWRh9WwziIun1zaT2cJJKJSA1H_jOoKFhnXA-Ne8vpMHHnV1T5OxsSxt7yehXdUaShMHFLbFCbzEMCggqcJTJ0meee8N3IbTLdhnQxpgcrUqh-jKEFoa1YJgf2Oc_JNzywCK0MilFFTd4B5pMn8rNrVaJ_mJmPU82gEDKVjGsG_Z-1hGJ3wUM5cZbwxINuq4uJO4_i"/>
-<div class="absolute inset-0 bg-gradient-to-t from-[#131315] to-transparent"></div>
-<div class="absolute bottom-4 left-6">
-<span class="bg-secondary px-3 py-1 rounded-full text-[10px] font-bold text-on-secondary">TRENDING</span>
-</div>
-</div>
-<div class="p-6">
-<h4 class="font-headline-md text-headline-md mb-2">Automated Dropship Hub</h4>
-<p class="text-sm text-on-surface-variant mb-6">Blueprint untuk membangun brand dropship tanpa stok, terintegrasi ke 50+ supplier China &amp; Lokal.</p>
-<div class="flex items-center justify-between border-t border-outline-variant/30 pt-4">
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-xs text-primary" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
-<span class="text-[10px] text-outline font-code-label">Certified Blueprint</span>
-</div>
-<span class="text-sm font-bold text-tertiary">IDR 1.250k</span>
-</div>
-</div>
-</div>
-<!-- Retail Blueprint -->
-<div class="glass-card rounded-[2rem] overflow-hidden group">
-<div class="h-48 relative">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A sophisticated boutique retail store interior featuring dark minimalist shelving and glowing product displays. The aesthetic is ultra-modern luxury, emphasizing high-end organization and digital inventory control systems. Muted tones of charcoal and circuit blue accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSLIIsKYXXfhjWKz3BsFrG8dzRy_bBfpWw23PxbGUaDIeghcr-oHgINHWgAqCX5v0Dbin9XCg_8JvsYNj5dXC-V51RwXiWV2eE8SoV-AexVyrjXUNv8dy9yF3Kmt6ekDaVHQl-Ane4dQgFkDJPL7rENk_MV7eSwTCacqfRnQPsnXKERO1HkQpOSGwmL-aNayuP5h3_aeaJ5g8jzCXJqLcezIP7Za9xO2G23tlX7wTvTnHClKFfBF9pRKmpB3ndVIt3DiZQxPJQgqCd"/>
-<div class="absolute inset-0 bg-gradient-to-t from-[#131315] to-transparent"></div>
-<div class="absolute bottom-4 left-6">
-<span class="bg-surface-variant px-3 py-1 rounded-full text-[10px] font-bold text-on-surface">STAFF PICK</span>
-</div>
-</div>
-<div class="p-6">
-<h4 class="font-headline-md text-headline-md mb-2">Omnichannel Retail</h4>
-<p class="text-sm text-on-surface-variant mb-6">Gabungkan toko offline dan online Anda dalam satu dashboard pusat yang sinkron otomatis.</p>
-<div class="flex items-center justify-between border-t border-outline-variant/30 pt-4">
-<div class="flex items-center gap-1">
-<span class="material-symbols-outlined text-yellow-500 text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">4.9 (120+)</span>
-</div>
-<span class="text-sm font-bold text-tertiary">IDR 3.900k</span>
-</div>
-</div>
-</div>
+<div id="grid-blueprint" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<p class="text-sm text-on-surface-variant col-span-full">Memuat blueprint...</p>
 </div>
 </div>
 </main>
@@ -517,51 +327,152 @@
 <script src="../js/interactive.js"></script>
 <script src="../js/automation-engine.js"></script>
 <script>
-// Fetch app listings dari API riil untuk marketplace
+// ─────────────────────────────────────────────────────────────
+// Ekosistem Marketplace — data asli dari /api/app-store/listings
+// (bukan lagi kartu statis hardcoded)
+// ─────────────────────────────────────────────────────────────
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str ?? '';
+    return div.innerHTML;
+}
+
+function connectorCardHtml(item) {
+    return `
+        <div class="glass-card rounded-2xl p-6 flex flex-col gap-4 group">
+            <div class="flex justify-between items-start">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center border" style="background:${item.color_hex}1a; border-color:${item.color_hex}33;">
+                    <span class="material-symbols-outlined text-2xl" style="color:${item.color_hex}">${escapeHtml(item.icon)}</span>
+                </div>
+                <div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
+                    <span class="material-symbols-outlined text-yellow-400 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="text-[10px] font-bold">${item.rating}</span>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-body-base text-body-base font-bold group-hover:text-primary transition-colors">${escapeHtml(item.name)}</h4>
+                <p class="text-xs text-on-surface-variant mb-4">${escapeHtml(item.description)}</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-code-label text-outline bg-surface-container px-2 py-1 rounded">Dev: ${escapeHtml(item.developer)}</span>
+                    <span class="text-sm font-bold text-primary">${escapeHtml(item.price_label)}</span>
+                </div>
+                <button data-install-id="${item.id}" class="install-btn w-full mt-3 py-2 rounded-lg text-xs font-bold bg-primary/20 hover:bg-primary/40 text-primary transition-colors">
+                    INSTALL &middot; ${item.installs_count} terpasang
+                </button>
+            </div>
+        </div>`;
+}
+
+function pluginCardHtml(item) {
+    const icon = item.locked ? 'lock' : 'add';
+    return `
+        <div class="glass-card rounded-2xl p-5 border-l-4 relative overflow-hidden group" style="border-left-color:${item.color_hex}">
+            <div class="relative z-10">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="material-symbols-outlined text-sm" style="color:${item.color_hex}">${escapeHtml(item.icon)}</span>
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-outline">${item.installs_count} terpasang</span>
+                </div>
+                <h4 class="font-body-base text-body-base font-bold mb-1">${escapeHtml(item.name)}</h4>
+                <p class="text-xs text-on-surface-variant mb-6">${escapeHtml(item.description)}</p>
+                <div class="flex items-center justify-between mt-auto">
+                    <span class="text-sm font-bold">${escapeHtml(item.price_label)}</span>
+                    <button data-install-id="${item.id}" ${item.locked ? 'disabled' : ''} class="install-btn p-2 rounded-lg transition-colors" style="background:${item.color_hex}33;color:${item.color_hex}">
+                        <span class="material-symbols-outlined text-sm">${icon}</span>
+                    </button>
+                </div>
+            </div>
+        </div>`;
+}
+
+function blueprintCardHtml(item) {
+    return `
+        <div class="glass-card rounded-[2rem] overflow-hidden group">
+            <div class="h-32 relative flex items-center justify-center" style="background:linear-gradient(135deg, ${item.color_hex}22, #131315)">
+                <span class="material-symbols-outlined text-5xl opacity-40" style="color:${item.color_hex}">${escapeHtml(item.icon)}</span>
+                ${item.badge ? `<div class="absolute bottom-4 left-6"><span class="bg-primary px-3 py-1 rounded-full text-[10px] font-bold text-on-primary">${escapeHtml(item.badge)}</span></div>` : ''}
+            </div>
+            <div class="p-6">
+                <h4 class="font-headline-md text-headline-md mb-2">${escapeHtml(item.name)}</h4>
+                <p class="text-sm text-on-surface-variant mb-6">${escapeHtml(item.description)}</p>
+                <div class="flex items-center justify-between border-t border-outline-variant/30 pt-4">
+                    <span class="text-[10px] text-outline font-code-label">${item.installs_count} bisnis pakai ini</span>
+                    <span class="text-sm font-bold text-tertiary">${escapeHtml(item.price_label)}</span>
+                </div>
+                <button data-install-id="${item.id}" class="install-btn w-full mt-4 py-2 rounded-lg text-xs font-bold bg-primary text-on-primary hover:opacity-90 transition-opacity">GUNAKAN BLUEPRINT</button>
+            </div>
+        </div>`;
+}
+
+const RENDERERS = { connector: connectorCardHtml, plugin: pluginCardHtml, blueprint: blueprintCardHtml };
+let allListings = [];
+
+function renderGrid(category) {
+    const container = document.getElementById(`grid-${category}`);
+    if (!container) return;
+    const items = allListings.filter(l => l.category === category);
+    container.innerHTML = items.length
+        ? items.map(RENDERERS[category]).join('')
+        : '<p class="text-sm text-on-surface-variant col-span-full">Belum ada item di kategori ini.</p>';
+}
+
 async function loadAppListings() {
     try {
         const response = await fetch('/api/app-store/listings');
-        const listings = await response.json();
-        
-        if (listings && listings.length > 0) {
-            // Update marketplace cards dengan data riil
-            const cardsContainer = document.querySelector('.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3');
-            if (cardsContainer) {
-                // Clear existing cards
-                cardsContainer.innerHTML = '';
-                
-                // Render listings dari API
-                listings.forEach(listing => {
-                    const card = document.createElement('div');
-                    card.className = 'glass-card rounded-2xl p-6 flex flex-col gap-4 group';
-                    card.innerHTML = `
-                        <div class="flex justify-between items-start">
-                            <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
-                                <span class="material-symbols-outlined text-2xl text-primary">${listing.icon || 'extension'}</span>
-                            </div>
-                            <div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-lg">
-                                <span class="material-symbols-outlined text-yellow-400 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-                                <span class="text-xs font-bold">${listing.rating || '4.5'}</span>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-on-surface">${listing.name}</h3>
-                            <p class="text-sm text-on-surface-variant mt-1">${listing.description}</p>
-                        </div>
-                        <div class="flex justify-between items-center mt-auto">
-                            <span class="text-sm font-bold text-tertiary">${listing.price || 'Gratis'}</span>
-                            <button class="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-bold hover:opacity-90 transition-opacity">INSTALL</button>
-                        </div>
-                    `;
-                    cardsContainer.appendChild(card);
-                });
-            }
-        }
+        allListings = await response.json();
+        ['connector', 'plugin', 'blueprint'].forEach(renderGrid);
     } catch (error) {
-        console.log('Gagal memuat app listings:', error);
+        console.error('Gagal memuat app listings:', error);
+        ['connector', 'plugin', 'blueprint'].forEach(cat => {
+            const container = document.getElementById(`grid-${cat}`);
+            if (container) container.innerHTML = '<p class="text-sm text-error col-span-full">Gagal memuat data dari server.</p>';
+        });
     }
 }
 
+// Filter kategori
+document.getElementById('category-filters').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('bg-primary', 'text-on-primary');
+        b.classList.add('bg-surface-container', 'border', 'border-outline-variant', 'text-on-surface-variant');
+    });
+    btn.classList.add('bg-primary', 'text-on-primary');
+    btn.classList.remove('bg-surface-container', 'border', 'border-outline-variant', 'text-on-surface-variant');
+
+    const category = btn.dataset.category;
+    const sections = { connector: 'section-connector', plugin: 'section-plugin', blueprint: 'section-blueprint' };
+    Object.entries(sections).forEach(([cat, sectionId]) => {
+        const el = document.getElementById(sectionId);
+        if (el) el.style.display = (!category || category === cat) ? '' : 'none';
+    });
+});
+
+// Install button (event delegation, karena kartu dibuat dinamis)
+document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.install-btn');
+    if (!btn || btn.disabled) return;
+    const id = btn.dataset.installId;
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Memproses...';
+    try {
+        const res = await fetch(`/api/app-store/listings/${id}/install`, { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Gagal install');
+        const idx = allListings.findIndex(l => String(l.id) === String(id));
+        if (idx !== -1) {
+            allListings[idx] = data;
+            renderGrid(data.category);
+        }
+    } catch (err) {
+        alert(`Gagal: ${err.message}`);
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+});
+
 document.addEventListener('DOMContentLoaded', loadAppListings);
 </script>
+
 </body></html>

@@ -532,49 +532,49 @@
 <script src="../js/interactive.js"></script>
 <script src="../js/automation-engine.js"></script>
 <script>
-// Fetch customer segments dari API riil
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str ?? '';
+    return div.innerHTML;
+}
+
 async function loadCustomerSegments() {
     try {
         const response = await fetch('/api/customers/segments');
         const segments = await response.json();
-        
-        if (segments && segments.length > 0) {
-            // Update tabel segmen pelanggan dengan data riil
-            const tableBody = document.querySelector('tbody');
-            if (tableBody) {
-                // Clear existing rows
-                tableBody.innerHTML = '';
-                
-                // Render segments dari API
-                segments.forEach(segment => {
-                    const row = document.createElement('tr');
-                    row.className = 'border-b border-outline-variant/20 hover:bg-surface-container-high/30 transition-colors';
-                    row.innerHTML = `
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-primary text-sm">group</span>
-                                </div>
-                                <span class="font-body-md text-on-surface">${segment.name}</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 font-data-mono text-sm text-on-surface-variant">${segment.volume}</td>
-                        <td class="px-6 py-4 font-data-mono text-sm text-primary">$${segment.avg_ltv.toLocaleString()}</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-2">
-                                <div class="w-20 h-1 rounded-full bg-surface-container overflow-hidden">
-                                    <div class="h-full rounded-full ${segment.churn_propensity > 50 ? 'bg-risk-danger' : 'bg-market-growth'}" style="width: ${segment.churn_propensity}%"></div>
-                                </div>
-                                <span class="font-data-mono text-xs text-on-surface-variant">${segment.churn_propensity}%</span>
-                            </div>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            }
+
+        const tableBody = document.querySelector('tbody');
+        if (!tableBody) return;
+
+        if (!segments || segments.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-sm text-on-surface-variant">Belum ada segmen pelanggan.</td></tr>';
+            return;
         }
+
+        tableBody.innerHTML = segments.map(segment => `
+            <tr class="border-b border-outline-variant/20 hover:bg-surface-container-high/30 transition-colors">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-sm">group</span>
+                        </div>
+                        <span class="font-body-md text-on-surface">${escapeHtml(segment.segment_name)}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 font-data-mono text-sm text-on-surface-variant">${segment.customer_count}</td>
+                <td class="px-6 py-4 font-data-mono text-sm text-primary">Rp${Number(segment.avg_order_value).toLocaleString('id-ID')}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-20 h-1 rounded-full bg-surface-container overflow-hidden">
+                            <div class="h-full rounded-full ${segment.churn_risk_percent > 50 ? 'bg-risk-danger' : 'bg-market-growth'}" style="width: ${segment.churn_risk_percent}%"></div>
+                        </div>
+                        <span class="font-data-mono text-xs text-on-surface-variant">${segment.churn_risk_percent}%</span>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
     } catch (error) {
-        console.log('Gagal memuat customer segments:', error);
+        console.error('Gagal memuat customer segments:', error);
     }
 }
 

@@ -413,79 +413,77 @@
 <script src="../js/interactive.js"></script>
 <script src="../js/automation-engine.js"></script>
 <script>
-// Fetch margin rules dari API riil
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str ?? '';
+    return div.innerHTML;
+}
+
 async function loadMarginRules() {
     try {
         const response = await fetch('/api/margin-rules');
         const rules = await response.json();
-        
-        if (rules && rules.length > 0) {
-            // Update "DAFTAR ATURAN AKTIF" dengan jumlah rules aktif
-            const activeCountElement = document.querySelector('.font-label-caps:contains("DAFTAR ATURAN AKTIF")').parentElement.querySelector('.text-outline');
-            if (activeCountElement) {
-                const activeCount = rules.filter(r => r.enabled).length;
-                activeCountElement.textContent = `${activeCount} Aktif`;
+
+        // Update badge jumlah aturan aktif (cari label lewat textContent, bukan :contains())
+        const labels = document.querySelectorAll('.font-label-caps');
+        labels.forEach(label => {
+            if (label.textContent.includes('DAFTAR ATURAN AKTIF')) {
+                const countElement = label.parentElement?.querySelector('.text-outline');
+                if (countElement) {
+                    const activeCount = rules.filter(r => r.active).length;
+                    countElement.textContent = `${activeCount} Aktif`;
+                }
             }
-            
-            // Render rule cards dari data riil
-            const rulesContainer = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-3.gap-md');
-            if (rulesContainer) {
-                // Hapus card empty state
-                const emptyCard = rulesContainer.querySelector('.border-dashed');
-                if (emptyCard) emptyCard.remove();
-                
-                // Tambahkan rule cards dari API
-                rules.forEach(rule => {
-                    const ruleCard = document.createElement('div');
-                    ruleCard.className = 'p-md rounded-xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/50 transition-all group';
-                    ruleCard.innerHTML = `
-                        <div class="flex justify-between items-start mb-md">
-                            <div class="w-8 h-8 rounded-lg ${rule.enabled ? 'bg-primary/10 text-primary' : 'bg-surface-variant text-outline'} flex items-center justify-center">
-                                <span class="material-symbols-outlined" data-icon="rule">${rule.enabled ? 'check_circle' : 'cancel'}</span>
-                            </div>
-                            <div class="flex items-center gap-xs">
-                                <span class="w-2 h-2 rounded-full ${rule.enabled ? 'bg-tertiary' : 'bg-outline'}"></span>
-                                <span class="text-[10px] font-label-caps ${rule.enabled ? 'text-tertiary' : 'text-outline'}">${rule.enabled ? 'AKTIF' : 'NONAKTIF'}</span>
-                            </div>
-                        </div>
-                        <h4 class="font-headline-md text-body-md text-on-surface mb-xs">${rule.name}</h4>
-                        <p class="text-body-sm text-on-surface-variant mb-md">Kategori: ${rule.category} | Min Margin: ${rule.min_margin_pct}%</p>
-                        <div class="flex items-center justify-between pt-sm border-t border-outline-variant/20">
-                            <span class="text-data-mono text-[11px] text-outline">ID: ${rule.id}</span>
-                            <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary cursor-pointer" data-icon="edit">edit</span>
-                        </div>
-                    `;
-                    rulesContainer.appendChild(ruleCard);
-                });
-            }
+        });
+
+        const rulesContainer = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-3.gap-md');
+        if (!rulesContainer) return;
+        if (!rules || rules.length === 0) {
+            rulesContainer.innerHTML = '<p class="text-sm text-on-surface-variant col-span-full">Belum ada aturan margin. Tambah lewat tombol "+ Aturan Baru".</p>';
+            return;
         }
+
+        rulesContainer.innerHTML = rules.map(rule => `
+            <div class="p-md rounded-xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/50 transition-all group">
+                <div class="flex justify-between items-start mb-md">
+                    <div class="w-8 h-8 rounded-lg ${rule.active ? 'bg-primary/10 text-primary' : 'bg-surface-variant text-outline'} flex items-center justify-center">
+                        <span class="material-symbols-outlined" data-icon="rule">${rule.active ? 'check_circle' : 'cancel'}</span>
+                    </div>
+                    <div class="flex items-center gap-xs">
+                        <span class="w-2 h-2 rounded-full ${rule.active ? 'bg-tertiary' : 'bg-outline'}"></span>
+                        <span class="text-[10px] font-label-caps ${rule.active ? 'text-tertiary' : 'text-outline'}">${rule.active ? 'AKTIF' : 'NONAKTIF'}</span>
+                    </div>
+                </div>
+                <h4 class="font-headline-md text-body-md text-on-surface mb-xs">${escapeHtml(rule.rule_name)}</h4>
+                <p class="text-body-sm text-on-surface-variant mb-md">Kategori: ${escapeHtml(rule.category)} | Min Margin: ${rule.min_margin_percent}% | Target: ${rule.target_margin_percent ?? '-'}%</p>
+                <div class="flex items-center justify-between pt-sm border-t border-outline-variant/20">
+                    <span class="text-data-mono text-[11px] text-outline">ID: ${rule.id}</span>
+                    <button data-toggle-id="${rule.id}" data-toggle-active="${rule.active}" class="toggle-rule-btn material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">${rule.active ? 'toggle_on' : 'toggle_off'}</button>
+                </div>
+            </div>
+        `).join('');
     } catch (error) {
-        console.log('Gagal memuat margin rules:', error);
+        console.error('Gagal memuat margin rules:', error);
     }
 }
 
-// Fallback selector untuk elemen yang tidak support :contains()
-function updateMarginRulesByLoop() {
-    fetch('/api/margin-rules')
-        .then(res => res.json())
-        .then(rules => {
-            if (rules && rules.length > 0) {
-                const labels = document.querySelectorAll('.font-label-caps');
-                labels.forEach(label => {
-                    if (label.textContent.includes('DAFTAR ATURAN AKTIF')) {
-                        const parent = label.parentElement;
-                        const countElement = parent.querySelector('.text-outline');
-                        if (countElement) {
-                            const activeCount = rules.filter(r => r.enabled).length;
-                            countElement.textContent = `${activeCount} Aktif`;
-                        }
-                    }
-                });
-            }
-        })
-        .catch(err => console.log('Gagal memuat margin rules:', err));
-}
+document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.toggle-rule-btn');
+    if (!btn) return;
+    const id = btn.dataset.toggleId;
+    const newActive = btn.dataset.toggleActive !== 'true';
+    try {
+        await fetch(`/api/margin-rules/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ active: newActive })
+        });
+        loadMarginRules();
+    } catch (err) {
+        console.error('Gagal toggle rule:', err);
+    }
+});
 
-document.addEventListener('DOMContentLoaded', updateMarginRulesByLoop);
+document.addEventListener('DOMContentLoaded', loadMarginRules);
 </script>
 </body></html>

@@ -483,15 +483,15 @@ async function loadEventsFeed() {
                 events.forEach((event, index) => {
                     const colors = ['bg-primary', 'bg-secondary', 'bg-tertiary'];
                     const color = colors[index % colors.length];
-                    const time = new Date(event.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
+                    const time = new Date(event.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
                     
                     const eventNode = document.createElement('div');
                     eventNode.className = 'relative pl-12 group cursor-pointer event-node';
                     eventNode.innerHTML = `
                         <div class="absolute left-4 top-1.5 w-4 h-4 rounded-full border-4 border-background ${color} z-10 group-hover:scale-125 transition-transform"></div>
                         <div class="flex flex-col">
-                            <span class="font-code-label text-code-label text-on-surface uppercase">${event.type}</span>
-                            <span class="text-body-sm text-on-surface-variant">${event.message}</span>
+                            <span class="font-code-label text-code-label text-on-surface uppercase">${event.event_type}</span>
+                            <span class="text-body-sm text-on-surface-variant">${event.message || ''}</span>
                             <span class="font-code-label text-[10px] text-outline mt-1">${time}</span>
                         </div>
                     `;

@@ -29,6 +29,58 @@ const gopayRouter = require('./payment/gopay');
 app.use('/api/payment/gopay', gopayRouter);
 const tiktokPosting = require('./social/tiktok-posting');
 const instagramPosting = require('./social/instagram-posting');
+const { createCrudRouter } = require('./generic-crud');
+
+// Mount CRUD router generik untuk modul-modul yang polanya list/create/update/delete
+app.use('/api/margin-rules', (req, res, next) =>
+  createCrudRouter(pool, 'margin_rules', ['rule_name', 'category', 'min_margin_percent', 'target_margin_percent', 'condition_type', 'active'], 'created_at DESC')(req, res, next)
+);
+app.use('/api/customers/segments', (req, res, next) =>
+  createCrudRouter(pool, 'customer_segments', ['segment_name', 'description', 'criteria', 'customer_count', 'avg_order_value', 'churn_risk_percent'])(req, res, next)
+);
+app.use('/api/events/feed', (req, res, next) =>
+  createCrudRouter(pool, 'event_feed', ['event_type', 'message', 'source_service', 'payload', 'severity'], 'created_at DESC')(req, res, next)
+);
+app.use('/api/nodes', (req, res, next) =>
+  createCrudRouter(pool, 'workflow_nodes', ['node_name', 'node_type', 'config', 'position_x', 'position_y', 'connected_to'])(req, res, next)
+);
+app.use('/api/ai/models', (req, res, next) =>
+  createCrudRouter(pool, 'ai_models_catalog', ['model_name', 'provider', 'use_case', 'cost_label', 'context_window', 'active'])(req, res, next)
+);
+app.use('/api/tenants', (req, res, next) =>
+  createCrudRouter(pool, 'tenants', ['tenant_name', 'subdomain', 'plan', 'status'], 'created_at DESC')(req, res, next)
+);
+app.use('/api/affiliates', (req, res, next) =>
+  createCrudRouter(pool, 'affiliates', ['affiliate_name', 'referral_code', 'commission_percent', 'total_referrals', 'total_commission', 'status'], 'total_commission DESC')(req, res, next)
+);
+app.use('/api/products/manage', (req, res, next) =>
+  createCrudRouter(pool, 'products', ['name', 'category', 'price', 'stock', 'sold', 'description'])(req, res, next)
+);
+app.use('/api/suppliers', (req, res, next) =>
+  createCrudRouter(pool, 'suppliers', ['supplier_name', 'contact_person', 'phone', 'fulfillment_type', 'avg_lead_time_days', 'rating', 'status'])(req, res, next)
+);
+app.use('/api/marketplace-integrations', (req, res, next) =>
+  createCrudRouter(pool, 'marketplace_integrations', ['marketplace_name', 'connected', 'store_name', 'last_sync_at', 'auto_sync_enabled'])(req, res, next)
+);
+
+// Recalculate customer segments dari data orders nyata (bukan angka statis)
+app.post('/api/customers/segments/recalculate', async (req, res) => {
+  try {
+    const segments = await pool.query('SELECT * FROM customer_segments');
+    const totalOrders = await pool.query('SELECT COUNT(*) c, COALESCE(AVG(amount),0) avg_val FROM orders');
+    for (const seg of segments.rows) {
+      await pool.query(
+        'UPDATE customer_segments SET customer_count = $1, avg_order_value = $2 WHERE id = $3',
+        [parseInt(totalOrders.rows[0].c) || 0, parseFloat(totalOrders.rows[0].avg_val) || 0, seg.id]
+      );
+    }
+    const updated = await pool.query('SELECT * FROM customer_segments');
+    res.json(updated.rows);
+  } catch (err) {
+    console.error('[Segments Recalculate] Error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // PostgreSQL
 const pool = new Pool({
@@ -903,6 +955,25 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
+// Saran restok dihitung dari stok produk nyata (bukan rekomendasi AI-generated palsu)
+app.get('/api/products/restock-suggestions', async (req, res) => {
+  try {
+    const threshold = parseInt(req.query.threshold) || 50;
+    const target = parseInt(req.query.target) || 100;
+    const result = await pool.query(
+      'SELECT id, name, category, stock FROM products WHERE stock < $1 ORDER BY stock ASC',
+      [threshold]
+    );
+    const suggestions = result.rows.map((p) => ({
+      ...p,
+      recommended_restock: Math.max(target - p.stock, 0)
+    }));
+    res.json(suggestions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // ─────────────────────────────────────────────────────────────────
 // TIKTOK CONTENT POSTING API — OAUTH CONNECT (untuk akun @skuypergibelanja)
 // ─────────────────────────────────────────────────────────────────
@@ -1010,6 +1081,41 @@ app.get('/api/social/instagram/callback', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────────────
+// EKOSISTEM MARKETPLACE APP STORE
+// ─────────────────────────────────────────────────────────────────
+app.get('/api/app-store/listings', async (req, res) => {
+  try {
+    const { category } = req.query;
+    const result = category
+      ? await pool.query('SELECT * FROM app_store_listings WHERE category = $1 ORDER BY installs_count DESC, rating DESC', [category])
+      : await pool.query('SELECT * FROM app_store_listings ORDER BY installs_count DESC, rating DESC');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('[App Store] Error listings:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/app-store/listings/:id/install', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const listing = await pool.query('SELECT * FROM app_store_listings WHERE id = $1', [id]);
+    if (listing.rows.length === 0) return res.status(404).json({ error: 'Listing tidak ditemukan' });
+    if (listing.rows[0].locked) return res.status(403).json({ error: 'Item ini butuh Enterprise plan' });
+
+    await pool.query('INSERT INTO app_store_installs (listing_id) VALUES ($1)', [id]);
+    const updated = await pool.query(
+      'UPDATE app_store_listings SET installs_count = installs_count + 1 WHERE id = $1 RETURNING *',
+      [id]
+    );
+    res.json(updated.rows[0]);
+  } catch (err) {
+    console.error('[App Store] Error install:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
 // SOCIAL MEDIA POST SCHEDULING
 // ─────────────────────────────────────────────────────────────────
 app.post('/api/social/schedule', async (req, res) => {
@@ -1098,9 +1204,80 @@ async function initializeDatabase() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+    // Kolom tambahan yang dipakai backend/orders/index.js (sync order dari marketplace) —
+    // sebelumnya tabel ini TIDAK punya kolom-kolom ini sama sekali, jadi POST /api/orders/sync
+    // selalu gagal dengan error "column does not exist". Sekarang diselaraskan.
+    await pool.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS order_id VARCHAR(255)`);
+    await pool.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS marketplace VARCHAR(100)`);
+    await pool.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS product_id INTEGER`);
+    await pool.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS quantity INTEGER DEFAULT 1`);
+    await pool.query(`ALTER TABLE orders ADD COLUMN IF NOT EXISTS price DECIMAL(10,2)`);
+    await pool.query(`
+      DO $$ BEGIN
+        ALTER TABLE orders ADD CONSTRAINT orders_order_id_marketplace_unique UNIQUE (order_id, marketplace);
+      EXCEPTION WHEN duplicate_object THEN NULL;
+      END $$;
+    `);
 
-    // Seed initial orders if empty
-    const ordersCount = await pool.query('SELECT COUNT(*) FROM orders');
+    // Seed initial products if empty (tabel ini sebelumnya tidak pernah diisi sama sekali)
+    const productsCount = await pool.query('SELECT COUNT(*) FROM products');
+    if (parseInt(productsCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO products (name, category, price, stock, sold, description) VALUES
+        ('Kaos Polos Combed 30s', 'Fashion', 45000, 320, 128, 'Kaos combed 30s adem, cocok untuk sablon custom maupun dipakai harian.'),
+        ('Powerbank 10000mAh Fast Charging', 'Elektronik', 155000, 84, 62, 'Powerbank kapasitas 10000mAh dengan fast charging 22.5W, kompatibel semua HP.'),
+        ('Kopi Kenangan Sachet 1L', 'F&B', 89000, 210, 340, 'Kopi susu kemasan 1 liter, siap seduh dingin, tahan di kulkas 3 hari.'),
+        ('Skincare Set Viral Glow Up', 'Kecantikan', 129000, 45, 210, 'Paket skincare 5 langkah untuk kulit glowing, cocok segala jenis kulit.'),
+        ('Sepatu Sneakers Casual Pria', 'Fashion', 189000, 60, 34, 'Sneakers casual bahan kanvas, ringan dan nyaman untuk aktivitas harian.')
+      `);
+    }
+
+    // ─── Suppliers (supplier_fulfillment_hub) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS suppliers (
+        id SERIAL PRIMARY KEY,
+        supplier_name VARCHAR(255) NOT NULL,
+        contact_person VARCHAR(255),
+        phone VARCHAR(50),
+        fulfillment_type VARCHAR(50) DEFAULT 'dropship',
+        avg_lead_time_days INT DEFAULT 3,
+        rating NUMERIC(2,1) DEFAULT 4.5,
+        status VARCHAR(20) DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    const supplierCount = await pool.query('SELECT COUNT(*) FROM suppliers');
+    if (parseInt(supplierCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO suppliers (supplier_name, contact_person, phone, fulfillment_type, avg_lead_time_days, rating) VALUES
+        ('CV Sumber Rejeki Textile', 'Pak Hendra', '081234567890', 'dropship', 2, 4.8),
+        ('PT Gudang Elektronik Jaya', 'Bu Lina', '081298765432', 'warehouse', 1, 4.6),
+        ('Supplier Kosmetik Bandung', 'Pak Andi', '081311122233', 'dropship', 3, 4.4)
+      `);
+    }
+
+    // ─── Marketplace Integrations Status (integrasi_marketplace_api) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS marketplace_integrations (
+        id SERIAL PRIMARY KEY,
+        marketplace_name VARCHAR(100) UNIQUE NOT NULL,
+        connected BOOLEAN DEFAULT FALSE,
+        store_name VARCHAR(255),
+        last_sync_at TIMESTAMP,
+        auto_sync_enabled BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    const marketplaceIntCount = await pool.query('SELECT COUNT(*) FROM marketplace_integrations');
+    if (parseInt(marketplaceIntCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO marketplace_integrations (marketplace_name, connected, store_name, auto_sync_enabled) VALUES
+        ('Shopee', FALSE, NULL, FALSE),
+        ('Tokopedia', FALSE, NULL, FALSE),
+        ('TikTok Shop', FALSE, NULL, FALSE),
+        ('Lazada', FALSE, NULL, FALSE)
+      `);
+    }
     if (parseInt(ordersCount.rows[0].count) === 0) {
       await pool.query(`
         INSERT INTO orders (customer_name, product_name, amount, status, platform, created_at) VALUES
@@ -1126,9 +1303,11 @@ async function initializeDatabase() {
         price DECIMAL(10,2),
         stock INTEGER,
         sold INTEGER,
+        description TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+    await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS description TEXT`);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS social_posts (
         id SERIAL PRIMARY KEY,
@@ -1163,6 +1342,205 @@ async function initializeDatabase() {
     await pool.query(`ALTER TABLE social_posts ADD COLUMN IF NOT EXISTS video_url TEXT`);
     await pool.query(`ALTER TABLE social_posts ADD COLUMN IF NOT EXISTS publish_id VARCHAR(255)`);
     await pool.query(`ALTER TABLE social_posts ADD COLUMN IF NOT EXISTS failure_reason TEXT`);
+
+    // App Store Ekosistem Marketplace — tabel nyata untuk /ekosistem_marketplace_app_store
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS app_store_listings (
+        id SERIAL PRIMARY KEY,
+        category VARCHAR(50) NOT NULL,   -- connector | plugin | blueprint
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        developer VARCHAR(255),
+        price_label VARCHAR(100) DEFAULT 'Gratis',
+        rating NUMERIC(2,1) DEFAULT 4.5,
+        badge VARCHAR(50),
+        icon VARCHAR(100) DEFAULT 'extension',
+        color_hex VARCHAR(20) DEFAULT '#adc6ff',
+        locked BOOLEAN DEFAULT FALSE,
+        installs_count INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS app_store_installs (
+        id SERIAL PRIMARY KEY,
+        listing_id INT REFERENCES app_store_listings(id) ON DELETE CASCADE,
+        installed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    const listingCount = await pool.query('SELECT COUNT(*) FROM app_store_listings');
+    if (parseInt(listingCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO app_store_listings (category, name, description, developer, price_label, rating, badge, icon, color_hex, locked) VALUES
+        ('connector', 'Shopee Sync Pro', 'Integrasi inventory real-time & order processing otomatis.', 'NeuralCore', 'Gratis', 4.9, NULL, 'sync', '#EE4D2D', FALSE),
+        ('connector', 'Tokopedia Bridge', 'Manajemen multi-gudang dan promosi flash sale terpadu.', 'IndoStack', 'IDR 149k/bln', 4.8, NULL, 'hub', '#42B549', FALSE),
+        ('connector', 'Global Amazon FBA', 'Export otomatis dan sinkronisasi stok ke fulfillment center US/UK.', 'Amazon AWS', 'Komisi 2%', 5.0, NULL, 'public', '#ffffff', FALSE),
+        ('plugin', 'Smart Logistics AI', 'Pemilihan kurir termurah otomatis berdasarkan rute.', 'NeuralCore', 'IDR 89k', 4.6, NULL, 'local_shipping', '#ddb7ff', FALSE),
+        ('plugin', 'Auto-Accounting Sync', 'Penjualan langsung masuk ke neraca laba rugi otomatis.', 'NeuralCore', 'Gratis', 4.7, NULL, 'account_balance_wallet', '#adc6ff', FALSE),
+        ('plugin', 'COD Risk Shield', 'Deteksi buyer bermasalah sebelum kirim paket COD.', 'NeuralCore', 'IDR 45k', 4.5, NULL, 'payments', '#ffb786', FALSE),
+        ('plugin', 'Retention Radar', 'Analisis customer churn rate dengan machine learning.', 'NeuralCore', 'Enterprise', 4.4, NULL, 'analytics', '#ffb4ab', TRUE),
+        ('blueprint', 'Modern Laundry OS', 'Sistem manajemen laundry kiloan & satuan lengkap dengan tracker kurir dan POS.', 'NeuralCore', 'IDR 2.499k', 4.8, 'NEW', 'architecture', '#adc6ff', FALSE),
+        ('blueprint', 'Automated Dropship Hub', 'Blueprint untuk membangun brand dropship tanpa stok, terintegrasi ke 50+ supplier China & Lokal.', 'NeuralCore', 'IDR 1.250k', 4.7, 'TRENDING', 'account_tree', '#ddb7ff', FALSE),
+        ('blueprint', 'Omnichannel Retail', 'Gabungkan toko offline dan online Anda dalam satu dashboard pusat yang sinkron otomatis.', 'NeuralCore', 'IDR 3.900k', 4.9, 'STAFF PICK', 'storefront', '#ffb786', FALSE)
+      `);
+      console.log('[App Store] Seed data awal berhasil dibuat (10 listing).');
+    }
+
+    // ─── Margin Rules (aturan_margin_otomatis_rule_engine) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS margin_rules (
+        id SERIAL PRIMARY KEY,
+        rule_name VARCHAR(255) NOT NULL,
+        category VARCHAR(100),
+        min_margin_percent NUMERIC(5,2) NOT NULL,
+        target_margin_percent NUMERIC(5,2),
+        condition_type VARCHAR(50) DEFAULT 'category',
+        active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    const marginCount = await pool.query('SELECT COUNT(*) FROM margin_rules');
+    if (parseInt(marginCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO margin_rules (rule_name, category, min_margin_percent, target_margin_percent, condition_type) VALUES
+        ('Elektronik Minimum', 'Elektronik', 8.0, 15.0, 'category'),
+        ('Fashion Standar', 'Fashion', 20.0, 35.0, 'category'),
+        ('Produk Fast-Moving', 'Semua Kategori', 5.0, 12.0, 'velocity'),
+        ('Produk Musiman', 'Semua Kategori', 25.0, 45.0, 'seasonal')
+      `);
+    }
+
+    // ─── Customer Segments (customer_intelligence_hub) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS customer_segments (
+        id SERIAL PRIMARY KEY,
+        segment_name VARCHAR(255) NOT NULL,
+        description TEXT,
+        criteria VARCHAR(255),
+        customer_count INT DEFAULT 0,
+        avg_order_value NUMERIC(12,2) DEFAULT 0,
+        churn_risk_percent NUMERIC(5,2) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await pool.query(`ALTER TABLE customer_segments ADD COLUMN IF NOT EXISTS churn_risk_percent NUMERIC(5,2) DEFAULT 0`);
+    const segmentCount = await pool.query('SELECT COUNT(*) FROM customer_segments');
+    if (parseInt(segmentCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO customer_segments (segment_name, description, criteria, customer_count, avg_order_value, churn_risk_percent) VALUES
+        ('VIP Loyalis', 'Pelanggan dengan 10+ transaksi dalam 90 hari terakhir', 'transaksi >= 10 AND hari <= 90', 0, 0, 5),
+        ('Berisiko Churn', 'Belum bertransaksi 60+ hari padahal dulu aktif', 'idle_days >= 60', 0, 0, 78),
+        ('Baru Bergabung', 'Pelanggan baru dalam 30 hari terakhir', 'created_at >= now() - 30d', 0, 0, 25),
+        ('Big Spender', 'Rata-rata nilai order di atas Rp 1 juta', 'avg_order_value >= 1000000', 0, 0, 15)
+      `);
+    }
+    // NOTE: customer_count & avg_order_value di atas sengaja 0 (belum ada data order/customer
+    // yang cukup untuk dihitung otomatis) — endpoint /api/customers/segments/recalculate
+    // akan menghitung ulang dari tabel orders begitu ada data transaksi nyata.
+
+    // ─── Event Feed (pusat_komando_event_driven, BPMN) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS event_feed (
+        id SERIAL PRIMARY KEY,
+        event_type VARCHAR(100) NOT NULL,
+        message TEXT,
+        source_service VARCHAR(100),
+        payload JSONB,
+        severity VARCHAR(20) DEFAULT 'info',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await pool.query(`ALTER TABLE event_feed ADD COLUMN IF NOT EXISTS message TEXT`);
+    const eventCount = await pool.query('SELECT COUNT(*) FROM event_feed');
+    if (parseInt(eventCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO event_feed (event_type, message, source_service, severity) VALUES
+        ('SYSTEM_START', 'Backend AI Commerce OS berhasil start', 'backend', 'info'),
+        ('DB_MIGRATION', 'Migrasi tabel database selesai dijalankan', 'backend', 'info'),
+        ('WEBHOOK_READY', 'Webhook listener siap menerima event', 'webhook', 'info')
+      `);
+    }
+
+    // ─── Workflow Nodes (otomatisasi_alur_kerja_bpmn) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS workflow_nodes (
+        id SERIAL PRIMARY KEY,
+        node_name VARCHAR(255) NOT NULL,
+        node_type VARCHAR(50) NOT NULL,
+        config JSONB,
+        position_x INT DEFAULT 0,
+        position_y INT DEFAULT 0,
+        connected_to INT REFERENCES workflow_nodes(id),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    const nodeCount = await pool.query('SELECT COUNT(*) FROM workflow_nodes');
+    if (parseInt(nodeCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO workflow_nodes (node_name, node_type, config, position_x, position_y) VALUES
+        ('Order Masuk', 'trigger', '{"source":"marketplace"}', 100, 100),
+        ('Cek Stok', 'condition', '{"check":"stock_available"}', 300, 100),
+        ('Kirim WhatsApp Konfirmasi', 'action', '{"template":"order_confirmation"}', 500, 100)
+      `);
+    }
+
+    // ─── AI Models Catalog (pusat_kecerdasan_model_gratis) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS ai_models_catalog (
+        id SERIAL PRIMARY KEY,
+        model_name VARCHAR(255) NOT NULL,
+        provider VARCHAR(100),
+        use_case VARCHAR(255),
+        cost_label VARCHAR(100) DEFAULT 'Gratis',
+        context_window VARCHAR(50),
+        active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    const modelCount = await pool.query('SELECT COUNT(*) FROM ai_models_catalog');
+    if (parseInt(modelCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO ai_models_catalog (model_name, provider, use_case, cost_label, context_window) VALUES
+        ('Gemini 2.0 Flash', 'Google', 'Generate caption & deskripsi produk', 'Gratis (rate limit)', '1M token'),
+        ('Gemini 2.0 Pro', 'Google', 'Analisis kompetitor & strategi harga', 'Berbayar per token', '2M token')
+      `);
+    }
+
+    // ─── Tenants (saas_white_label_center) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS tenants (
+        id SERIAL PRIMARY KEY,
+        tenant_name VARCHAR(255) NOT NULL,
+        subdomain VARCHAR(100) UNIQUE,
+        plan VARCHAR(50) DEFAULT 'Starter',
+        status VARCHAR(20) DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    const tenantCount = await pool.query('SELECT COUNT(*) FROM tenants');
+    if (parseInt(tenantCount.rows[0].count) === 0) {
+      await pool.query(`
+        INSERT INTO tenants (tenant_name, subdomain, plan, status) VALUES
+        ('Toko Berkah Jaya', 'berkahjaya', 'Starter', 'active'),
+        ('Reseller Fashion Kita', 'fashionkita', 'Pro', 'active'),
+        ('Grosir Elektronik Nusantara', 'gronusantara', 'Pro', 'active'),
+        ('Distributor Sejahtera Group', 'sejahteragroup', 'Enterprise', 'active')
+      `);
+    }
+
+    // ─── Affiliate Program (affiliate_engine, otomatisasi_pusat_afiliasi) ───
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS affiliates (
+        id SERIAL PRIMARY KEY,
+        affiliate_name VARCHAR(255) NOT NULL,
+        referral_code VARCHAR(50) UNIQUE,
+        commission_percent NUMERIC(5,2) DEFAULT 5.0,
+        total_referrals INT DEFAULT 0,
+        total_commission NUMERIC(14,2) DEFAULT 0,
+        status VARCHAR(20) DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
     // Seed initial keys if empty
     const keysCount = await pool.query('SELECT COUNT(*) FROM api_keys');
