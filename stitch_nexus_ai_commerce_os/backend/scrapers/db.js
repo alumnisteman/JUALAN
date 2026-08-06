@@ -168,6 +168,7 @@ async function initMarketplaceTable() {
   `);
 
   console.log('[DB] Tables initialized');
+}
 
 // Inisialisasi tabel orders
 async function initOrdersTable() {
@@ -204,8 +205,6 @@ async function initAffiliateTable() {
     )
   `);
   console.log('[DB] affiliate table initialized');
-}
-
 }
 
 /**
